@@ -940,8 +940,8 @@ main() {
     sourceDisks=($(for disk in "${!sourceDisks[@]}"; do echo "$disk"; done | sort -V))
     targetDisks=($(for disk in "${!targetDisks[@]}"; do echo "$disk"; done | sort -V))
 
-    logMessage "debug" "    Source disks: ${sortedSourceDisks[@]}"
-    logMessage "debug" "    Target disks: ${sortedTargetDisks[@]}"
+    logMessage "debug" "    Source disks: ${sourceDisks[@]}"
+    logMessage "debug" "    Target disks: ${targetDisks[@]}"
     logMessage "debug,info" "Sorting disks by available free space..."
 
     logMessage "debug" "Source disks sorted by available free space:"
