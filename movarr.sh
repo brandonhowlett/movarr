@@ -161,16 +161,16 @@ validateDiskSpace() {
         unit=${BASH_REMATCH[2]}
         if [ -z "$unit" ]; then
             unit="GB"
-            logMessage "debug" "No unit provided for $spaceName, defaulting to GB"
+            # logMessage "debug" "No unit provided for $spaceName, defaulting to GB"
         fi
         if [ "$unit" == "GB" ]; then
             spaceValue=$((size * 1024))
-            logMessage "debug" "Converted $spaceName to MB: $spaceValue"
+            # logMessage "debug" "Converted $spaceName to MB: $spaceValue"
         else
             spaceValue=$size
         fi
     else
-        logMessage "error" "Invalid value for '$spaceName'. It should be a number followed by MB or GB."
+        # logMessage "error" "Invalid value for '$spaceName'. It should be a number followed by MB or GB."
         ((errors++))
     fi
 
