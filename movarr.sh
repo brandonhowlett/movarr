@@ -367,6 +367,8 @@ validateConfiguration() {
     maxSourceDiskFreeSpace=$(validateDiskSpace "$maxSourceDiskFreeSpace" "maxSourceDiskFreeSpace" "$errors")
     minTargetDiskFreeSpace=$(validateDiskSpace "$minTargetDiskFreeSpace" "minTargetDiskFreeSpace" "$errors")
 
+    echo "<<<" $minFreeDiskSpace ">>>";
+
     formattedMinFreeDiskSpace=$(formatSpace "$validatedMinFreeDiskSpace")
     formattedMaxSourceDiskFreeSpace=$(formatSpace "$validatedMaxSourceDiskFreeSpace")
     formattedMinTargetDiskFreeSpace=$(formatSpace "$validatedMinTargetDiskFreeSpace")
