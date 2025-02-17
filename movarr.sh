@@ -736,38 +736,136 @@ sortAssociativeArray() {
 }
 
 # Function to generate a list of tentative files to move
+# generateMoveList() {
+#     local moveListFile="$1"
+#     > "$moveListFile"  # Clear the move list file
+
+#     for sourceDisk in "${!sourceDisks[@]}"; do
+#         for rootFolder in "${rootFolders[@]}"; do
+#             rootFolderPath="$diskPath/$sourceDisk/$rootFolder"
+#             if [ ! -d "$rootFolderPath" ]; then
+#                 continue
+#             fi
+
+#             sourceDirectories=()
+#             while IFS= read -r dir; do
+#                 sourceDirectories+=("$dir")
+#             done < <(find "$rootFolderPath" -maxdepth 1 -mindepth 1 -type d)
+
+#             for dir in "${sourceDirectories[@]}"; do
+#                 dirSize=$(du -sm "$dir" 2>/dev/null | awk '{print $1}')
+#                 if [ -z "$dirSize" ]; then
+#                     continue
+#                 fi
+
+#                 targetDisk=$(findLeastFreeDisk "$dirSize")
+#                 if [ -z "$targetDisk" ]; then
+#                     continue
+#                 fi
+
+#                 echo "$dirSize $dir $targetDisk" >> "$moveListFile"
+#             done
+#         done
+#     done
+# }
+
 generateMoveList() {
     local moveListFile="$1"
     > "$moveListFile"  # Clear the move list file
 
+    # Iterate over each source disk
     for sourceDisk in "${!sourceDisks[@]}"; do
+        logMessage "debug" "  $sourceDisk:"
+
+        # Skip excluded disks
+        if arrayContainsDisk "${excludeSourceDisks[@]}" "$sourceDisk"; then
+            logMessage "debug" "    Skipping excluded source disk"
+            continue
+        fi
+
+        # Iterate over each root folder
         for rootFolder in "${rootFolders[@]}"; do
             rootFolderPath="$diskPath/$sourceDisk/$rootFolder"
+
+            # Check if the root folder exists
             if [ ! -d "$rootFolderPath" ]; then
+                logMessage "debug,info" "    Root folder $rootFolderPath not found on $sourceDisk"
                 continue
             fi
 
+            logMessage "debug" "    Root folder exists"
+
+            # List directories in rootFolderPath
             sourceDirectories=()
             while IFS= read -r dir; do
                 sourceDirectories+=("$dir")
             done < <(find "$rootFolderPath" -maxdepth 1 -mindepth 1 -type d)
 
+            # Skip if no directories found
+            if [ ${#sourceDirectories[@]} -eq 0 ]; then
+                logMessage "info" "    No directories found on $sourceDisk for transfer."
+                continue
+            fi
+
+            # Function to get sorting key
+            getSortKey() {
+                local dir="$1"
+                case "$moverMode" in
+                    "largest" | "smallest") du -s "$dir" | awk '{print $1}' ;;
+                    "oldest" | "newest") stat -c %W "$dir" 2>/dev/null || stat -c %Y "$dir" ;;
+                    *) echo "$dir" ;;
+                esac
+            }
+
+            # Sort directories based on moverMode
+            if [[ "$moverMode" == "largest" || "$moverMode" == "smallest" || "$moverMode" == "oldest" || "$moverMode" == "newest" ]]; then
+                readarray -t sourceDirectories < <(for dir in "${sourceDirectories[@]}"; do
+                    echo "$(getSortKey "$dir") $dir"
+                done | sort -k1,1n | awk '{print substr($0, index($0,$2))}')
+            fi
+
+            # Reverse order for "largest" and "newest"
+            if [[ "$moverMode" == "largest" || "$moverMode" == "newest" ]]; then
+                readarray -t sourceDirectories < <(printf "%s\n" "${sourceDirectories[@]}" | tac)
+            fi
+
+            # Retrieve free space on the source disk
+            freeSpace=$(grep "^$sourceDisk " "$tempFile" | awk '{print $2}')
+            logMessage "debug" "    Free space is $(formatSpace $freeSpace)"
+
+            # Iterate over each directory
             for dir in "${sourceDirectories[@]}"; do
                 dirSize=$(du -sm "$dir" 2>/dev/null | awk '{print $1}')
                 if [ -z "$dirSize" ]; then
                     continue
                 fi
 
+                # Find the best destination disk
                 targetDisk=$(findLeastFreeDisk "$dirSize")
                 if [ -z "$targetDisk" ]; then
+                    logMessage "error" "    No destination disk found for $dir (size: $(formatSpace $dirSize))"
                     continue
                 fi
 
+                # Add move entry to move list file
                 echo "$dirSize $dir $targetDisk" >> "$moveListFile"
+                logMessage "debug,info" "    Queued move: $dir ($(formatSpace $dirSize)) → $targetDisk"
+
+                # Simulate updating free space
+                updateFreeSpace "$sourceDisk" "$dirSize" "$tempFile"
+                updateFreeSpace "$targetDisk" "$((-dirSize))" "$tempFile"
+
+                # Retrieve updated free space
+                freeSpace=$(grep "^$sourceDisk " "$tempFile" | awk '{print $2}')
+                if [ "$freeSpace" -ge "$maxSourceDiskFreeSpace" ]; then
+                    logMessage "debug" "    Enough free space reached. Moving to next disk."
+                    break
+                fi
             done
         done
     done
 }
+
 
 # Function to move files based on the move list
 moveFilesFromList() {
@@ -837,24 +935,20 @@ main() {
     done
 
     logMessage "debug" "  Evaluating disks..."
-    
+
     # Sort source disks by name
     sortedSourceDisks=($(for disk in "${!sourceDisks[@]}"; do echo "$disk"; done | sort -V))
     sortedTargetDisks=($(for disk in "${!targetDisks[@]}"; do echo "$disk"; done | sort -V))
 
     logMessage "debug" "    Source disks: ${sortedSourceDisks[@]}"
     logMessage "debug" "    Target disks: ${sortedTargetDisks[@]}"
-
     logMessage "debug,info" "Sorting disks by available free space..."
 
-    # Sort target disks by free space in descending order
-    # sortedTargetDisks=($(for disk in "${!targetDisks[@]}"; do echo "$disk ${targetDisks[$disk]}"; done | sort -k2 -nr | awk '{print $1}'))
-
     # Log target disks with their free space
-    logMessage "debug,info" "Target disks sorted by available free space:"
-    for disk in "${sortedTargetDisks[@]}"; do
-        logMessage "debug,info" "  $disk ($(formatSpace ${targetDisks[$disk]}))"
-    done
+    # logMessage "debug,info" "Target disks sorted by available free space:"
+    # for disk in "${sortedTargetDisks[@]}"; do
+    #     logMessage "debug,info" "  $disk ($(formatSpace ${targetDisks[$disk]}))"
+    # done
 
     # Create a temporary file to track the simulated movement of data
     tempFile=$(mktemp)
@@ -879,211 +973,211 @@ main() {
 
     moveFilesFromList "$moveListFile"
 
-    # Main loop
-    while :; do
-        moveNeeded=false
+    # # Main loop
+    # while :; do
+    #     moveNeeded=false
 
-        # Iterate over each source disk
-        for sourceDisk in "${!sourceDisks[@]}"; do
-            logMessage "debug" "  $sourceDisk:"
+    #     # Iterate over each source disk
+    #     for sourceDisk in "${!sourceDisks[@]}"; do
+    #         logMessage "debug" "  $sourceDisk:"
 
-            # Check if the source disk should be excluded from searching
-            if arrayContainsDisk "${excludeSourceDisks[@]}" "$sourceDisk"; then
-                logMessage "debug" "    Skipping excluded source disk"
-                continue
-            fi
+    #         # Check if the source disk should be excluded from searching
+    #         if arrayContainsDisk "${excludeSourceDisks[@]}" "$sourceDisk"; then
+    #             logMessage "debug" "    Skipping excluded source disk"
+    #             continue
+    #         fi
 
-            # Iterate over each root folder
-            for rootFolder in "${rootFolders[@]}"; do
-                rootFolderPath="$diskPath/$sourceDisk/$rootFolder"
+    #         # Iterate over each root folder
+    #         for rootFolder in "${rootFolders[@]}"; do
+    #             rootFolderPath="$diskPath/$sourceDisk/$rootFolder"
 
-                # Check if the root folder exists
-                if [ ! -d "$rootFolderPath" ]; then
-                    logMessage "debug,info" "    Root folder $rootFolderPath not found on $sourceDisk"
-                    continue
-                else
-                    logMessage "debug" "    Root folder exists"
-                fi
+    #             # Check if the root folder exists
+    #             if [ ! -d "$rootFolderPath" ]; then
+    #                 logMessage "debug,info" "    Root folder $rootFolderPath not found on $sourceDisk"
+    #                 continue
+    #             else
+    #                 logMessage "debug" "    Root folder exists"
+    #             fi
 
-                # List all directories on the source disk
-                sourceDirectories=()
-                while IFS= read -r dir; do
-                    sourceDirectories+=("$dir")
-                done < <(find "$rootFolderPath" -maxdepth 1 -mindepth 1 -type d)
+    #             # List all directories on the source disk
+    #             sourceDirectories=()
+    #             while IFS= read -r dir; do
+    #                 sourceDirectories+=("$dir")
+    #             done < <(find "$rootFolderPath" -maxdepth 1 -mindepth 1 -type d)
                 
-                # Skip if no directories found
-                if [ ${#sourceDirectories[@]} -eq 0 ]; then
-                    logMessage "info" "    No directories found on $sourceDisk for transfer."
-                    continue
-                fi
+    #             # Skip if no directories found
+    #             if [ ${#sourceDirectories[@]} -eq 0 ]; then
+    #                 logMessage "info" "    No directories found on $sourceDisk for transfer."
+    #                 continue
+    #             fi
 
-                # Function to get the sort key based on moverMode
-                getSortKey() {
-                    local dir="$1"
-                    case "$moverMode" in
-                        "largest" | "smallest")
-                            du -s "$dir" | awk '{print $1}'
-                            ;;
-                        "oldest" | "newest")
-                            stat -c %W "$dir" 2>/dev/null || stat -c %Y "$dir"
-                            ;;
-                        *)
-                            echo "$dir"
-                            ;;
-                    esac
-                }
+    #             # Function to get the sort key based on moverMode
+    #             getSortKey() {
+    #                 local dir="$1"
+    #                 case "$moverMode" in
+    #                     "largest" | "smallest")
+    #                         du -s "$dir" | awk '{print $1}'
+    #                         ;;
+    #                     "oldest" | "newest")
+    #                         stat -c %W "$dir" 2>/dev/null || stat -c %Y "$dir"
+    #                         ;;
+    #                     *)
+    #                         echo "$dir"
+    #                         ;;
+    #                 esac
+    #             }
 
-                # Sort directories based on moverMode
-                if [ "$moverMode" == "largest" ] || [ "$moverMode" == "smallest" ]; then
-                    readarray -t sourceDirectories < <(for dir in "${sourceDirectories[@]}"; do
-                        echo "$(getSortKey "$dir") $dir"
-                    done | sort -k1,1n | awk '{print substr($0, index($0,$2))}')
-                elif [ "$moverMode" == "oldest" ] || [ "$moverMode" == "newest" ]; then
-                    readarray -t sourceDirectories < <(for dir in "${sourceDirectories[@]}"; do
-                        echo "$(getSortKey "$dir") $dir"
-                    done | sort -k1,1n | awk '{print substr($0, index($0,$2))}')
-                fi
+    #             # Sort directories based on moverMode
+    #             if [ "$moverMode" == "largest" ] || [ "$moverMode" == "smallest" ]; then
+    #                 readarray -t sourceDirectories < <(for dir in "${sourceDirectories[@]}"; do
+    #                     echo "$(getSortKey "$dir") $dir"
+    #                 done | sort -k1,1n | awk '{print substr($0, index($0,$2))}')
+    #             elif [ "$moverMode" == "oldest" ] || [ "$moverMode" == "newest" ]; then
+    #                 readarray -t sourceDirectories < <(for dir in "${sourceDirectories[@]}"; do
+    #                     echo "$(getSortKey "$dir") $dir"
+    #                 done | sort -k1,1n | awk '{print substr($0, index($0,$2))}')
+    #             fi
 
-                # Reverse the order for largest and newest
-                if [[ "$moverMode" == "largest" || "$moverMode" == "newest" ]]; then
-                    readarray -t sourceDirectories < <(printf "%s\n" "${sourceDirectories[@]}" | tac)
-                fi
+    #             # Reverse the order for largest and newest
+    #             if [[ "$moverMode" == "largest" || "$moverMode" == "newest" ]]; then
+    #                 readarray -t sourceDirectories < <(printf "%s\n" "${sourceDirectories[@]}" | tac)
+    #             fi
 
-                # List all directories on the source disk in the debug log
-                if [ "$logLevel" == "trace" ]; then
-                    logMessage "debug" "Directories found on $sourceDisk:"
-                    for dir in "${sourceDirectories[@]}"; do
-                        if [ "$moverMode" == "largest" ] || [ "$moverMode" == "smallest" ]; then
-                            size=$(du -sh "$dir" | awk '{print $1}')
-                            logMessage "debug" "  [$size] $dir"
-                        elif [ "$moverMode" == "oldest" ] || [ "$moverMode" == "newest" ]; then
-                            dateAdded=$(stat -c %y "$dir")
-                            logMessage "debug" "  [$dateAdded] $dir"
-                        else
-                            logMessage "debug" "  $dir"
-                        fi
-                    done
-                fi
-            done
+    #             # List all directories on the source disk in the debug log
+    #             if [ "$logLevel" == "trace" ]; then
+    #                 logMessage "debug" "Directories found on $sourceDisk:"
+    #                 for dir in "${sourceDirectories[@]}"; do
+    #                     if [ "$moverMode" == "largest" ] || [ "$moverMode" == "smallest" ]; then
+    #                         size=$(du -sh "$dir" | awk '{print $1}')
+    #                         logMessage "debug" "  [$size] $dir"
+    #                     elif [ "$moverMode" == "oldest" ] || [ "$moverMode" == "newest" ]; then
+    #                         dateAdded=$(stat -c %y "$dir")
+    #                         logMessage "debug" "  [$dateAdded] $dir"
+    #                     else
+    #                         logMessage "debug" "  $dir"
+    #                     fi
+    #                 done
+    #             fi
+    #         done
 
-            # Retrieve free space for the source disk from the temporary file
-            freeSpace=$(grep "^$sourceDisk " "$tempFile" | awk '{print $2}')
+    #         # Retrieve free space for the source disk from the temporary file
+    #         freeSpace=$(grep "^$sourceDisk " "$tempFile" | awk '{print $2}')
 
-            logMessage "debug" "    Free space is $(formatSpace $freeSpace) < $(formatSpace $maxSourceDiskFreeSpace)"
-            logMessage "debug" "    Searching $rootFolderPath/..."
+    #         logMessage "debug" "    Free space is $(formatSpace $freeSpace) < $(formatSpace $maxSourceDiskFreeSpace)"
+    #         logMessage "debug" "    Searching $rootFolderPath/..."
 
-            # Check if free space is less than or equal to zero
-            while [ "$freeSpace" -le $maxSourceDiskFreeSpace ]; do
-                moveNeeded=true
+    #         # Check if free space is less than or equal to zero
+    #         while [ "$freeSpace" -le $maxSourceDiskFreeSpace ]; do
+    #             moveNeeded=true
 
-                # Iterate over each available directory
-                for dir in "${sourceDirectories[@]}"; do
-                    # Get the size of the directory
-                    dirSize=$(du -sm "$dir" 2>/dev/null | awk '{print $1}')
-                    if [ -z "$dirSize" ]; then
-                        missingDirectories+=("$dir")
-                        continue
-                    fi
+    #             # Iterate over each available directory
+    #             for dir in "${sourceDirectories[@]}"; do
+    #                 # Get the size of the directory
+    #                 dirSize=$(du -sm "$dir" 2>/dev/null | awk '{print $1}')
+    #                 if [ -z "$dirSize" ]; then
+    #                     missingDirectories+=("$dir")
+    #                     continue
+    #                 fi
 
-                    # Find the next destination disk with enough space for dirSize
-                    targetDisk=$(findLeastFreeDisk "$dirSize")
+    #                 # Find the next destination disk with enough space for dirSize
+    #                 targetDisk=$(findLeastFreeDisk "$dirSize")
 
-                    # If no suitable destination disk is found, log an error and skip this directory
-                    if [ -z "$targetDisk" ]; then
-                        logMessage "error" "    No destination disk found with enough space for $dir (size: $(formatSpace $dirSize))."
-                        continue
-                    fi
+    #                 # If no suitable destination disk is found, log an error and skip this directory
+    #                 if [ -z "$targetDisk" ]; then
+    #                     logMessage "error" "    No destination disk found with enough space for $dir (size: $(formatSpace $dirSize))."
+    #                     continue
+    #                 fi
 
-                    # Add a new section to the simulation file if switching disks
-                    if [ "$targetDisk" != "$currentDisk" ]; then
-                        setDestinationDisk "$targetDisk"
-                        currentDisk="$targetDisk"
-                    fi
+    #                 # Add a new section to the simulation file if switching disks
+    #                 if [ "$targetDisk" != "$currentDisk" ]; then
+    #                     setDestinationDisk "$targetDisk"
+    #                     currentDisk="$targetDisk"
+    #                 fi
 
-                    # Log the transfer to the simulation file
-                    simulationEntry=$(formatSimulationEntry "$dirSize" "$dir" "$targetDisk")
-                    echo "$simulationEntry" >> "$dryRunFilePath"
+    #                 # Log the transfer to the simulation file
+    #                 simulationEntry=$(formatSimulationEntry "$dirSize" "$dir" "$targetDisk")
+    #                 echo "$simulationEntry" >> "$dryRunFilePath"
 
-                    # Log the directory being moved
-                    logMessage "debug,info" "      Moving $dir ($(formatSpace $dirSize)) to $targetDisk"
+    #                 # Log the directory being moved
+    #                 logMessage "debug,info" "      Moving $dir ($(formatSpace $dirSize)) to $targetDisk"
 
-                    # Capture old free space for logging
-                    oldSourceFreeSpace=$freeSpace
-                    oldTargetFreeSpace=$(grep "^$targetDisk " "$tempFile" | awk '{print $2}')
+    #                 # Capture old free space for logging
+    #                 oldSourceFreeSpace=$freeSpace
+    #                 oldTargetFreeSpace=$(grep "^$targetDisk " "$tempFile" | awk '{print $2}')
 
-                    # Update the free space in the temporary file
-                    updateFreeSpace "$sourceDisk" "$dirSize" "$tempFile"
-                    updateFreeSpace "$targetDisk" "$((-dirSize))" "$tempFile"
+    #                 # Update the free space in the temporary file
+    #                 updateFreeSpace "$sourceDisk" "$dirSize" "$tempFile"
+    #                 updateFreeSpace "$targetDisk" "$((-dirSize))" "$tempFile"
 
-                    # Retrieve updated free space for the source and target disks
-                    freeSpace=$(grep "^$sourceDisk " "$tempFile" | awk '{print $2}')
-                    targetFreeSpace=$(grep "^$targetDisk " "$tempFile" | awk '{print $2}')
-                    # logMessage "debug" "    Updated free space for source disk $sourceDisk from $(formatSpace $oldSourceFreeSpace) to $(formatSpace $freeSpace)"
-                    # logMessage "debug" "    Updated free space for target disk $targetDisk from $(formatSpace $oldTargetFreeSpace) to $(formatSpace $targetFreeSpace)"
+    #                 # Retrieve updated free space for the source and target disks
+    #                 freeSpace=$(grep "^$sourceDisk " "$tempFile" | awk '{print $2}')
+    #                 targetFreeSpace=$(grep "^$targetDisk " "$tempFile" | awk '{print $2}')
+    #                 # logMessage "debug" "    Updated free space for source disk $sourceDisk from $(formatSpace $oldSourceFreeSpace) to $(formatSpace $freeSpace)"
+    #                 # logMessage "debug" "    Updated free space for target disk $targetDisk from $(formatSpace $oldTargetFreeSpace) to $(formatSpace $targetFreeSpace)"
 
-                    # Replace the source disk with the target disk in the $dir variable
-                    targetDir=$(echo "$dir" | sed "s:$diskPath/$sourceDisk:$diskPath/$targetDisk:")
+    #                 # Replace the source disk with the target disk in the $dir variable
+    #                 targetDir=$(echo "$dir" | sed "s:$diskPath/$sourceDisk:$diskPath/$targetDisk:")
 
-                    # Set the dry-run flag based on simulation mode
-                    dryRunFlag=""
-                    if [ "$dryRun" == "true" ]; then
-                        dryRunFlag="--dry-run"
-                    fi
+    #                 # Set the dry-run flag based on simulation mode
+    #                 dryRunFlag=""
+    #                 if [ "$dryRun" == "true" ]; then
+    #                     dryRunFlag="--dry-run"
+    #                 fi
 
-                    # Perform the rsync operation
-                    rsync -avz $dryRunFlag --remove-source-files --progress -- "$dir/" "$targetDir/"
+    #                 # Perform the rsync operation
+    #                 rsync -avz $dryRunFlag --remove-source-files --progress -- "$dir/" "$targetDir/"
 
-                    # Check the exit status of rsync to confirm the transfer
-                    if [ $? -eq 0 ]; then
-                        # If rsync was successful, delete empty directories in the source
-                        find "$dir" -depth -type d -empty -exec rmdir -- "{}" \; 2>/dev/null
-                        echo "Transfer completed, and empty directories removed from source: $dir"
-                    else
-                        echo "rsync transfer failed. No files were deleted."
-                        exit 1
-                    fi
+    #                 # Check the exit status of rsync to confirm the transfer
+    #                 if [ $? -eq 0 ]; then
+    #                     # If rsync was successful, delete empty directories in the source
+    #                     find "$dir" -depth -type d -empty -exec rmdir -- "{}" \; 2>/dev/null
+    #                     echo "Transfer completed, and empty directories removed from source: $dir"
+    #                 else
+    #                     echo "rsync transfer failed. No files were deleted."
+    #                     exit 1
+    #                 fi
 
-                    # Track moved directories and data
-                    movedDirectories["$targetDisk"]+="$dir\n"
-                    movedData["$targetDisk"]=$((movedData["$targetDisk"] + dirSize))
+    #                 # Track moved directories and data
+    #                 movedDirectories["$targetDisk"]+="$dir\n"
+    #                 movedData["$targetDisk"]=$((movedData["$targetDisk"] + dirSize))
 
-                    # Check if the minimum free disk space is reached
-                    if [ "$freeSpace" -ge "$maxSourceDiskFreeSpace" ]; then
-                        logMessage "debug" "    Free space on $sourceDisk is $(formatSpace $freeSpace). Moving to the next disk."
-                        break
-                    else
-                        logMessage "debug" "     Free space has increased from $(formatSpace $oldSourceFreeSpace) to $(formatSpace $freeSpace). Continuing..."
-                    fi
+    #                 # Check if the minimum free disk space is reached
+    #                 if [ "$freeSpace" -ge "$maxSourceDiskFreeSpace" ]; then
+    #                     logMessage "debug" "    Free space on $sourceDisk is $(formatSpace $freeSpace). Moving to the next disk."
+    #                     break
+    #                 else
+    #                     logMessage "debug" "     Free space has increased from $(formatSpace $oldSourceFreeSpace) to $(formatSpace $freeSpace). Continuing..."
+    #                 fi
 
-                done
-            done
-        done
+    #             done
+    #         done
+    #     done
 
-        if ! $moveNeeded; then
-            logMessage "debug" "All disks have been evaluated. No move needed."
-            break
-        else
-            logMessage "debug" "All disks have been evaluated. Move recommended."
-        fi
+    #     if ! $moveNeeded; then
+    #         logMessage "debug" "All disks have been evaluated. No move needed."
+    #         break
+    #     else
+    #         logMessage "debug" "All disks have been evaluated. Move recommended."
+    #     fi
 
-        # If in simulation mode, exit after creating the simulation file
-        if [ "$dryRun" == "true" ]; then
-            logMessage "debug,info" "Simulation mode: Transfer plan saved to $dryRunFilePath."
-            # break
-            exit 0
-        fi
+    #     # If in simulation mode, exit after creating the simulation file
+    #     if [ "$dryRun" == "true" ]; then
+    #         logMessage "debug,info" "Simulation mode: Transfer plan saved to $dryRunFilePath."
+    #         # break
+    #         exit 0
+    #     fi
 
-        # Start the transfer process
-        logMessage "debug,info" "Starting data transfer..."
+    #     # Start the transfer process
+    #     logMessage "debug,info" "Starting data transfer..."
 
-        transferDirectories "$sourceDisk" "$destinationDisk"
+    #     transferDirectories "$sourceDisk" "$destinationDisk"
 
-        # Limit the number of concurrent transfers
-        logMessage "debug" "Limiting the number of concurrent transfers to $fileTransferLimit"
-        while [ "$(jobs -r | wc -l)" -ge "$fileTransferLimit" ]; do
-            sleep 1
-        done
-    done
+    #     # Limit the number of concurrent transfers
+    #     logMessage "debug" "Limiting the number of concurrent transfers to $fileTransferLimit"
+    #     while [ "$(jobs -r | wc -l)" -ge "$fileTransferLimit" ]; do
+    #         sleep 1
+    #     done
+    # done
 
     # Wait for all background jobs to complete
     logMessage "debug" "Waiting for all background jobs to complete..."
