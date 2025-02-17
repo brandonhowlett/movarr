@@ -793,7 +793,7 @@ generateMoveList() {
                 continue
             fi
 
-            logMessage "debug" "    Root folder exists"
+            # logMessage "debug" "    Root folder exists"
 
             # List directories in rootFolderPath
             sourceDirectories=()
@@ -937,18 +937,21 @@ main() {
     logMessage "debug" "  Evaluating disks..."
 
     # Sort source disks by name
-    sortedSourceDisks=($(for disk in "${!sourceDisks[@]}"; do echo "$disk"; done | sort -V))
-    sortedTargetDisks=($(for disk in "${!targetDisks[@]}"; do echo "$disk"; done | sort -V))
+    sourceDisks=($(for disk in "${!sourceDisks[@]}"; do echo "$disk"; done | sort -V))
+    targetDisks=($(for disk in "${!targetDisks[@]}"; do echo "$disk"; done | sort -V))
 
     logMessage "debug" "    Source disks: ${sortedSourceDisks[@]}"
     logMessage "debug" "    Target disks: ${sortedTargetDisks[@]}"
     logMessage "debug,info" "Sorting disks by available free space..."
 
-    # Log target disks with their free space
-    # logMessage "debug,info" "Target disks sorted by available free space:"
-    # for disk in "${sortedTargetDisks[@]}"; do
-    #     logMessage "debug,info" "  $disk ($(formatSpace ${targetDisks[$disk]}))"
-    # done
+    logMessage "debug" "Source disks sorted by available free space:"
+    for disk in "${sourceDisks[@]}"; do
+        logMessage "debug,info" "  $disk ($(formatSpace ${sourceDisks[$disk]}))"
+    done
+    logMessage "debug" "Target disks sorted by available free space:"
+    for disk in "${targetDisks[@]}"; do
+        logMessage "debug,info" "  $disk ($(formatSpace ${targetDisks[$disk]}))"
+    done
 
     # Create a temporary file to track the simulated movement of data
     tempFile=$(mktemp)
