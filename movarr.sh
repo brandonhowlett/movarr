@@ -151,7 +151,7 @@ initializeLogs() {
     addHeader "$logFilePath"
 }
 
-validateDiskSpace() {
+validateDiskSpace() {  # NO LOGGING ALLOWED IN THIS FUNCTION!
     local spaceValue="$1"
     local spaceName="$2"
     local errors="$3"
@@ -161,16 +161,13 @@ validateDiskSpace() {
         unit=${BASH_REMATCH[2]}
         if [ -z "$unit" ]; then
             unit="GB"
-            # logMessage "debug" "No unit provided for $spaceName, defaulting to GB"
         fi
         if [ "$unit" == "GB" ]; then
             spaceValue=$((size * 1024))
-            # logMessage "debug" "Converted $spaceName to MB: $spaceValue"
         else
             spaceValue=$size
         fi
     else
-        # logMessage "error" "Invalid value for '$spaceName'. It should be a number followed by MB or GB."
         ((errors++))
     fi
 
@@ -369,6 +366,12 @@ validateConfiguration() {
     minFreeDiskSpace=$(validateDiskSpace "$minFreeDiskSpace" "minFreeDiskSpace" "$errors")
     maxSourceDiskFreeSpace=$(validateDiskSpace "$maxSourceDiskFreeSpace" "maxSourceDiskFreeSpace" "$errors")
     minTargetDiskFreeSpace=$(validateDiskSpace "$minTargetDiskFreeSpace" "minTargetDiskFreeSpace" "$errors")
+
+    formattedMinFreeDiskSpace=$(formatSpace "$validatedMinFreeDiskSpace")
+    formattedMaxSourceDiskFreeSpace=$(formatSpace "$validatedMaxSourceDiskFreeSpace")
+    formattedMinTargetDiskFreeSpace=$(formatSpace "$validatedMinTargetDiskFreeSpace")
+
+    logMessage "debug" "minFreeDiskSpace=${formattedMinFreeDiskSpace}, maxSourceDiskFreeSpace=${formattedMaxSourceDiskFreeSpace}, minTargetDiskFreeSpace=${formattedMinTargetDiskFreeSpace}"
 
     # Validate backgroundTasks (should be true or false)
     logMessage "debug" "backgroundTasks: $backgroundTasks"
