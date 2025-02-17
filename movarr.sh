@@ -813,6 +813,8 @@ main() {
 
     if [ "$dryRun" == "true" ]; then
         logMessage "debug,info" "Simulation mode: Transfer plan saved to $dryRunFilePath."
+        # Copy the move list to the dry run file for inspection
+        cp "$moveListFile" "$dryRunFilePath"
         exit 0
     fi
 
