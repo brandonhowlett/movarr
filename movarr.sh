@@ -751,20 +751,16 @@ main() {
     # Validate configuration and populate activeDisks
     validateConfiguration
     
-    # Delete any existing simulation file
+    # Delete any existing simulation file if not in dryRun mode
     if [ "$dryRun" == "true" ]; then
         logMessage "debug,info" "Starting data transfer simulation"
- 
-        # Delete existing simulation file
-        if [ -f "$dryRunFilePath" ]; then
-            rm -f "$dryRunFilePath"
-        fi
-
         # Create a new simulation file
-        dryRunFilePath="$scriptDir/movarr_simulation.txt"
         > "$dryRunFilePath"
     else
         logMessage "debug,info" "Starting data transfer..."
+        if [ -f "$dryRunFilePath" ]; then
+            rm -f "$dryRunFilePath"
+        fi
     fi
 
     # Identify source and target disks
