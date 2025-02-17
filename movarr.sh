@@ -434,6 +434,50 @@ getFreeSpace() {
     df -m "$diskPath/$1" | awk 'NR==2 {print $4}'
 }
 
+convertThreshold() {
+    local disk="$1"
+    local threshold="$2"
+
+    # Get total and available space on the disk in bytes
+    local total_space=$(df --output=size -B1 "$disk" | tail -1)
+    local available_space=$(df --output=avail -B1 "$disk" | tail -1)
+
+    # If threshold is in percentage format (e.g., "5%"), calculate equivalent bytes
+    if [[ "$threshold" =~ ^[0-9]+%$ ]]; then
+        local percent=${threshold%\%}  # Remove % sign
+        echo $((total_space * percent / 100))
+    elif [[ "$threshold" =~ ^[0-9]+(GB|G)$ ]]; then
+        echo $(( ${threshold%GB} * 1024 * 1024 * 1024 ))
+    elif [[ "$threshold" =~ ^[0-9]+(MB|M)$ ]]; then
+        echo $(( ${threshold%MB} * 1024 * 1024 ))
+    elif [[ "$threshold" =~ ^[0-9]+(KB|K)$ ]]; then
+        echo $(( ${threshold%KB} * 1024 ))
+    else
+        echo "$threshold"  # Assume it's already in bytes
+    fi
+}
+
+check_disk_space() {
+    local disk="$1"
+    local threshold="$2"
+
+    # Convert threshold to bytes
+    local min_free_space
+    min_free_space=$(convertThreshold "$disk" "$threshold")
+
+    # Get available space on the disk in bytes
+    local available_space
+    available_space=$(df --output=avail -B1 "$disk" | tail -1)
+
+    # Check if available space is below the threshold
+    if [[ "$available_space" -lt "$min_free_space" ]]; then
+        logMessage "warn" "Free space on $disk ($(formatSpace $((available_space / 1024 / 1024)))) is below the threshold ($(formatSpace $((min_free_space / 1024 / 1024))))"
+        return 1
+    fi
+
+    return 0
+}
+
 # Function to convert disk space reported in MB to GB for use in strings
 formatSpace() {
     local diskSpace="$1"
