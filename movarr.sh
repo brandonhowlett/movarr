@@ -368,12 +368,10 @@ validateConfiguration() {
     minTargetDiskFreeSpace=$(validateDiskSpace "$minTargetDiskFreeSpace" "minTargetDiskFreeSpace" "$errors")
 
     echo "<<<" $minFreeDiskSpace ">>>";
-
-    formattedMinFreeDiskSpace=$(formatSpace "$validatedMinFreeDiskSpace")
-    formattedMaxSourceDiskFreeSpace=$(formatSpace "$validatedMaxSourceDiskFreeSpace")
-    formattedMinTargetDiskFreeSpace=$(formatSpace "$validatedMinTargetDiskFreeSpace")
-
-    logMessage "debug" "minFreeDiskSpace=${formattedMinFreeDiskSpace}, maxSourceDiskFreeSpace=${formattedMaxSourceDiskFreeSpace}, minTargetDiskFreeSpace=${formattedMinTargetDiskFreeSpace}"
+    echo "<<<" $maxSourceDiskFreeSpace ">>>";
+    echo "<<<" $minTargetDiskFreeSpace ">>>";
+    
+    logMessage "debug" "minFreeDiskSpace=$(formatSpace $minFreeDiskSpace), maxSourceDiskFreeSpace=$(formatSpace $maxSourceDiskFreeSpace), minTargetDiskFreeSpace=$(formatSpace $minTargetDiskFreeSpace)"
 
     # Validate backgroundTasks (should be true or false)
     logMessage "debug" "backgroundTasks: $backgroundTasks"
