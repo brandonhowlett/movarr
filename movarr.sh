@@ -837,7 +837,7 @@ main() {
     done
 
     logMessage "debug" "  Evaluating disks..."
-    logMessage "debug" "    Source disks: $(printf "%s, " "${!sourceDisks[@]}" | sed 's/, $//')"
+    logMessage "debug" "    Source disks: $(printf "%s (%s), " "${!sourceDisks[@]}" "$(formatSpace ${sourceDisks[@]})" | sed 's/, $//')"
     # logMessage "debug" "    Source disks: ${!sourceDisks[@]}"
     logMessage "debug" "    Target disks: $(printf "%s, " "${!targetDisks[@]}" | sed 's/, $//')"
 
