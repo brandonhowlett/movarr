@@ -837,11 +837,18 @@ main() {
     done
 
     logMessage "debug" "  Evaluating disks..."
-    logMessage "debug" "    Source disks: ${!sourceDisks[@]}"
+    
+    # Sort source disks by name
+    sortedSourceDisks=($(for disk in "${!sourceDisks[@]}"; do echo "$disk"; done | sort -V))
+    sortedTargetDisks=($(for disk in "${!targetDisks[@]}"; do echo "$disk"; done | sort -V))
+
+    logMessage "debug" "    Source disks: ${sortedSourceDisks[@]}"
+    logMessage "debug" "    Target disks: ${sortedTargetDisks[@]}"
+
     logMessage "debug,info" "Sorting disks by available free space..."
 
     # Sort target disks by free space in descending order
-    sortedTargetDisks=($(for disk in "${!targetDisks[@]}"; do echo "$disk ${targetDisks[$disk]}"; done | sort -k2 -nr | awk '{print $1}'))
+    # sortedTargetDisks=($(for disk in "${!targetDisks[@]}"; do echo "$disk ${targetDisks[$disk]}"; done | sort -k2 -nr | awk '{print $1}'))
 
     # Log target disks with their free space
     logMessage "debug,info" "Target disks sorted by available free space:"
