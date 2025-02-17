@@ -414,6 +414,18 @@ validateConfiguration() {
     activeDisks=($(printf "%s\n" "${activeDisks[@]}" | sort -V))
 
     logMessage "info" "Configuration validation completed successfully."
+
+
+
+    if [ "$errors" -gt 0 ]; then
+        logMessage "error" "Configuration validation failed with $errors errors."
+        exit 1
+    fi
+
+    # Sort activeDisks to ensure disk1 precedes disk10
+    activeDisks=($(printf "%s\n" "${activeDisks[@]}" | sort -V))
+
+    logMessage "info" "Configuration validation completed successfully."
 }
 
 # Function to check if an array contains a specific disk
@@ -691,59 +703,6 @@ sortAssociativeArray() {
     echo "${!sortedArr[@]}"
 }
 
-# Function to generate a list of tentative files to move
-generateMoveList() {
-    local moveListFile="$1"
-    > "$moveListFile"  # Clear the move list file
-
-    for sourceDisk in "${!sourceDisks[@]}"; do
-        for rootFolder in "${rootFolders[@]}"; do
-            rootFolderPath="$diskPath/$sourceDisk/$rootFolder"
-            if [ ! -d "$rootFolderPath" ]; then
-                continue
-            fi
-
-            sourceDirectories=()
-            while IFS= read -r dir; do
-                sourceDirectories+=("$dir")
-            done < <(find "$rootFolderPath" -maxdepth 1 -mindepth 1 -type d)
-
-            for dir in "${sourceDirectories[@]}"; do
-                dirSize=$(du -sm "$dir" 2>/dev/null | awk '{print $1}')
-                if [ -z "$dirSize" ]; then
-                    continue
-                fi
-
-                targetDisk=$(findLeastFreeDisk "$dirSize")
-                if [ -z "$targetDisk" ]; then
-                    continue
-                fi
-
-                echo "$dirSize $dir $targetDisk" >> "$moveListFile"
-            done
-        done
-    done
-}
-
-# Function to move files based on the move list
-moveFilesFromList() {
-    local moveListFile="$1"
-    while IFS= read -r line; do
-        dirSize=$(echo "$line" | awk '{print $1}')
-        dir=$(echo "$line" | awk '{print $2}')
-        targetDisk=$(echo "$line" | awk '{print $3}')
-
-        targetDir=$(echo "$dir" | sed "s:$diskPath/$sourceDisk:$diskPath/$targetDisk:")
-        rsync -avz --remove-source-files --progress -- "$dir/" "$targetDir/" &
-        
-        while [ "$(jobs -r | wc -l)" -ge "$fileTransferLimit" ]; do
-            sleep 1
-        done
-    done < "$moveListFile"
-
-    wait
-}
-
 main() {
     # Initialize logs
     initializeLogs
@@ -812,15 +771,7 @@ main() {
     declare -A movedDirectories
     declare -A movedData
 
-    moveListFile=$(mktemp)
-    generateMoveList "$moveListFile"
 
-    if [ "$dryRun" == "true" ]; then
-        logMessage "debug,info" "Simulation mode: Transfer plan saved to $dryRunFilePath."
-        exit 0
-    fi
-
-    moveFilesFromList "$moveListFile"
 
     # Main loop
     while :; do
