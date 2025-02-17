@@ -837,18 +837,17 @@ main() {
     done
 
     logMessage "debug" "  Evaluating disks..."
-    # log the message Source disks: disk1 (100GB), disk2 (200GB), disk3 (300GB)
-    logMessage "debug" "    Source disks: $(printf "%s (%s), " "${!sourceDisks[@]}" "${sourceDisks[@]}" | sed 's/, $//')"
-
-
-    # logMessage "debug" "    Source disks: ${!sourceDisks[@]}"
-    logMessage "debug" "    Target disks: $(printf "%s, " "${!targetDisks[@]}" | sed 's/, $//')"
-
-    # logMessage "debug" "    Target disks: ${!targetDisks[@]}"
+    logMessage "debug" "    Source disks: ${!sourceDisks[@]}"
     logMessage "debug,info" "Sorting disks by available free space..."
 
-    # Sort target disks by free space
-    # targetDisks=($(sortAssociativeArray targetDisks))
+    # Sort target disks by free space in descending order
+    sortedTargetDisks=($(for disk in "${!targetDisks[@]}"; do echo "$disk ${targetDisks[$disk]}"; done | sort -k2 -nr | awk '{print $1}'))
+
+    # Log target disks with their free space
+    logMessage "debug,info" "Target disks sorted by available free space:"
+    for disk in "${sortedTargetDisks[@]}"; do
+        logMessage "debug,info" "  $disk ($(formatSpace ${targetDisks[$disk]}))"
+    done
 
     # Create a temporary file to track the simulated movement of data
     tempFile=$(mktemp)
