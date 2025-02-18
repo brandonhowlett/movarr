@@ -1,0 +1,118 @@
+#!/bin/bash
+
+# Set the path to movarr.sh
+movarrPath="/root/scripts/movarr/movarr.sh"
+
+# Set the minimum free space threshold (50%)
+minimumFreeSpaceThreshold=50
+
+# Check if movarr.sh is already running
+if pgrep -f "movarr.sh" > /dev/null; then
+    echo "Movarr is already running. Exiting activation script."
+    exit 0
+fi
+
+# Get the path to the movarr directory
+scriptDir="$(cd -- "$(dirname "$movarrPath")" >/dev/null 2>&1; pwd -P)"
+
+# Set the path to the log file
+logFile="$scriptDir/logs/movarr_activation_log.txt"
+touch "$logFile"
+
+# Read configuration from file
+configFile="$scriptDir/config.ini"
+if [ -f "$configFile" ]; then
+    . "$configFile"
+else
+    echo "Error: Configuration file '$configFile' not found."
+    exit 1
+fi
+
+# Function to check if the free space is below the threshold
+isFreeSpaceBelowThreshold() {
+    local diskPath="$1"
+    local minFreeSpace="$2"
+    local currentFreeSpace=$(df -BG "$diskPath" | awk 'NR==2 {print $4}' | sed 's/G//')
+    
+    [ "$currentFreeSpace" -lt "$minFreeSpace" ]
+}
+
+# Function to check if a disk should be excluded from searching
+shouldExcludeSearch() {
+    local diskName="$1"
+    for excludedDisk in "${excludeSearch[@]}"; do
+        [[ $diskName == $excludedDisk ]] && return 0
+    done
+    return 1
+}
+
+# Dynamically generate diskPaths based on directories in /mnt matching the pattern disk# or disk##
+diskPaths=("/mnt/disk"[0-9]*)
+
+# Check if any disks are found
+if [ ${#diskPaths[@]} -eq 0 ]; then
+    echo "Error: No disks found in /mnt matching the pattern disk##."
+    exit 1
+fi
+
+logMessage() {
+    local logLevel="$1"
+    shift
+    local logMessage="$@"
+
+    case "$logLevel" in
+        "debug")
+            # Print debug messages to the console for troubleshooting
+            echo "$(date +"%Y-%m-%d %H:%M:%S") [$logLevel]: $logMessage"
+            ;;
+        "info" | "warn" | "error")
+            # Log messages to the specified log file
+            echo "$(date +"%Y-%m-%d %H:%M:%S") [$logLevel]: $logMessage" >>"$logFile"
+
+            # Use Unraid's notifications based on the log level (excluding debug)
+            if [ "$logLevel" != "debug" ]; then
+                case "$logLevel" in
+                    "info")
+                        /usr/local/emhttp/webGui/scripts/notify -i normal -s "$logMessage"
+                        ;;
+                    "warn")
+                        /usr/local/emhttp/webGui/scripts/notify -i warning -s "$logMessage"
+                        ;;
+                    "error")
+                        /usr/local/emhttp/webGui/scripts/notify -i alert -s "$logMessage"
+                        ;;
+                    *)
+                        echo "$(date +"%Y-%m-%d %H:%M:%S") [ERROR]: Invalid log level '$logLevel'" >>"$logFile"
+                        ;;
+                esac
+            fi
+            ;;
+        *)
+            echo "$(date +"%Y-%m-%d %H:%M:%S") [ERROR]: Invalid log level '$logLevel'" >>"$logFile"
+            ;;
+    esac
+}
+
+# Iterate over each searchable disk
+for diskPath in "${diskPaths[@]}"; do
+    diskName=$(basename "$diskPath")
+
+    # Check if the disk should be excluded from searching
+    if shouldExcludeSearch "$diskName"; then
+        echo "Skipping excluded disk: $diskName"
+        continue
+    fi
+
+    # Check if the free space is below the threshold
+    if isFreeSpaceBelowThreshold "$diskPath" "$minimumFreeSpaceThreshold"; then
+        echo "Free space on $diskPath is below the threshold. Initiating movarr.sh."
+
+        # Execute movarr.sh
+        "$movarrPath"
+        
+        # Add any additional logic or actions here as needed
+
+        # Break out of the loop after initiating movarr.sh for the first disk
+        break
+    fi
+done

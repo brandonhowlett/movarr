@@ -10,7 +10,7 @@ startTime=$(date +%s)
 dryRun=false
 logLevel="info"
 # logFileNameTimestamp=false
-maxLogSize=30
+maxLogSize=1
 maxLogRollovers=3
 diskPath="/mnt"
 diskRegex="disk[0-9]{1,2}"
@@ -23,7 +23,7 @@ minFreeDiskSpace="20480 MB"
 maxSourceDiskFreeSpace="20480 MB"
 minTargetDiskFreeSpace="20480 MB"
 # backgroundTasks=false
-fileTransferLimit=4
+fileTransferLimit=1
 moverMode="largest"
 notificationType="none"
 notifyEmail=""
@@ -992,6 +992,12 @@ main() {
         fi
     done
     
+    # Check if there are any source disks (e.g. below minFreeDiskSpace). Exit if none.
+    if [ ${#sourceDisks[@]} -eq 0 ]; then
+        logMessage "info" "No source disks require maintenance."
+        exit 1
+    fi
+
     logMessage "debug" "  Analyzing disks..."
 
     # Sort source disks by name

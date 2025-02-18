@@ -9,11 +9,11 @@
   minFreeDiskSpace: 102.4 GB
   maxSourceDiskFreeSpace: 102.4 GB
   minTargetDiskFreeSpace: 122.9 GB
-  fileTransferLimit: 4
+  fileTransferLimit: 1
   moverMode: largest
   notificationType: unraid
   notifyEmail: brandonhowlett.unraid@gmail.com
 Disks:
-  Source: disk2 disk3 disk4 disk5 disk6 disk8 disk10
-  Target: disk7 disk9 disk11 disk12 disk13
+  Source: disk2 disk3 disk4 disk5 disk8 disk11
+  Target: disk6 disk7 disk9 disk10 disk12 disk13
 
