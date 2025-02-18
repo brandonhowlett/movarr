@@ -1,0 +1,94 @@
+  disk6 (Available free space: 571 MB, Target: 102.4 GB)
+    "/mnt/disk6/data/media/movies/hd/Star Trek II The Wrath of Khan (1982) {tmdb-154}" (30.9 GB)
+     ➥ "/mnt/disk11/data/media/movies/hd/Star Trek II The Wrath of Khan (1982) {tmdb-154}"
+    "/mnt/disk6/data/media/movies/hd/Ali Fear Eats the Soul (1974) {tmdb-216}" (23.9 GB)
+     ➥ "/mnt/disk11/data/media/movies/hd/Ali Fear Eats the Soul (1974) {tmdb-216}"
+    "/mnt/disk6/data/media/movies/hd/Sonic the Hedgehog (2020) {tmdb-454626}" (23.5 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/Sonic the Hedgehog (2020) {tmdb-454626}"
+    "/mnt/disk6/data/media/movies/hd/Philadelphia (1993) {tmdb-9800}" (23.1 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/Philadelphia (1993) {tmdb-9800}"
+    "/mnt/disk6/data/media/movies/hd/The Last Picture Show (1971) {tmdb-25188}" (23.0 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/The Last Picture Show (1971) {tmdb-25188}"
+    Summary:
+    [-] disk6: 124.3 GB
+    [+] disk11: 54.8 GB
+    [+] disk12: 69.5 GB
+
+  disk2 (Available free space: 815 MB, Target: 102.4 GB)
+    "/mnt/disk2/data/media/movies/hd/The Hunger Games Catching Fire (2013) {tmdb-101299}" (38.4 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/The Hunger Games Catching Fire (2013) {tmdb-101299}"
+    "/mnt/disk2/data/media/movies/hd/Antebellum (2020) {tmdb-627290}" (30.0 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/Antebellum (2020) {tmdb-627290}"
+    "/mnt/disk2/data/media/movies/hd/Before Sunrise (1995) {tmdb-76}" (26.6 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/Before Sunrise (1995) {tmdb-76}"
+    "/mnt/disk2/data/media/movies/hd/The Lady Vanishes (1938) {tmdb-940}" (24.6 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/The Lady Vanishes (1938) {tmdb-940}"
+    Summary:
+    [-] disk2: 119.6 GB
+    [+] disk11: 54.8 GB
+    [+] disk12: 189.1 GB
+
+  disk10 (Available free space: 3.3 GB, Target: 102.4 GB)
+    "/mnt/disk10/data/media/movies/hd/Lawrence of Arabia (1962) {tmdb-947}" (33.0 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/Lawrence of Arabia (1962) {tmdb-947}"
+    "/mnt/disk10/data/media/movies/hd/The Paper Tigers (2020) {tmdb-731738}" (32.6 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/The Paper Tigers (2020) {tmdb-731738}"
+    "/mnt/disk10/data/media/movies/hd/The Manchurian Candidate (1962) {tmdb-982}" (32.5 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/The Manchurian Candidate (1962) {tmdb-982}"
+    "/mnt/disk10/data/media/movies/hd/Thief (1981) {tmdb-11524}" (32.0 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/Thief (1981) {tmdb-11524}"
+    Summary:
+    [-] disk10: 130.1 GB
+    [+] disk11: 54.8 GB
+    [+] disk12: 319.3 GB
+
+  disk3 (Available free space: 5.5 GB, Target: 102.4 GB)
+    "/mnt/disk3/data/media/movies/hd/The Batman (2022) {tmdb-414906}" (32.6 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/The Batman (2022) {tmdb-414906}"
+    "/mnt/disk3/data/media/movies/hd/The Secret Dare to Dream (2020) {tmdb-550231}" (14.8 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/The Secret Dare to Dream (2020) {tmdb-550231}"
+    "/mnt/disk3/data/media/movies/hd/The Secret Garden (2020) {tmdb-521034}" (14.7 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/The Secret Garden (2020) {tmdb-521034}"
+    "/mnt/disk3/data/media/movies/hd/Maurice (1987) {tmdb-26371}" (14.6 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/Maurice (1987) {tmdb-26371}"
+    "/mnt/disk3/data/media/movies/hd/Empire of the Sun (1987) {tmdb-10110}" (14.5 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/Empire of the Sun (1987) {tmdb-10110}"
+    "/mnt/disk3/data/media/movies/hd/Miracle in Milan (1951) {tmdb-43379}" (14.4 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/Miracle in Milan (1951) {tmdb-43379}"
+    Summary:
+    [-] disk3: 105.6 GB
+    [+] disk11: 54.8 GB
+    [+] disk12: 424.9 GB
+
+  disk5 (Available free space: 15.2 GB, Target: 102.4 GB)
+    "/mnt/disk5/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160}" (37.3 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160}"
+    "/mnt/disk5/data/media/movies/hd/The Green Mile (1999) {tmdb-497}" (30.1 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/The Green Mile (1999) {tmdb-497}"
+    "/mnt/disk5/data/media/movies/hd/Slumdog Millionaire (2008) {tmdb-12405}" (29.9 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/Slumdog Millionaire (2008) {tmdb-12405}"
+    Summary:
+    [-] disk5: 97.3 GB
+    [+] disk11: 54.8 GB
+    [+] disk12: 522.1 GB
+
+  disk4 (Available free space: 62.2 GB, Target: 102.4 GB)
+    "/mnt/disk4/data/media/movies/hd/In the Heat of the Night (1967) {tmdb-10633}" (28.7 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/In the Heat of the Night (1967) {tmdb-10633}"
+    "/mnt/disk4/data/media/movies/hd/My Fair Lady (1964) {tmdb-11113}" (26.4 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/My Fair Lady (1964) {tmdb-11113}"
+    Summary:
+    [-] disk4: 55.1 GB
+    [+] disk11: 54.8 GB
+    [+] disk12: 577.3 GB
+
+  disk8 (Available free space: 64.0 GB, Target: 102.4 GB)
+    "/mnt/disk8/data/media/movies/hd/Far and Away (1992) {tmdb-11259}" (30.5 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/Far and Away (1992) {tmdb-11259}"
+    "/mnt/disk8/data/media/movies/hd/Star Trek IV The Voyage Home (1986) {tmdb-168}" (28.7 GB)
+     ➥ "/mnt/disk12/data/media/movies/hd/Star Trek IV The Voyage Home (1986) {tmdb-168}"
+    Summary:
+    [-] disk8: 59.2 GB
+    [+] disk11: 54.8 GB
+    [+] disk12: 636.5 GB
+

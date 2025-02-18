@@ -35,7 +35,7 @@ logFileName="movarr.log"
 logFilePath="$scriptDir/logs/$logFileName"
 dryRunFileName="simulation.txt"
 dryRunFilePath="$scriptDir/$dryRunFileName"
-fileListFileName="tmp_file.txt"
+fileListFileName="debug_file_list.txt"
 fileListFilePath="$scriptDir/$fileListFileName"
 
 # timestamp=$(date +"%Y%m%d_%H%M%S")
@@ -151,6 +151,21 @@ initializeLogs() {
     addHeader "$logFilePath"
 }
 
+initializeDryRun() {
+    if [[ "$dryRun" == "true" ]] || [[ "$logLevel" == "debug" ]]; then
+        # Initialize the dry run simulation file
+        logMessage "debug" "Starting data transfer simulation"
+        > "$dryRunFilePath"  # Clear the dry run simulation file
+        echo "==== Movarr Simulation for $(date) ====" >> "$dryRunFilePath"
+    else
+        logMessage "debug,info" "Starting data transfer..."
+        # Remove any existing simulation file
+        if [ -f "$dryRunFilePath" ]; then
+            rm -f "$dryRunFilePath"
+        fi
+    fi
+}
+
 validateDiskSpace() {  # NO LOGGING ALLOWED IN THIS FUNCTION!
     local spaceValue="$1"
     local spaceName="$2"
@@ -185,6 +200,8 @@ validateConfiguration() {
     if [ "$dryRun" != "true" ] && [ "$dryRun" != "false" ]; then
         logMessage "error" "Invalid value for 'dryRun'. It should be true or false."
         ((errors++))
+    else
+        echo "  dryRun: $dryRun" >> "$dryRunFilePath"
     fi
 
     # Validate logLevel (should be debug, info, warn, or error)
@@ -192,6 +209,8 @@ validateConfiguration() {
     if [ "$logLevel" != "trace" ] && [ "$logLevel" != "debug" ] && [ "$logLevel" != "info" ] && [ "$logLevel" != "warn" ] && [ "$logLevel" != "error" ]; then
         logMessage "error" "Invalid value for 'logLevel'. It should be one of: trace, debug, info, warn, error."
         ((errors++))
+    else
+        echo "  logLevel: $logLevel" >> "$dryRunFilePath"
     fi
 
     # Validate logFileNameTimestamp (should be true or false)
@@ -206,6 +225,8 @@ validateConfiguration() {
     if ! [[ "$maxLogSize" =~ ^[1-9][0-9]*$ ]]; then
         logMessage "error" "Invalid value for 'maxLogSize'. It should be a positive integer."
         ((errors++))
+    else
+        echo "  maxLogSize: $maxLogSize" >> "$dryRunFilePath"
     fi
 
     # Validate maxLogRollovers (should be a positive integer)
@@ -213,6 +234,8 @@ validateConfiguration() {
     if ! [[ "$maxLogRollovers" =~ ^[1-9][0-9]*$ ]]; then
         logMessage "error" "Invalid value for 'maxLogRollovers'. It should be a positive integer."
         ((errors++))
+    else
+        echo "  maxLogRollovers: $maxLogRollovers" >> "$dryRunFilePath"
     fi
 
     # Validate diskPath (should be a valid directory)
@@ -223,6 +246,7 @@ validateConfiguration() {
     else
         # Strip trailing slashes from diskPath
         diskPath=$(echo "$diskPath" | sed 's:/*$::')
+        echo "  diskPath: $diskPath" >> "$dryRunFilePath"
     fi
 
     # Validate diskRegex (should be a valid regex pattern)
@@ -241,6 +265,7 @@ validateConfiguration() {
         else
             # logMessage "debug" "Disks matching '$diskRegex' in '$diskPath': ${matchingDisks[@]}"
             activeDisks=("${matchingDisks[@]}")
+            echo "  diskRegex: $diskRegex" >> "$dryRunFilePath"
         fi
     fi
 
@@ -262,6 +287,7 @@ validateConfiguration() {
                 ((errors++))
             fi
         done
+        echo "  includeDisks: ${includeDisks[@]}" >> "$dryRunFilePath"
     fi
 
     # Validate excludeDisks (should be an array of disk names)
@@ -283,6 +309,7 @@ validateConfiguration() {
                 ((errors++))
             fi
         done
+        echo "  excludeDisks: ${excludeDisks[@]}" >> "$dryRunFilePath"
     fi
 
     # Validate excludeSourceDisks (should be an array of disk names)
@@ -304,6 +331,7 @@ validateConfiguration() {
                 ((errors++))
             fi
         done
+        echo "  excludeSourceDisks: ${excludeSourceDisks[@]}" >> "$dryRunFilePath"
     fi
 
     # Validate excludeTargetDisks (should be an array of disk names)
@@ -325,6 +353,7 @@ validateConfiguration() {
                 ((errors++))
             fi
         done
+        echo "  excludeTargetDisks: ${excludeTargetDisks[@]}" >> "$dryRunFilePath"
     fi
 
     # Validate rootFolders (should be an array of directories)
@@ -360,21 +389,27 @@ validateConfiguration() {
                 rootFolders[$i]="$strippedRootFolderPath"
             fi
         done
+        echo "  rootFolders: ${rootFolders[@]}" >> "$dryRunFilePath"
     fi
 
     # Validate minFreeDiskSpace, maxSourceDiskFreeSpace, and minTargetDiskFreeSpace
     minFreeDiskSpace=$(validateDiskSpace "$minFreeDiskSpace" "minFreeDiskSpace" "$errors")
     logMessage "debug" "minFreeDiskSpace: $(formatSpace $minFreeDiskSpace)"
+    echo "  minFreeDiskSpace: $(formatSpace $minFreeDiskSpace)" >> "$dryRunFilePath"
     maxSourceDiskFreeSpace=$(validateDiskSpace "$maxSourceDiskFreeSpace" "maxSourceDiskFreeSpace" "$errors")
     logMessage "debug" "maxSourceDiskFreeSpace: $(formatSpace $maxSourceDiskFreeSpace)"
+    echo "  maxSourceDiskFreeSpace: $(formatSpace $maxSourceDiskFreeSpace)" >> "$dryRunFilePath"
     minTargetDiskFreeSpace=$(validateDiskSpace "$minTargetDiskFreeSpace" "minTargetDiskFreeSpace" "$errors")
     logMessage "debug" "minTargetDiskFreeSpace: $(formatSpace $minTargetDiskFreeSpace)"
+    echo "  minTargetDiskFreeSpace: $(formatSpace $minTargetDiskFreeSpace)" >> "$dryRunFilePath"
 
     # Validate backgroundTasks (should be true or false)
     logMessage "debug" "backgroundTasks: $backgroundTasks"
     if [ "$backgroundTasks" != "true" ] && [ "$backgroundTasks" != "false" ]; then
         logMessage "error" "Invalid value for 'backgroundTasks'. It should be true or false."
         ((errors++))
+    else
+        echo "  backgroundTasks: $backgroundTasks" >> "$dryRunFilePath"
     fi
 
     # Validate fileTransferLimit (should be a positive integer and not exceed 10)
@@ -382,6 +417,8 @@ validateConfiguration() {
     if ! [[ "$fileTransferLimit" =~ ^[1-9][0-9]*$ ]] || [ "$fileTransferLimit" -gt 10 ]; then
         logMessage "error" "Invalid value for 'fileTransferLimit'. It should be a positive integer between 1 and 10."
         ((errors++))
+    else
+        echo "  fileTransferLimit: $fileTransferLimit" >> "$dryRunFilePath"
     fi
 
     # Validate moverMode (should be one of largest, smallest, oldest, newest)
@@ -389,6 +426,8 @@ validateConfiguration() {
     if [ "$moverMode" != "largest" ] && [ "$moverMode" != "smallest" ] && [ "$moverMode" != "oldest" ] && [ "$moverMode" != "newest" ]; then
         logMessage "error" "Invalid value for 'moverMode'. It should be one of: largest, smallest, oldest, newest."
         ((errors++))
+    else
+        echo "  moverMode: $moverMode" >> "$dryRunFilePath"
     fi
 
     # Validate notificationType (should be one of none, email, or pushbullet)
@@ -396,6 +435,8 @@ validateConfiguration() {
     if [ "$notificationType" != "none" ] && [ "$notificationType" != "unraid" ] && [ "$notificationType" != "email" ]; then
         logMessage "error" "Invalid value for 'notificationType'. It should be one of: none, unraid, email."
         ((errors++))
+    else
+        echo "  notificationType: $notificationType" >> "$dryRunFilePath"
     fi
 
     # Validate notifyEmail (should be a valid email address)
@@ -403,6 +444,8 @@ validateConfiguration() {
     if [ "$notificationType" = "email" ] && ! [[ "$notifyEmail" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
         logMessage "error" "Invalid value for 'notifyEmail'. It should be a valid email address."
         ((errors++))
+    else
+        echo "  notifyEmail: $notifyEmail" >> "$dryRunFilePath"
     fi
 
     if [ "$errors" -gt 0 ]; then
@@ -663,6 +706,11 @@ generateMoveList() {
     local moveListFile="$1"
     > "$moveListFile"  # Clear the move list file
 
+    # Dry run - create or clear the dry run file
+    if [ "$dryRun" == "true" ]; then
+        > "$dryRunFilePath"  # Clear the dry run simulation file
+    fi
+
     # Sort the sourceDisks array by disk size (ascending order)
     sortedSizeSourceDisks=$(for disk in "${!sourceDisks[@]}"; do echo "$disk ${sourceDisks[$disk]}"; done | sort -n -k2)
 
@@ -674,6 +722,12 @@ generateMoveList() {
         if arrayContainsDisk "${excludeSourceDisks[@]}" "$sourceDisk"; then
             logMessage "debug" "    Skipping excluded source disk"
             continue
+        fi
+
+        # Dry run - log initial free space for the disk
+        if [ "$dryRun" == "true" ]; then
+            initialFreeSpace=$(grep "^$sourceDisk " "$tempFile" | awk '{print $2}')
+            echo "  $sourceDisk (Available free space: $(formatSpace $initialFreeSpace), Target: $(formatSpace $minFreeDiskSpace))" >> "$dryRunFilePath"
         fi
 
         # Iterate over each root folder
@@ -724,19 +778,25 @@ generateMoveList() {
             freeSpace=$(grep "^$sourceDisk " "$tempFile" | awk '{print $2}')
             logMessage "debug" "    Free space on source disk ($sourceDisk) is $(formatSpace $freeSpace)"
 
+            # Dry run - Initialize tracking for data moved
+            if [ "$dryRun" == "true" ]; then
+                totalDataMovedFromSource=0
+                declare -A dataMovedToTargetDisk
+            fi
+
             # Iterate over each directory
-            for dir in "${sourceDirectories[@]}"; do
-                dirSize=$(du -sm "$dir" 2>/dev/null | awk '{print $1}')
-                if [ -z "$dirSize" ]; then
+            for sourceDir in "${sourceDirectories[@]}"; do
+                sourceDirSize=$(du -sm "$sourceDir" 2>/dev/null | awk '{print $1}')
+                if [ -z "$sourceDirSize" ]; then
                     # Directory cannot be accessed, add to missingDirectories array
-                    missingDirectories+=("$dir")
+                    missingDirectories+=("$sourceDir")
                     continue
                 fi
 
                 # Find the best destination disk based on theoretical space from the temp file
-                targetDisk=$(findLeastFreeDisk "$dirSize" "$tempFile")
+                targetDisk=$(findLeastFreeDisk "$sourceDirSize" "$tempFile")
                 if [ -z "$targetDisk" ]; then
-                    logMessage "error" "    No destination disk found for $dir (size: $(formatSpace $dirSize))"
+                    logMessage "error" "    No destination disk found for $sourceDir (size: $(formatSpace $sourceDirSize))"
                     continue
                 fi
 
@@ -744,15 +804,21 @@ generateMoveList() {
                 targetDiskFreeSpace=$(grep "^$targetDisk " "$tempFile" | awk '{print $2}')
                 logMessage "debug" "    Free space on target disk ($targetDisk) is $(formatSpace $targetDiskFreeSpace)"
 
-                # Add move entry to move list file
-                # formatSimulationEntry "$dirSize" "$dir" "$targetDisk" >> "$moveListFile"
-                echo "$dirSize $dir $targetDisk" >> "$moveListFile"
+                targetDir=$(echo "$sourceDir" | sed "s|^$diskPath/disk[0-9]\+|$diskPath/$targetDisk|")
 
-                logMessage "debug,info" "    Queued move: $dir ($(formatSpace $dirSize)) → $targetDisk"
+                # Add move entry to move list file
+                if [ "$dryRun" == "true" ]; then
+                    echo "    \"$sourceDir\" ($(formatSpace $sourceDirSize))" >> "$dryRunFilePath"
+                    echo "     ➥ \"$targetDir\"" >> "$dryRunFilePath"
+                else
+                    echo "$sourceDirSize $sourceDir $targetDisk" >> "$moveListFile"
+                fi
+
+                logMessage "debug,info" "    Queued move: $sourceDir ($(formatSpace $sourceDirSize)) → $targetDisk"
 
                 # Simulate updating free space
-                updateFreeSpace "$sourceDisk" "$dirSize" "$tempFile"
-                updateFreeSpace "$targetDisk" "$((-dirSize))" "$tempFile"
+                updateFreeSpace "$sourceDisk" "$sourceDirSize" "$tempFile"
+                updateFreeSpace "$targetDisk" "$((-sourceDirSize))" "$tempFile"
 
                 # Retrieve updated free space on source disk
                 sourceDiskfreeSpace=$(grep "^$sourceDisk " "$tempFile" | awk '{print $2}')
@@ -762,26 +828,48 @@ generateMoveList() {
                 targetDiskFreeSpace=$(grep "^$targetDisk " "$tempFile" | awk '{print $2}')
                 logMessage "debug" "    Updated free space on target disk ($targetDisk) is $(formatSpace $targetDiskFreeSpace)"
 
+                # Dry run - Track data moved
+                if [ "$dryRun" == "true" ]; then
+                    totalDataMovedFromSource=$((totalDataMovedFromSource + sourceDirSize))
+                    dataMovedToTargetDisk[$targetDisk]=$((dataMovedToTargetDisk[$targetDisk] + sourceDirSize))
+                fi
+
                 # Check if enough free space has been reached on the source disk
                 if [ "$sourceDiskfreeSpace" -ge "$maxSourceDiskFreeSpace" ]; then
                     logMessage "debug" "    Free space on source disk ($sourceDisk) exceeds minimum threshold."
                     break
-                else # Check if the disk has enough space for the next directory
-                    # logMessage "debug" "    Checking if $targetDisk has enough space for the next directory"
-                    nextDir=$(echo "${sourceDirectories[1]}" | awk '{print $2}')
-                    nextDirSize=$(du -sm "$nextDir" 2>/dev/null | awk '{print $1}')
-                    if [ -z "$nextDirSize" ]; then
+                else
+                    # Check if the disk has enough space for the next directory
+                    nextSourceDir=$(echo "${sourceDirectories[1]}" | awk '{print $2}')
+                    nextSourceDirSize=$(du -sm "$nextSourceDir" 2>/dev/null | awk '{print $1}')
+                    if [ -z "$nextSourceDirSize" ]; then
                         continue
                     fi
 
-                    if [ "$((targetDiskFreeSpace - nextDirSize))" -lt "$maxSourceDiskFreeSpace" ]; then
+                    if [ "$((targetDiskFreeSpace - nextSourceDirSize))" -lt "$maxSourceDiskFreeSpace" ]; then
                         logMessage "debug" "    Not enough space on target disk ($targetDisk) for the next directory."
                         break
                     fi
                 fi
             done
+
+            # Dry run - Log the total data moved for the disk
+            if [ "$dryRun" == "true" ]; then
+                echo "    Summary:" >> "$dryRunFilePath"
+                echo "    [-] $sourceDisk: $(formatSpace $totalDataMovedFromSource)" >> "$dryRunFilePath"
+
+                for targetDisk in "${!dataMovedToTargetDisk[@]}"; do
+                    echo "    [+] $targetDisk: $(formatSpace ${dataMovedToTargetDisk[$targetDisk]})" >> "$dryRunFilePath"
+                done
+                echo "" >> "$dryRunFilePath"
+            fi
         done
     done <<< "$sortedSizeSourceDisks"
+
+    # Dry run - Add footer to the simulation file
+    if [ "$dryRun" == "true" ]; then
+        addFooter >> "$dryRunFilePath"
+    fi
 }
 
 moveFilesFromList() {
@@ -789,7 +877,7 @@ moveFilesFromList() {
     fileTransferLimit=${fileTransferLimit:-3} # Default concurrent limit
 
     while IFS= read -r line; do
-        dirSize=$(echo "$line" | awk '{print $1}')
+        sourceDirSize=$(echo "$line" | awk '{print $1}')
         sourceDir=$(echo "$line" | cut -d ' ' -f2- | rev | cut -d ' ' -f2- | rev)
         targetDisk=$(echo "$line" | awk '{print $NF}')
 
@@ -802,7 +890,7 @@ moveFilesFromList() {
 
         # Track moved directories and their sizes
         movedDirectories["$targetDisk"]+="$sourceDir\n"
-        movedData["$targetDisk"]=$((movedData["$targetDisk"] + dirSize))
+        movedData["$targetDisk"]=$((movedData["$targetDisk"] + sourceDirSize))
 
         while [ "$(jobs -r | wc -l)" -ge "$fileTransferLimit" ]; do
             sleep 1
@@ -816,23 +904,16 @@ moveFilesFromList() {
 main() {
     # Initialize logs
     initializeLogs
+    initializeDryRun
+
+    if [ "$dryRun" == "true" ]; then
+        echo "Configuration Settings:" >> "$dryRunFilePath"
+    fi
 
     # Validate configuration and populate activeDisks
     validateConfiguration
     
-    # Delete any existing simulation file if not in dryRun mode
-    if [[ "$dryRun" == "true" ]] || [[ "$logLevel" == "debug" ]]; then
 
-        logMessage "debug,info" "Starting data transfer simulation"
-        # Create a new simulation file
-        > "$dryRunFilePath"
-    else
-        logMessage "debug,info" "Starting data transfer..."
-        # Remove any existing simulation file
-        if [ -f "$dryRunFilePath" ]; then
-            rm -f "$dryRunFilePath"
-        fi
-    fi
 
     # Identify source and target disks
     declare -A sourceDisks
@@ -872,7 +953,11 @@ main() {
 
     logMessage "debug" "    Source disks: ${sortedNameSourceDisks[@]}"
     logMessage "debug" "    Target disks: ${sortedNameTargetDisks[@]}"
-    # logMessage "debug,info" "Sorting disks by available free space..."
+
+    echo "Disks:" >> "$dryRunFilePath"
+    echo "  Source: ${sortedNameSourceDisks[@]}" >> "$dryRunFilePath"
+    echo "  Target: ${sortedNameTargetDisks[@]}" >> "$dryRunFilePath"
+    echo "" >> "$dryRunFilePath"
 
     # logMessage "debug,info" "Target disks sorted by available free space:"
     # for disk in "${sortedTargetDisks[@]}"; do
@@ -900,12 +985,20 @@ main() {
 
     if [ "$dryRun" == "true" ]; then
         logMessage "debug,info" "Simulation mode: Transfer plan saved to $dryRunFilePath."
-        # Copy the move list to the dry run file for inspection
-        cp "$moveListFile" "$dryRunFilePath"
+
+        # Create a new log file if not present
+        if [ ! -f "$dryRunFilePath" ]; then
+            touch "$dryRunFilePath"
+            
+            # Set permissions
+            chmod 644 "$dryRunFilePath"
+        fi
+        
+        # Exit without moving files
         exit 0
     elif [ "$logLevel" == "debug" ]; then
         logMessage "debug,info" "Debug mode: Transfer plan saved to $dryRunFilePath."
-        cp "$moveListFile" "$dryRunFilePath"
+        cp "$moveListFile" "$fileListFilePath"
     fi
 
     moveFilesFromList "$moveListFile"
@@ -949,18 +1042,18 @@ logMessage "debug,info" "movarr.sh script started."
 main
 
 # Format and log the simulation results
-{
-    for disk in "${!movedDirectories[@]}"; do
-        echo "$disk:"
-        echo -e "${movedDirectories[$disk]}" | while IFS= read -r dir; do
-            echo "  [-] $dir"
-        done
-        totalFiles=$(echo -e "${movedDirectories[$disk]}" | wc -l)
-        totalData=$(formatSpace "${movedData[$disk]}")
-        echo "  Total files moved: $totalFiles"
-        echo "  Total data transferred: $totalData"
-    done
-} > "$dryRunFilePath"
+# {
+#     for disk in "${!movedDirectories[@]}"; do
+#         echo "$disk:"
+#         echo -e "${movedDirectories[$disk]}" | while IFS= read -r dir; do
+#             echo "  [-] $dir"
+#         done
+#         totalFiles=$(echo -e "${movedDirectories[$disk]}" | wc -l)
+#         totalData=$(formatSpace "${movedData[$disk]}")
+#         echo "  Total files moved: $totalFiles"
+#         echo "  Total data transferred: $totalData"
+#     done
+# } > "$dryRunFilePath"
 
 # Clean up the PID file
 logMessage "debug" "Cleaning up PID file"
