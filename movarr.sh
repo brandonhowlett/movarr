@@ -706,9 +706,11 @@ generateMoveList() {
     local moveListFile="$1"
     > "$moveListFile"  # Clear the move list file
 
-    # Dry run - create or clear the dry run file
     if [ "$dryRun" == "true" ]; then
         > "$dryRunFilePath"  # Clear the dry run simulation file
+
+        declare -A totalDataMovedTargetDisks
+        declare -A totalDataMovedSourceDisks
     fi
 
     # Sort the sourceDisks array by disk size (ascending order)
@@ -717,6 +719,9 @@ generateMoveList() {
     # Iterate over sorted source disks (by ascending disk size)
     while read -r sourceDisk size; do
         logMessage "debug,info" "  $sourceDisk:"
+
+        # Reset data moved this iteration for the current source disk
+        # declare -A dataMovedThisIteration
 
         # Skip excluded disks
         if arrayContainsDisk "${excludeSourceDisks[@]}" "$sourceDisk"; then
@@ -780,8 +785,9 @@ generateMoveList() {
 
             # Dry run - Initialize tracking for data moved
             if [ "$dryRun" == "true" ]; then
-                totalDataMovedFromSource=0
-                declare -A dataMovedToTargetDisk
+                # dataMovedSourceDisk=0
+                declare -A dataMovedTargetDisks
+                # declare -A dataMovedThisIteration  # Tracks data moved per source disk to target disk
             fi
 
             # Iterate over each directory
@@ -828,10 +834,15 @@ generateMoveList() {
                 targetDiskFreeSpace=$(grep "^$targetDisk " "$tempFile" | awk '{print $2}')
                 logMessage "debug" "    Updated free space on target disk ($targetDisk) is $(formatSpace $targetDiskFreeSpace)"
 
-                # Dry run - Track data moved
+                # Track total data moved from the source disk
                 if [ "$dryRun" == "true" ]; then
-                    totalDataMovedFromSource=$((totalDataMovedFromSource + sourceDirSize))
-                    dataMovedToTargetDisk[$targetDisk]=$((dataMovedToTargetDisk[$targetDisk] + sourceDirSize))
+                    # dataMovedSourceDisk=$((dataMovedSourceDisk + sourceDirSize))
+
+                    totalDataMovedSourceDisks[$sourceDisk]=$((totalDataMovedSourceDisks[$sourceDisk] + sourceDirSize))
+                    totalDataMovedTargetDisks[$targetDisk]=$((totalDataMovedTargetDisks[$targetDisk] + sourceDirSize))
+                    dataMovedTargetDisks[$targetDisk]=$((dataMovedTargetDisks[$targetDisk] + sourceDirSize))
+                    # Track data moved for the current iteration (from source to target)
+                    # dataMovedThisIteration["$sourceDisk->$targetDisk"]=$((dataMovedThisIteration["$sourceDisk->$targetDisk"] + sourceDirSize))
                 fi
 
                 # Check if enough free space has been reached on the source disk
@@ -852,22 +863,41 @@ generateMoveList() {
                     fi
                 fi
             done
-
+            
             # Dry run - Log the total data moved for the disk
             if [ "$dryRun" == "true" ]; then
                 echo "    Summary:" >> "$dryRunFilePath"
-                echo "    [-] $sourceDisk: $(formatSpace $totalDataMovedFromSource)" >> "$dryRunFilePath"
+                echo "    [-] $sourceDisk: $(formatSpace ${totalDataMovedSourceDisks[$sourceDisk]})" >> "$dryRunFilePath"
 
-                for targetDisk in "${!dataMovedToTargetDisk[@]}"; do
-                    echo "    [+] $targetDisk: $(formatSpace ${dataMovedToTargetDisk[$targetDisk]})" >> "$dryRunFilePath"
+                for targetDisk in "${!dataMovedTargetDisks[@]}"; do
+                    echo "    [+] $targetDisk: $(formatSpace ${dataMovedTargetDisks[$targetDisk]})" >> "$dryRunFilePath"
                 done
+
                 echo "" >> "$dryRunFilePath"
+
+                unset dataMovedTargetDisks
             fi
+
         done
     done <<< "$sortedSizeSourceDisks"
 
     # Dry run - Add footer to the simulation file
     if [ "$dryRun" == "true" ]; then
+        # Lot the total data moved for each disk
+        echo "Total Data Moved:" >> "$dryRunFilePath"
+        for disk in "${!totalDataMovedSourceDisks[@]}"; do
+            echo "  $disk: $(formatSpace ${totalDataMovedSourceDisks[$disk]})" >> "$dryRunFilePath"
+        done
+        echo "" >> "$dryRunFilePath"
+        echo "Total Data Added:" >> "$dryRunFilePath"
+        for disk in "${!totalDataMovedTargetDisks[@]}"; do
+            echo "  $disk: $(formatSpace ${totalDataMovedTargetDisks[$disk]})" >> "$dryRunFilePath"
+        done
+        echo "" >> "$dryRunFilePath"
+
+
+
+
         addFooter >> "$dryRunFilePath"
     fi
 }

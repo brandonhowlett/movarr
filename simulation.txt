@@ -25,8 +25,7 @@
      ➥ "/mnt/disk12/data/media/movies/hd/The Lady Vanishes (1938) {tmdb-940}"
     Summary:
     [-] disk2: 119.6 GB
-    [+] disk11: 54.8 GB
-    [+] disk12: 189.1 GB
+    [+] disk12: 119.6 GB
 
   disk10 (Available free space: 3.3 GB, Target: 102.4 GB)
     "/mnt/disk10/data/media/movies/hd/Lawrence of Arabia (1962) {tmdb-947}" (33.0 GB)
@@ -39,8 +38,7 @@
      ➥ "/mnt/disk12/data/media/movies/hd/Thief (1981) {tmdb-11524}"
     Summary:
     [-] disk10: 130.1 GB
-    [+] disk11: 54.8 GB
-    [+] disk12: 319.3 GB
+    [+] disk12: 130.1 GB
 
   disk3 (Available free space: 5.5 GB, Target: 102.4 GB)
     "/mnt/disk3/data/media/movies/hd/The Batman (2022) {tmdb-414906}" (32.6 GB)
@@ -57,8 +55,7 @@
      ➥ "/mnt/disk12/data/media/movies/hd/Miracle in Milan (1951) {tmdb-43379}"
     Summary:
     [-] disk3: 105.6 GB
-    [+] disk11: 54.8 GB
-    [+] disk12: 424.9 GB
+    [+] disk12: 105.6 GB
 
   disk5 (Available free space: 15.2 GB, Target: 102.4 GB)
     "/mnt/disk5/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160}" (37.3 GB)
@@ -69,8 +66,7 @@
      ➥ "/mnt/disk12/data/media/movies/hd/Slumdog Millionaire (2008) {tmdb-12405}"
     Summary:
     [-] disk5: 97.3 GB
-    [+] disk11: 54.8 GB
-    [+] disk12: 522.1 GB
+    [+] disk12: 97.3 GB
 
   disk4 (Available free space: 62.2 GB, Target: 102.4 GB)
     "/mnt/disk4/data/media/movies/hd/In the Heat of the Night (1967) {tmdb-10633}" (28.7 GB)
@@ -79,8 +75,7 @@
      ➥ "/mnt/disk12/data/media/movies/hd/My Fair Lady (1964) {tmdb-11113}"
     Summary:
     [-] disk4: 55.1 GB
-    [+] disk11: 54.8 GB
-    [+] disk12: 577.3 GB
+    [+] disk12: 55.1 GB
 
   disk8 (Available free space: 64.0 GB, Target: 102.4 GB)
     "/mnt/disk8/data/media/movies/hd/Far and Away (1992) {tmdb-11259}" (30.5 GB)
@@ -89,6 +84,18 @@
      ➥ "/mnt/disk12/data/media/movies/hd/Star Trek IV The Voyage Home (1986) {tmdb-168}"
     Summary:
     [-] disk8: 59.2 GB
-    [+] disk11: 54.8 GB
-    [+] disk12: 636.5 GB
+    [+] disk12: 59.2 GB
+
+Total Data Moved:
+  disk10: 130.1 GB
+  disk8: 59.2 GB
+  disk6: 124.3 GB
+  disk4: 55.1 GB
+  disk5: 97.3 GB
+  disk2: 119.6 GB
+  disk3: 105.6 GB
+
+Total Data Added:
+  disk11: 54.8 GB
+  disk12: 636.5 GB
 

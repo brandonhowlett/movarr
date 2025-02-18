@@ -25295,3 +25295,621 @@ disk11
 2025-02-17 21:02:59 [info] Total Data Moved: 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
 2025-02-17 21:02:59 [info] Script Execution Time: 0h 0m 31s
 2025-02-17 21:02:59 [info] Simulation mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-02-17 21:13:12 [info] movarr.sh script started.
+==== Movarr Results for Mon Feb 17 21:13:12 MST 2025 ====
+
+2025-02-17 21:13:12 [info] Configuration validation completed successfully.
+2025-02-17 21:13:12 [info] Processing disks:
+2025-02-17 21:13:12 [info]     disk1: Skipping excluded disk
+2025-02-17 21:13:13 [info]   Adding disk2 to source disks due to low free space
+2025-02-17 21:13:13 [info]   Adding disk3 to source disks due to low free space
+2025-02-17 21:13:13 [info]   Adding disk4 to source disks due to low free space
+2025-02-17 21:13:13 [info]   Adding disk5 to source disks due to low free space
+2025-02-17 21:13:13 [info]   Adding disk6 to source disks due to low free space
+2025-02-17 21:13:13 [info]   Adding disk7 to target disks
+2025-02-17 21:13:13 [info]   Adding disk8 to source disks due to low free space
+2025-02-17 21:13:13 [info]   Adding disk9 to target disks
+2025-02-17 21:13:13 [info]   Adding disk10 to source disks due to low free space
+2025-02-17 21:13:13 [info]   Adding disk11 to target disks
+2025-02-17 21:13:13 [info]   Adding disk12 to target disks
+2025-02-17 21:13:13 [info]   Adding disk13 to target disks
+2025-02-17 21:13:13 [info]   disk6:
+2025-02-17 21:13:16 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Star Trek II The Wrath of Khan (1982) {tmdb-154} (30.9 GB) → disk11
+2025-02-17 21:13:16 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Ali Fear Eats the Soul (1974) {tmdb-216} (23.9 GB) → disk11
+2025-02-17 21:13:16 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Sonic the Hedgehog (2020) {tmdb-454626} (23.5 GB) → disk12
+2025-02-17 21:13:17 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Philadelphia (1993) {tmdb-9800} (23.1 GB) → disk12
+2025-02-17 21:13:17 [info]     Queued move: /mnt/disk6/data/media/movies/hd/The Last Picture Show (1971) {tmdb-25188} (23.0 GB) → disk12
+2025-02-17 21:13:17 [info]   disk2:
+2025-02-17 21:13:20 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Hunger Games Catching Fire (2013) {tmdb-101299} (38.4 GB) → disk12
+2025-02-17 21:13:20 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Antebellum (2020) {tmdb-627290} (30.0 GB) → disk12
+2025-02-17 21:13:20 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Before Sunrise (1995) {tmdb-76} (26.6 GB) → disk12
+2025-02-17 21:13:20 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Lady Vanishes (1938) {tmdb-940} (24.6 GB) → disk12
+2025-02-17 21:13:20 [info]   disk10:
+2025-02-17 21:13:24 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Lawrence of Arabia (1962) {tmdb-947} (33.0 GB) → disk12
+2025-02-17 21:13:24 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Paper Tigers (2020) {tmdb-731738} (32.6 GB) → disk12
+2025-02-17 21:13:24 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Manchurian Candidate (1962) {tmdb-982} (32.5 GB) → disk12
+2025-02-17 21:13:25 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Thief (1981) {tmdb-11524} (32.0 GB) → disk12
+2025-02-17 21:13:25 [info]   disk3:
+2025-02-17 21:13:26 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Batman (2022) {tmdb-414906} (32.6 GB) → disk12
+2025-02-17 21:13:26 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Dare to Dream (2020) {tmdb-550231} (14.8 GB) → disk12
+2025-02-17 21:13:26 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Garden (2020) {tmdb-521034} (14.7 GB) → disk12
+2025-02-17 21:13:26 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Maurice (1987) {tmdb-26371} (14.6 GB) → disk12
+2025-02-17 21:13:26 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Empire of the Sun (1987) {tmdb-10110} (14.5 GB) → disk12
+2025-02-17 21:13:26 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Miracle in Milan (1951) {tmdb-43379} (14.4 GB) → disk12
+2025-02-17 21:13:27 [info]   disk5:
+2025-02-17 21:13:31 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160} (37.3 GB) → disk12
+2025-02-17 21:13:32 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Green Mile (1999) {tmdb-497} (30.1 GB) → disk12
+2025-02-17 21:13:32 [info]     Queued move: /mnt/disk5/data/media/movies/hd/Slumdog Millionaire (2008) {tmdb-12405} (29.9 GB) → disk12
+2025-02-17 21:13:32 [info]   disk4:
+2025-02-17 21:13:34 [info]     Queued move: /mnt/disk4/data/media/movies/hd/In the Heat of the Night (1967) {tmdb-10633} (28.7 GB) → disk12
+2025-02-17 21:13:34 [info]     Queued move: /mnt/disk4/data/media/movies/hd/My Fair Lady (1964) {tmdb-11113} (26.4 GB) → disk12
+2025-02-17 21:13:34 [info]   disk8:
+2025-02-17 21:13:39 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Far and Away (1992) {tmdb-11259} (30.5 GB) → disk12
+2025-02-17 21:13:40 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Star Trek IV The Voyage Home (1986) {tmdb-168} (28.7 GB) → disk12
+===== Summary =====
+2025-02-17 21:13:40 [info] 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 21:13:40 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M moved from
+2025-02-17 21:13:40 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M
+2025-02-17 21:13:40 [info] ---------------------------
+2025-02-17 21:13:40 [info] Total Data Moved: 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 21:13:40 [info] Script Execution Time: 0h 0m 28s
+2025-02-17 21:13:40 [info] Simulation mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-02-17 21:22:44 [info] movarr.sh script started.
+==== Movarr Results for Mon Feb 17 21:22:44 MST 2025 ====
+
+2025-02-17 21:22:44 [info] Configuration validation completed successfully.
+2025-02-17 21:22:44 [info] Processing disks:
+2025-02-17 21:22:44 [info]     disk1: Skipping excluded disk
+2025-02-17 21:22:44 [info]   Adding disk2 to source disks due to low free space
+2025-02-17 21:22:45 [info]   Adding disk3 to source disks due to low free space
+2025-02-17 21:22:45 [info]   Adding disk4 to source disks due to low free space
+2025-02-17 21:22:45 [info]   Adding disk5 to source disks due to low free space
+2025-02-17 21:22:45 [info]   Adding disk6 to source disks due to low free space
+2025-02-17 21:22:45 [info]   Adding disk7 to target disks
+2025-02-17 21:22:45 [info]   Adding disk8 to source disks due to low free space
+2025-02-17 21:22:45 [info]   Adding disk9 to target disks
+2025-02-17 21:22:45 [info]   Adding disk10 to source disks due to low free space
+2025-02-17 21:22:45 [info]   Adding disk11 to target disks
+2025-02-17 21:22:45 [info]   Adding disk12 to target disks
+2025-02-17 21:22:45 [info]   Adding disk13 to target disks
+2025-02-17 21:22:45 [info]   disk6:
+2025-02-17 21:22:48 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Star Trek II The Wrath of Khan (1982) {tmdb-154} (30.9 GB) → disk11
+2025-02-17 21:22:48 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Ali Fear Eats the Soul (1974) {tmdb-216} (23.9 GB) → disk11
+2025-02-17 21:22:48 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Sonic the Hedgehog (2020) {tmdb-454626} (23.5 GB) → disk12
+2025-02-17 21:22:48 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Philadelphia (1993) {tmdb-9800} (23.1 GB) → disk12
+2025-02-17 21:22:48 [info]     Queued move: /mnt/disk6/data/media/movies/hd/The Last Picture Show (1971) {tmdb-25188} (23.0 GB) → disk12
+2025-02-17 21:22:49 [info]   disk2:
+2025-02-17 21:22:52 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Hunger Games Catching Fire (2013) {tmdb-101299} (38.4 GB) → disk12
+2025-02-17 21:22:52 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Antebellum (2020) {tmdb-627290} (30.0 GB) → disk12
+2025-02-17 21:22:52 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Before Sunrise (1995) {tmdb-76} (26.6 GB) → disk12
+2025-02-17 21:22:53 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Lady Vanishes (1938) {tmdb-940} (24.6 GB) → disk12
+2025-02-17 21:22:53 [info]   disk10:
+2025-02-17 21:22:56 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Lawrence of Arabia (1962) {tmdb-947} (33.0 GB) → disk12
+2025-02-17 21:22:57 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Paper Tigers (2020) {tmdb-731738} (32.6 GB) → disk12
+2025-02-17 21:22:57 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Manchurian Candidate (1962) {tmdb-982} (32.5 GB) → disk12
+2025-02-17 21:22:57 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Thief (1981) {tmdb-11524} (32.0 GB) → disk12
+2025-02-17 21:22:57 [info]   disk3:
+2025-02-17 21:22:58 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Batman (2022) {tmdb-414906} (32.6 GB) → disk12
+2025-02-17 21:22:58 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Dare to Dream (2020) {tmdb-550231} (14.8 GB) → disk12
+2025-02-17 21:22:58 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Garden (2020) {tmdb-521034} (14.7 GB) → disk12
+2025-02-17 21:22:58 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Maurice (1987) {tmdb-26371} (14.6 GB) → disk12
+2025-02-17 21:22:59 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Empire of the Sun (1987) {tmdb-10110} (14.5 GB) → disk12
+2025-02-17 21:22:59 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Miracle in Milan (1951) {tmdb-43379} (14.4 GB) → disk12
+2025-02-17 21:22:59 [info]   disk5:
+2025-02-17 21:23:04 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160} (37.3 GB) → disk12
+2025-02-17 21:23:04 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Green Mile (1999) {tmdb-497} (30.1 GB) → disk12
+2025-02-17 21:23:04 [info]     Queued move: /mnt/disk5/data/media/movies/hd/Slumdog Millionaire (2008) {tmdb-12405} (29.9 GB) → disk12
+2025-02-17 21:23:04 [info]   disk4:
+2025-02-17 21:23:07 [info]     Queued move: /mnt/disk4/data/media/movies/hd/In the Heat of the Night (1967) {tmdb-10633} (28.7 GB) → disk12
+2025-02-17 21:23:07 [info]     Queued move: /mnt/disk4/data/media/movies/hd/My Fair Lady (1964) {tmdb-11113} (26.4 GB) → disk12
+2025-02-17 21:23:07 [info]   disk8:
+2025-02-17 21:23:12 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Far and Away (1992) {tmdb-11259} (30.5 GB) → disk12
+2025-02-17 21:23:12 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Star Trek IV The Voyage Home (1986) {tmdb-168} (28.7 GB) → disk12
+===== Summary =====
+2025-02-17 21:23:12 [info] 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 21:23:12 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M moved from
+2025-02-17 21:23:12 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M
+2025-02-17 21:23:12 [info] ---------------------------
+2025-02-17 21:23:12 [info] Total Data Moved: 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 21:23:12 [info] Script Execution Time: 0h 0m 28s
+2025-02-17 21:23:12 [info] Simulation mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-02-17 21:31:35 [info] movarr.sh script started.
+==== Movarr Results for Mon Feb 17 21:31:35 MST 2025 ====
+
+2025-02-17 21:31:36 [info] Configuration validation completed successfully.
+2025-02-17 21:31:36 [info] Processing disks:
+2025-02-17 21:31:36 [info]     disk1: Skipping excluded disk
+2025-02-17 21:31:36 [info]   Adding disk2 to source disks due to low free space
+2025-02-17 21:31:36 [info]   Adding disk3 to source disks due to low free space
+2025-02-17 21:31:36 [info]   Adding disk4 to source disks due to low free space
+2025-02-17 21:31:36 [info]   Adding disk5 to source disks due to low free space
+2025-02-17 21:31:36 [info]   Adding disk6 to source disks due to low free space
+2025-02-17 21:31:36 [info]   Adding disk7 to target disks
+2025-02-17 21:31:36 [info]   Adding disk8 to source disks due to low free space
+2025-02-17 21:31:36 [info]   Adding disk9 to target disks
+2025-02-17 21:31:36 [info]   Adding disk10 to source disks due to low free space
+2025-02-17 21:31:36 [info]   Adding disk11 to target disks
+2025-02-17 21:31:36 [info]   Adding disk12 to target disks
+2025-02-17 21:31:36 [info]   Adding disk13 to target disks
+2025-02-17 21:31:36 [info]   disk6:
+2025-02-17 21:31:39 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Star Trek II The Wrath of Khan (1982) {tmdb-154} (30.9 GB) → disk11
+2025-02-17 21:31:40 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Ali Fear Eats the Soul (1974) {tmdb-216} (23.9 GB) → disk11
+2025-02-17 21:31:40 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Sonic the Hedgehog (2020) {tmdb-454626} (23.5 GB) → disk12
+2025-02-17 21:31:40 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Philadelphia (1993) {tmdb-9800} (23.1 GB) → disk12
+2025-02-17 21:31:40 [info]     Queued move: /mnt/disk6/data/media/movies/hd/The Last Picture Show (1971) {tmdb-25188} (23.0 GB) → disk12
+2025-02-17 21:31:40 [info]   disk2:
+2025-02-17 21:31:43 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Hunger Games Catching Fire (2013) {tmdb-101299} (38.4 GB) → disk12
+2025-02-17 21:31:43 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Antebellum (2020) {tmdb-627290} (30.0 GB) → disk12
+2025-02-17 21:31:43 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Before Sunrise (1995) {tmdb-76} (26.6 GB) → disk12
+2025-02-17 21:31:43 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Lady Vanishes (1938) {tmdb-940} (24.6 GB) → disk12
+2025-02-17 21:31:43 [info]   disk10:
+2025-02-17 21:31:46 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Lawrence of Arabia (1962) {tmdb-947} (33.0 GB) → disk12
+2025-02-17 21:31:46 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Paper Tigers (2020) {tmdb-731738} (32.6 GB) → disk12
+2025-02-17 21:31:47 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Manchurian Candidate (1962) {tmdb-982} (32.5 GB) → disk12
+2025-02-17 21:31:47 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Thief (1981) {tmdb-11524} (32.0 GB) → disk12
+2025-02-17 21:31:47 [info]   disk3:
+2025-02-17 21:31:48 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Batman (2022) {tmdb-414906} (32.6 GB) → disk12
+2025-02-17 21:31:48 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Dare to Dream (2020) {tmdb-550231} (14.8 GB) → disk12
+2025-02-17 21:31:48 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Garden (2020) {tmdb-521034} (14.7 GB) → disk12
+2025-02-17 21:31:48 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Maurice (1987) {tmdb-26371} (14.6 GB) → disk12
+2025-02-17 21:31:48 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Empire of the Sun (1987) {tmdb-10110} (14.5 GB) → disk12
+2025-02-17 21:31:48 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Miracle in Milan (1951) {tmdb-43379} (14.4 GB) → disk12
+2025-02-17 21:31:49 [info]   disk5:
+2025-02-17 21:31:54 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160} (37.3 GB) → disk12
+2025-02-17 21:31:54 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Green Mile (1999) {tmdb-497} (30.1 GB) → disk12
+2025-02-17 21:31:55 [info]     Queued move: /mnt/disk5/data/media/movies/hd/Slumdog Millionaire (2008) {tmdb-12405} (29.9 GB) → disk12
+2025-02-17 21:31:55 [info]   disk4:
+2025-02-17 21:31:57 [info]     Queued move: /mnt/disk4/data/media/movies/hd/In the Heat of the Night (1967) {tmdb-10633} (28.7 GB) → disk12
+2025-02-17 21:31:57 [info]     Queued move: /mnt/disk4/data/media/movies/hd/My Fair Lady (1964) {tmdb-11113} (26.4 GB) → disk12
+2025-02-17 21:31:57 [info]   disk8:
+2025-02-17 21:32:02 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Far and Away (1992) {tmdb-11259} (30.5 GB) → disk12
+2025-02-17 21:32:02 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Star Trek IV The Voyage Home (1986) {tmdb-168} (28.7 GB) → disk12
+===== Summary =====
+2025-02-17 21:32:03 [info] 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 21:32:03 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M moved from
+2025-02-17 21:32:03 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M
+2025-02-17 21:32:03 [info] ---------------------------
+2025-02-17 21:32:03 [info] Total Data Moved: 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 21:32:03 [info] Script Execution Time: 0h 0m 28s
+2025-02-17 21:32:03 [info] Simulation mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-02-17 21:48:26 [info] movarr.sh script started.
+==== Movarr Results for Mon Feb 17 21:48:26 MST 2025 ====
+
+2025-02-17 21:48:27 [info] Configuration validation completed successfully.
+2025-02-17 21:48:27 [info] Processing disks:
+2025-02-17 21:48:27 [info]     disk1: Skipping excluded disk
+2025-02-17 21:48:27 [info]   Adding disk2 to source disks due to low free space
+2025-02-17 21:48:27 [info]   Adding disk3 to source disks due to low free space
+2025-02-17 21:48:27 [info]   Adding disk4 to source disks due to low free space
+2025-02-17 21:48:27 [info]   Adding disk5 to source disks due to low free space
+2025-02-17 21:48:27 [info]   Adding disk6 to source disks due to low free space
+2025-02-17 21:48:27 [info]   Adding disk7 to target disks
+2025-02-17 21:48:27 [info]   Adding disk8 to source disks due to low free space
+2025-02-17 21:48:27 [info]   Adding disk9 to target disks
+2025-02-17 21:48:27 [info]   Adding disk10 to source disks due to low free space
+2025-02-17 21:48:27 [info]   Adding disk11 to target disks
+2025-02-17 21:48:27 [info]   Adding disk12 to target disks
+2025-02-17 21:48:27 [info]   Adding disk13 to target disks
+2025-02-17 21:48:27 [info]   disk6:
+2025-02-17 21:48:31 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Star Trek II The Wrath of Khan (1982) {tmdb-154} (30.9 GB) → disk11
+2025-02-17 21:48:31 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Ali Fear Eats the Soul (1974) {tmdb-216} (23.9 GB) → disk11
+2025-02-17 21:48:31 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Sonic the Hedgehog (2020) {tmdb-454626} (23.5 GB) → disk12
+2025-02-17 21:48:32 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Philadelphia (1993) {tmdb-9800} (23.1 GB) → disk12
+2025-02-17 21:48:32 [info]     Queued move: /mnt/disk6/data/media/movies/hd/The Last Picture Show (1971) {tmdb-25188} (23.0 GB) → disk12
+2025-02-17 21:48:32 [info]   disk2:
+2025-02-17 21:48:36 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Hunger Games Catching Fire (2013) {tmdb-101299} (38.4 GB) → disk12
+2025-02-17 21:48:36 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Antebellum (2020) {tmdb-627290} (30.0 GB) → disk12
+2025-02-17 21:48:36 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Before Sunrise (1995) {tmdb-76} (26.6 GB) → disk12
+2025-02-17 21:48:37 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Lady Vanishes (1938) {tmdb-940} (24.6 GB) → disk12
+2025-02-17 21:48:37 [info]   disk10:
+2025-02-17 21:48:40 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Lawrence of Arabia (1962) {tmdb-947} (33.0 GB) → disk12
+2025-02-17 21:48:40 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Paper Tigers (2020) {tmdb-731738} (32.6 GB) → disk12
+2025-02-17 21:48:40 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Manchurian Candidate (1962) {tmdb-982} (32.5 GB) → disk12
+2025-02-17 21:48:40 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Thief (1981) {tmdb-11524} (32.0 GB) → disk12
+2025-02-17 21:48:41 [info]   disk3:
+2025-02-17 21:48:41 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Batman (2022) {tmdb-414906} (32.6 GB) → disk12
+2025-02-17 21:48:42 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Dare to Dream (2020) {tmdb-550231} (14.8 GB) → disk12
+2025-02-17 21:48:42 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Garden (2020) {tmdb-521034} (14.7 GB) → disk12
+2025-02-17 21:48:42 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Maurice (1987) {tmdb-26371} (14.6 GB) → disk12
+2025-02-17 21:48:42 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Empire of the Sun (1987) {tmdb-10110} (14.5 GB) → disk12
+2025-02-17 21:48:42 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Miracle in Milan (1951) {tmdb-43379} (14.4 GB) → disk12
+2025-02-17 21:48:43 [info]   disk5:
+2025-02-17 21:48:47 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160} (37.3 GB) → disk12
+2025-02-17 21:48:48 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Green Mile (1999) {tmdb-497} (30.1 GB) → disk12
+2025-02-17 21:48:48 [info]     Queued move: /mnt/disk5/data/media/movies/hd/Slumdog Millionaire (2008) {tmdb-12405} (29.9 GB) → disk12
+2025-02-17 21:48:48 [info]   disk4:
+2025-02-17 21:48:50 [info]     Queued move: /mnt/disk4/data/media/movies/hd/In the Heat of the Night (1967) {tmdb-10633} (28.7 GB) → disk12
+2025-02-17 21:48:50 [info]     Queued move: /mnt/disk4/data/media/movies/hd/My Fair Lady (1964) {tmdb-11113} (26.4 GB) → disk12
+2025-02-17 21:48:50 [info]   disk8:
+2025-02-17 21:48:56 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Far and Away (1992) {tmdb-11259} (30.5 GB) → disk12
+2025-02-17 21:48:56 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Star Trek IV The Voyage Home (1986) {tmdb-168} (28.7 GB) → disk12
+===== Summary =====
+2025-02-17 21:48:57 [info] 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 21:48:57 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M moved from
+2025-02-17 21:48:57 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M
+2025-02-17 21:48:57 [info] ---------------------------
+2025-02-17 21:48:57 [info] Total Data Moved: 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 21:48:57 [info] Script Execution Time: 0h 0m 30s
+2025-02-17 21:48:57 [info] Simulation mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-02-17 22:15:21 [info] movarr.sh script started.
+==== Movarr Results for Mon Feb 17 22:15:21 MST 2025 ====
+
+2025-02-17 22:15:22 [info] Configuration validation completed successfully.
+2025-02-17 22:15:22 [info] Processing disks:
+2025-02-17 22:15:22 [info]     disk1: Skipping excluded disk
+2025-02-17 22:15:22 [info]   Adding disk2 to source disks due to low free space
+2025-02-17 22:15:22 [info]   Adding disk3 to source disks due to low free space
+2025-02-17 22:15:22 [info]   Adding disk4 to source disks due to low free space
+2025-02-17 22:15:22 [info]   Adding disk5 to source disks due to low free space
+2025-02-17 22:15:22 [info]   Adding disk6 to source disks due to low free space
+2025-02-17 22:15:22 [info]   Adding disk7 to target disks
+2025-02-17 22:15:22 [info]   Adding disk8 to source disks due to low free space
+2025-02-17 22:15:22 [info]   Adding disk9 to target disks
+2025-02-17 22:15:22 [info]   Adding disk10 to source disks due to low free space
+2025-02-17 22:15:22 [info]   Adding disk11 to target disks
+2025-02-17 22:15:22 [info]   Adding disk12 to target disks
+2025-02-17 22:15:22 [info]   Adding disk13 to target disks
+2025-02-17 22:15:22 [info]   disk6:
+2025-02-17 22:15:26 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Star Trek II The Wrath of Khan (1982) {tmdb-154} (30.9 GB) → disk11
+2025-02-17 22:15:26 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Ali Fear Eats the Soul (1974) {tmdb-216} (23.9 GB) → disk11
+2025-02-17 22:15:26 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Sonic the Hedgehog (2020) {tmdb-454626} (23.5 GB) → disk12
+2025-02-17 22:15:26 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Philadelphia (1993) {tmdb-9800} (23.1 GB) → disk12
+2025-02-17 22:15:26 [info]     Queued move: /mnt/disk6/data/media/movies/hd/The Last Picture Show (1971) {tmdb-25188} (23.0 GB) → disk12
+2025-02-17 22:15:26 [error] Invalid disk space value: . Converting to integer.
+2025-02-17 22:15:26 [info]   disk2:
+2025-02-17 22:15:29 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Hunger Games Catching Fire (2013) {tmdb-101299} (38.4 GB) → disk12
+2025-02-17 22:15:29 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Antebellum (2020) {tmdb-627290} (30.0 GB) → disk12
+2025-02-17 22:15:30 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Before Sunrise (1995) {tmdb-76} (26.6 GB) → disk12
+2025-02-17 22:15:30 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Lady Vanishes (1938) {tmdb-940} (24.6 GB) → disk12
+2025-02-17 22:15:30 [error] Invalid disk space value: . Converting to integer.
+2025-02-17 22:15:30 [info]   disk10:
+2025-02-17 22:15:33 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Lawrence of Arabia (1962) {tmdb-947} (33.0 GB) → disk12
+2025-02-17 22:15:33 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Paper Tigers (2020) {tmdb-731738} (32.6 GB) → disk12
+2025-02-17 22:15:34 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Manchurian Candidate (1962) {tmdb-982} (32.5 GB) → disk12
+2025-02-17 22:15:34 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Thief (1981) {tmdb-11524} (32.0 GB) → disk12
+2025-02-17 22:15:34 [error] Invalid disk space value: . Converting to integer.
+2025-02-17 22:15:34 [info]   disk3:
+2025-02-17 22:15:35 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Batman (2022) {tmdb-414906} (32.6 GB) → disk12
+2025-02-17 22:15:35 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Dare to Dream (2020) {tmdb-550231} (14.8 GB) → disk12
+2025-02-17 22:15:35 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Garden (2020) {tmdb-521034} (14.7 GB) → disk12
+2025-02-17 22:15:35 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Maurice (1987) {tmdb-26371} (14.6 GB) → disk12
+2025-02-17 22:15:36 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Empire of the Sun (1987) {tmdb-10110} (14.5 GB) → disk12
+2025-02-17 22:15:36 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Miracle in Milan (1951) {tmdb-43379} (14.4 GB) → disk12
+2025-02-17 22:15:36 [error] Invalid disk space value: . Converting to integer.
+2025-02-17 22:15:36 [info]   disk5:
+2025-02-17 22:15:41 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160} (37.3 GB) → disk12
+2025-02-17 22:15:41 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Green Mile (1999) {tmdb-497} (30.1 GB) → disk12
+2025-02-17 22:15:41 [info]     Queued move: /mnt/disk5/data/media/movies/hd/Slumdog Millionaire (2008) {tmdb-12405} (29.9 GB) → disk12
+2025-02-17 22:15:41 [error] Invalid disk space value: . Converting to integer.
+2025-02-17 22:15:41 [info]   disk4:
+2025-02-17 22:15:43 [info]     Queued move: /mnt/disk4/data/media/movies/hd/In the Heat of the Night (1967) {tmdb-10633} (28.7 GB) → disk12
+2025-02-17 22:15:43 [info]     Queued move: /mnt/disk4/data/media/movies/hd/My Fair Lady (1964) {tmdb-11113} (26.4 GB) → disk12
+2025-02-17 22:15:44 [error] Invalid disk space value: . Converting to integer.
+2025-02-17 22:15:46 [info]   disk8:
+2025-02-17 22:15:51 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Far and Away (1992) {tmdb-11259} (30.5 GB) → disk12
+2025-02-17 22:15:51 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Star Trek IV The Voyage Home (1986) {tmdb-168} (28.7 GB) → disk12
+2025-02-17 22:15:51 [error] Invalid disk space value: . Converting to integer.
+===== Summary =====
+2025-02-17 22:15:51 [info] 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 22:15:51 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M moved from
+2025-02-17 22:15:52 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M
+2025-02-17 22:15:52 [info] ---------------------------
+2025-02-17 22:15:52 [info] Total Data Moved: 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 22:15:52 [info] Script Execution Time: 0h 0m 30s
+2025-02-17 22:15:52 [info] Simulation mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-02-17 22:17:42 [info] movarr.sh script started.
+==== Movarr Results for Mon Feb 17 22:17:42 MST 2025 ====
+
+2025-02-17 22:17:43 [info] Configuration validation completed successfully.
+2025-02-17 22:17:43 [info] Processing disks:
+2025-02-17 22:17:43 [info]     disk1: Skipping excluded disk
+2025-02-17 22:17:43 [info]   Adding disk2 to source disks due to low free space
+2025-02-17 22:17:43 [info]   Adding disk3 to source disks due to low free space
+2025-02-17 22:17:43 [info]   Adding disk4 to source disks due to low free space
+2025-02-17 22:17:43 [info]   Adding disk5 to source disks due to low free space
+2025-02-17 22:17:43 [info]   Adding disk6 to source disks due to low free space
+2025-02-17 22:17:43 [info]   Adding disk7 to target disks
+2025-02-17 22:17:43 [info]   Adding disk8 to source disks due to low free space
+2025-02-17 22:17:43 [info]   Adding disk9 to target disks
+2025-02-17 22:17:43 [info]   Adding disk10 to source disks due to low free space
+2025-02-17 22:17:43 [info]   Adding disk11 to target disks
+2025-02-17 22:17:43 [info]   Adding disk12 to target disks
+2025-02-17 22:17:43 [info]   Adding disk13 to target disks
+2025-02-17 22:17:43 [info]   disk6:
+2025-02-17 22:17:47 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Star Trek II The Wrath of Khan (1982) {tmdb-154} (30.9 GB) → disk11
+2025-02-17 22:17:47 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Ali Fear Eats the Soul (1974) {tmdb-216} (23.9 GB) → disk11
+2025-02-17 22:17:47 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Sonic the Hedgehog (2020) {tmdb-454626} (23.5 GB) → disk12
+2025-02-17 22:17:47 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Philadelphia (1993) {tmdb-9800} (23.1 GB) → disk12
+2025-02-17 22:17:47 [info]     Queued move: /mnt/disk6/data/media/movies/hd/The Last Picture Show (1971) {tmdb-25188} (23.0 GB) → disk12
+2025-02-17 22:17:47 [error] Invalid disk space value: . Converting to integer.
+2025-02-17 22:17:47 [info]   disk2:
+2025-02-17 22:17:51 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Hunger Games Catching Fire (2013) {tmdb-101299} (38.4 GB) → disk12
+2025-02-17 22:17:51 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Antebellum (2020) {tmdb-627290} (30.0 GB) → disk12
+2025-02-17 22:17:51 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Before Sunrise (1995) {tmdb-76} (26.6 GB) → disk12
+2025-02-17 22:17:52 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Lady Vanishes (1938) {tmdb-940} (24.6 GB) → disk12
+2025-02-17 22:17:52 [error] Invalid disk space value: . Converting to integer.
+2025-02-17 22:17:52 [info]   disk10:
+2025-02-17 22:17:56 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Lawrence of Arabia (1962) {tmdb-947} (33.0 GB) → disk12
+2025-02-17 22:17:56 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Paper Tigers (2020) {tmdb-731738} (32.6 GB) → disk12
+2025-02-17 22:17:56 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Manchurian Candidate (1962) {tmdb-982} (32.5 GB) → disk12
+2025-02-17 22:17:56 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Thief (1981) {tmdb-11524} (32.0 GB) → disk12
+2025-02-17 22:17:56 [error] Invalid disk space value: . Converting to integer.
+2025-02-17 22:17:56 [info]   disk3:
+2025-02-17 22:17:57 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Batman (2022) {tmdb-414906} (32.6 GB) → disk12
+2025-02-17 22:17:57 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Dare to Dream (2020) {tmdb-550231} (14.8 GB) → disk12
+2025-02-17 22:17:57 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Garden (2020) {tmdb-521034} (14.7 GB) → disk12
+2025-02-17 22:17:58 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Maurice (1987) {tmdb-26371} (14.6 GB) → disk12
+2025-02-17 22:17:58 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Empire of the Sun (1987) {tmdb-10110} (14.5 GB) → disk12
+2025-02-17 22:17:58 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Miracle in Milan (1951) {tmdb-43379} (14.4 GB) → disk12
+2025-02-17 22:17:58 [error] Invalid disk space value: . Converting to integer.
+2025-02-17 22:17:58 [info]   disk5:
+2025-02-17 22:18:02 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160} (37.3 GB) → disk12
+2025-02-17 22:18:03 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Green Mile (1999) {tmdb-497} (30.1 GB) → disk12
+2025-02-17 22:18:03 [info]     Queued move: /mnt/disk5/data/media/movies/hd/Slumdog Millionaire (2008) {tmdb-12405} (29.9 GB) → disk12
+2025-02-17 22:18:03 [error] Invalid disk space value: . Converting to integer.
+2025-02-17 22:18:03 [info]   disk4:
+2025-02-17 22:18:05 [info]     Queued move: /mnt/disk4/data/media/movies/hd/In the Heat of the Night (1967) {tmdb-10633} (28.7 GB) → disk12
+2025-02-17 22:18:05 [info]     Queued move: /mnt/disk4/data/media/movies/hd/My Fair Lady (1964) {tmdb-11113} (26.4 GB) → disk12
+2025-02-17 22:18:05 [error] Invalid disk space value: . Converting to integer.
+2025-02-17 22:18:05 [info]   disk8:
+2025-02-17 22:18:10 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Far and Away (1992) {tmdb-11259} (30.5 GB) → disk12
+2025-02-17 22:18:10 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Star Trek IV The Voyage Home (1986) {tmdb-168} (28.7 GB) → disk12
+2025-02-17 22:18:10 [error] Invalid disk space value: . Converting to integer.
+===== Summary =====
+2025-02-17 22:18:11 [info] 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 22:18:11 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M moved from
+2025-02-17 22:18:11 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M
+2025-02-17 22:18:11 [info] ---------------------------
+2025-02-17 22:18:11 [info] Total Data Moved: 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 22:18:11 [info] Script Execution Time: 0h 0m 29s
+2025-02-17 22:18:11 [info] Simulation mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-02-17 22:20:26 [info] movarr.sh script started.
+==== Movarr Results for Mon Feb 17 22:20:26 MST 2025 ====
+
+2025-02-17 22:20:26 [info] Configuration validation completed successfully.
+2025-02-17 22:20:26 [info] Processing disks:
+2025-02-17 22:20:26 [info]     disk1: Skipping excluded disk
+2025-02-17 22:20:26 [info]   Adding disk2 to source disks due to low free space
+2025-02-17 22:20:26 [info]   Adding disk3 to source disks due to low free space
+2025-02-17 22:20:26 [info]   Adding disk4 to source disks due to low free space
+2025-02-17 22:20:27 [info]   Adding disk5 to source disks due to low free space
+2025-02-17 22:20:27 [info]   Adding disk6 to source disks due to low free space
+2025-02-17 22:20:27 [info]   Adding disk7 to target disks
+2025-02-17 22:20:27 [info]   Adding disk8 to source disks due to low free space
+2025-02-17 22:20:27 [info]   Adding disk9 to target disks
+2025-02-17 22:20:27 [info]   Adding disk10 to source disks due to low free space
+2025-02-17 22:20:27 [info]   Adding disk11 to target disks
+2025-02-17 22:20:27 [info]   Adding disk12 to target disks
+2025-02-17 22:20:27 [info]   Adding disk13 to target disks
+2025-02-17 22:20:27 [info]   disk6:
+2025-02-17 22:20:30 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Star Trek II The Wrath of Khan (1982) {tmdb-154} (30.9 GB) → disk11
+2025-02-17 22:20:30 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Ali Fear Eats the Soul (1974) {tmdb-216} (23.9 GB) → disk11
+2025-02-17 22:20:31 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Sonic the Hedgehog (2020) {tmdb-454626} (23.5 GB) → disk12
+2025-02-17 22:20:31 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Philadelphia (1993) {tmdb-9800} (23.1 GB) → disk12
+2025-02-17 22:20:31 [info]     Queued move: /mnt/disk6/data/media/movies/hd/The Last Picture Show (1971) {tmdb-25188} (23.0 GB) → disk12
+2025-02-17 22:20:31 [error] Invalid disk space value: [disk6]. Converting to integer.
+2025-02-17 22:20:31 [info]   disk2:
+2025-02-17 22:20:35 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Hunger Games Catching Fire (2013) {tmdb-101299} (38.4 GB) → disk12
+2025-02-17 22:20:35 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Antebellum (2020) {tmdb-627290} (30.0 GB) → disk12
+2025-02-17 22:20:35 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Before Sunrise (1995) {tmdb-76} (26.6 GB) → disk12
+2025-02-17 22:20:35 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Lady Vanishes (1938) {tmdb-940} (24.6 GB) → disk12
+2025-02-17 22:20:35 [error] Invalid disk space value: [disk2]. Converting to integer.
+2025-02-17 22:20:35 [info]   disk10:
+2025-02-17 22:20:38 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Lawrence of Arabia (1962) {tmdb-947} (33.0 GB) → disk12
+2025-02-17 22:20:39 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Paper Tigers (2020) {tmdb-731738} (32.6 GB) → disk12
+2025-02-17 22:20:39 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Manchurian Candidate (1962) {tmdb-982} (32.5 GB) → disk12
+2025-02-17 22:20:39 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Thief (1981) {tmdb-11524} (32.0 GB) → disk12
+2025-02-17 22:20:39 [error] Invalid disk space value: [disk10]. Converting to integer.
+2025-02-17 22:20:39 [info]   disk3:
+2025-02-17 22:20:40 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Batman (2022) {tmdb-414906} (32.6 GB) → disk12
+2025-02-17 22:20:40 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Dare to Dream (2020) {tmdb-550231} (14.8 GB) → disk12
+2025-02-17 22:20:40 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Garden (2020) {tmdb-521034} (14.7 GB) → disk12
+2025-02-17 22:20:40 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Maurice (1987) {tmdb-26371} (14.6 GB) → disk12
+2025-02-17 22:20:41 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Empire of the Sun (1987) {tmdb-10110} (14.5 GB) → disk12
+2025-02-17 22:20:41 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Miracle in Milan (1951) {tmdb-43379} (14.4 GB) → disk12
+2025-02-17 22:20:41 [error] Invalid disk space value: [disk3]. Converting to integer.
+2025-02-17 22:20:41 [info]   disk5:
+2025-02-17 22:20:45 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160} (37.3 GB) → disk12
+2025-02-17 22:20:46 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Green Mile (1999) {tmdb-497} (30.1 GB) → disk12
+2025-02-17 22:20:46 [info]     Queued move: /mnt/disk5/data/media/movies/hd/Slumdog Millionaire (2008) {tmdb-12405} (29.9 GB) → disk12
+2025-02-17 22:20:46 [error] Invalid disk space value: [disk5]. Converting to integer.
+2025-02-17 22:20:46 [info]   disk4:
+2025-02-17 22:20:48 [info]     Queued move: /mnt/disk4/data/media/movies/hd/In the Heat of the Night (1967) {tmdb-10633} (28.7 GB) → disk12
+2025-02-17 22:20:48 [info]     Queued move: /mnt/disk4/data/media/movies/hd/My Fair Lady (1964) {tmdb-11113} (26.4 GB) → disk12
+2025-02-17 22:20:48 [error] Invalid disk space value: [disk4]. Converting to integer.
+2025-02-17 22:20:48 [info]   disk8:
+2025-02-17 22:20:54 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Far and Away (1992) {tmdb-11259} (30.5 GB) → disk12
+2025-02-17 22:20:54 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Star Trek IV The Voyage Home (1986) {tmdb-168} (28.7 GB) → disk12
+2025-02-17 22:20:54 [error] Invalid disk space value: [disk8]. Converting to integer.
+===== Summary =====
+2025-02-17 22:20:54 [info] 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 22:20:54 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M moved from
+2025-02-17 22:20:54 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M
+2025-02-17 22:20:54 [info] ---------------------------
+2025-02-17 22:20:54 [info] Total Data Moved: 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 22:20:54 [info] Script Execution Time: 0h 0m 28s
+2025-02-17 22:20:54 [info] Simulation mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-02-17 22:28:03 [info] movarr.sh script started.
+==== Movarr Results for Mon Feb 17 22:28:03 MST 2025 ====
+
+2025-02-17 22:28:03 [info] Configuration validation completed successfully.
+2025-02-17 22:28:03 [info] Processing disks:
+2025-02-17 22:28:03 [info]     disk1: Skipping excluded disk
+2025-02-17 22:28:03 [info]   Adding disk2 to source disks due to low free space
+2025-02-17 22:28:03 [info]   Adding disk3 to source disks due to low free space
+2025-02-17 22:28:04 [info]   Adding disk4 to source disks due to low free space
+2025-02-17 22:28:04 [info]   Adding disk5 to source disks due to low free space
+2025-02-17 22:28:04 [info]   Adding disk6 to source disks due to low free space
+2025-02-17 22:28:04 [info]   Adding disk7 to target disks
+2025-02-17 22:28:04 [info]   Adding disk8 to source disks due to low free space
+2025-02-17 22:28:04 [info]   Adding disk9 to target disks
+2025-02-17 22:28:04 [info]   Adding disk10 to source disks due to low free space
+2025-02-17 22:28:04 [info]   Adding disk11 to target disks
+2025-02-17 22:28:04 [info]   Adding disk12 to target disks
+2025-02-17 22:28:04 [info]   Adding disk13 to target disks
+2025-02-17 22:28:04 [info]   disk6:
+2025-02-17 22:28:08 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Star Trek II The Wrath of Khan (1982) {tmdb-154} (30.9 GB) → disk11
+2025-02-17 22:28:08 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Ali Fear Eats the Soul (1974) {tmdb-216} (23.9 GB) → disk11
+2025-02-17 22:28:08 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Sonic the Hedgehog (2020) {tmdb-454626} (23.5 GB) → disk12
+2025-02-17 22:28:08 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Philadelphia (1993) {tmdb-9800} (23.1 GB) → disk12
+2025-02-17 22:28:08 [info]     Queued move: /mnt/disk6/data/media/movies/hd/The Last Picture Show (1971) {tmdb-25188} (23.0 GB) → disk12
+2025-02-17 22:28:08 [error] Invalid disk space value: [disk6]. Converting to integer.
+2025-02-17 22:28:08 [info]   disk2:
+2025-02-17 22:28:12 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Hunger Games Catching Fire (2013) {tmdb-101299} (38.4 GB) → disk12
+2025-02-17 22:28:12 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Antebellum (2020) {tmdb-627290} (30.0 GB) → disk12
+2025-02-17 22:28:12 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Before Sunrise (1995) {tmdb-76} (26.6 GB) → disk12
+2025-02-17 22:28:12 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Lady Vanishes (1938) {tmdb-940} (24.6 GB) → disk12
+2025-02-17 22:28:13 [error] Invalid disk space value: [disk2]. Converting to integer.
+2025-02-17 22:28:15 [info]   disk10:
+2025-02-17 22:28:19 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Lawrence of Arabia (1962) {tmdb-947} (33.0 GB) → disk12
+2025-02-17 22:28:19 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Paper Tigers (2020) {tmdb-731738} (32.6 GB) → disk12
+2025-02-17 22:28:19 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Manchurian Candidate (1962) {tmdb-982} (32.5 GB) → disk12
+2025-02-17 22:28:19 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Thief (1981) {tmdb-11524} (32.0 GB) → disk12
+2025-02-17 22:28:19 [error] Invalid disk space value: [disk10]. Converting to integer.
+2025-02-17 22:28:19 [info]   disk3:
+2025-02-17 22:28:20 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Batman (2022) {tmdb-414906} (32.6 GB) → disk12
+2025-02-17 22:28:20 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Dare to Dream (2020) {tmdb-550231} (14.8 GB) → disk12
+2025-02-17 22:28:21 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Garden (2020) {tmdb-521034} (14.7 GB) → disk12
+2025-02-17 22:28:21 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Maurice (1987) {tmdb-26371} (14.6 GB) → disk12
+2025-02-17 22:28:21 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Empire of the Sun (1987) {tmdb-10110} (14.5 GB) → disk12
+2025-02-17 22:28:21 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Miracle in Milan (1951) {tmdb-43379} (14.4 GB) → disk12
+2025-02-17 22:28:21 [error] Invalid disk space value: [disk3]. Converting to integer.
+2025-02-17 22:28:21 [info]   disk5:
+2025-02-17 22:28:27 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160} (37.3 GB) → disk12
+2025-02-17 22:28:27 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Green Mile (1999) {tmdb-497} (30.1 GB) → disk12
+2025-02-17 22:28:27 [info]     Queued move: /mnt/disk5/data/media/movies/hd/Slumdog Millionaire (2008) {tmdb-12405} (29.9 GB) → disk12
+2025-02-17 22:28:27 [error] Invalid disk space value: [disk5]. Converting to integer.
+2025-02-17 22:28:27 [info]   disk4:
+2025-02-17 22:28:29 [info]     Queued move: /mnt/disk4/data/media/movies/hd/In the Heat of the Night (1967) {tmdb-10633} (28.7 GB) → disk12
+2025-02-17 22:28:30 [info]     Queued move: /mnt/disk4/data/media/movies/hd/My Fair Lady (1964) {tmdb-11113} (26.4 GB) → disk12
+2025-02-17 22:28:30 [error] Invalid disk space value: [disk4]. Converting to integer.
+2025-02-17 22:28:30 [info]   disk8:
+2025-02-17 22:28:35 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Far and Away (1992) {tmdb-11259} (30.5 GB) → disk12
+2025-02-17 22:28:35 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Star Trek IV The Voyage Home (1986) {tmdb-168} (28.7 GB) → disk12
+2025-02-17 22:28:35 [error] Invalid disk space value: [disk8]. Converting to integer.
+===== Summary =====
+2025-02-17 22:28:35 [info] 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 22:28:35 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M moved from
+2025-02-17 22:28:35 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M
+2025-02-17 22:28:35 [info] ---------------------------
+2025-02-17 22:28:35 [info] Total Data Moved: 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 22:28:35 [info] Script Execution Time: 0h 0m 32s
+2025-02-17 22:28:35 [info] Simulation mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-02-17 22:30:28 [info] movarr.sh script started.
+==== Movarr Results for Mon Feb 17 22:30:28 MST 2025 ====
+
+2025-02-17 22:30:29 [info] Configuration validation completed successfully.
+2025-02-17 22:30:29 [info] Processing disks:
+2025-02-17 22:30:29 [info]     disk1: Skipping excluded disk
+2025-02-17 22:30:29 [info]   Adding disk2 to source disks due to low free space
+2025-02-17 22:30:29 [info]   Adding disk3 to source disks due to low free space
+2025-02-17 22:30:29 [info]   Adding disk4 to source disks due to low free space
+2025-02-17 22:30:29 [info]   Adding disk5 to source disks due to low free space
+2025-02-17 22:30:29 [info]   Adding disk6 to source disks due to low free space
+2025-02-17 22:30:29 [info]   Adding disk7 to target disks
+2025-02-17 22:30:29 [info]   Adding disk8 to source disks due to low free space
+2025-02-17 22:30:29 [info]   Adding disk9 to target disks
+2025-02-17 22:30:29 [info]   Adding disk10 to source disks due to low free space
+2025-02-17 22:30:29 [info]   Adding disk11 to target disks
+2025-02-17 22:30:29 [info]   Adding disk12 to target disks
+2025-02-17 22:30:29 [info]   Adding disk13 to target disks
+2025-02-17 22:30:29 [info]   disk6:
+2025-02-17 22:30:32 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Star Trek II The Wrath of Khan (1982) {tmdb-154} (30.9 GB) → disk11
+2025-02-17 22:30:33 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Ali Fear Eats the Soul (1974) {tmdb-216} (23.9 GB) → disk11
+2025-02-17 22:30:33 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Sonic the Hedgehog (2020) {tmdb-454626} (23.5 GB) → disk12
+2025-02-17 22:30:33 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Philadelphia (1993) {tmdb-9800} (23.1 GB) → disk12
+2025-02-17 22:30:33 [info]     Queued move: /mnt/disk6/data/media/movies/hd/The Last Picture Show (1971) {tmdb-25188} (23.0 GB) → disk12
+2025-02-17 22:30:33 [info]   disk2:
+2025-02-17 22:30:36 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Hunger Games Catching Fire (2013) {tmdb-101299} (38.4 GB) → disk12
+2025-02-17 22:30:37 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Antebellum (2020) {tmdb-627290} (30.0 GB) → disk12
+2025-02-17 22:30:37 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Before Sunrise (1995) {tmdb-76} (26.6 GB) → disk12
+2025-02-17 22:30:37 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Lady Vanishes (1938) {tmdb-940} (24.6 GB) → disk12
+2025-02-17 22:30:37 [info]   disk10:
+2025-02-17 22:30:40 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Lawrence of Arabia (1962) {tmdb-947} (33.0 GB) → disk12
+2025-02-17 22:30:40 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Paper Tigers (2020) {tmdb-731738} (32.6 GB) → disk12
+2025-02-17 22:30:40 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Manchurian Candidate (1962) {tmdb-982} (32.5 GB) → disk12
+2025-02-17 22:30:40 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Thief (1981) {tmdb-11524} (32.0 GB) → disk12
+2025-02-17 22:30:40 [info]   disk3:
+2025-02-17 22:30:41 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Batman (2022) {tmdb-414906} (32.6 GB) → disk12
+2025-02-17 22:30:41 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Dare to Dream (2020) {tmdb-550231} (14.8 GB) → disk12
+2025-02-17 22:30:41 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Garden (2020) {tmdb-521034} (14.7 GB) → disk12
+2025-02-17 22:30:41 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Maurice (1987) {tmdb-26371} (14.6 GB) → disk12
+2025-02-17 22:30:42 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Empire of the Sun (1987) {tmdb-10110} (14.5 GB) → disk12
+2025-02-17 22:30:42 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Miracle in Milan (1951) {tmdb-43379} (14.4 GB) → disk12
+2025-02-17 22:30:42 [info]   disk5:
+2025-02-17 22:30:47 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160} (37.3 GB) → disk12
+2025-02-17 22:30:47 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Green Mile (1999) {tmdb-497} (30.1 GB) → disk12
+2025-02-17 22:30:47 [info]     Queued move: /mnt/disk5/data/media/movies/hd/Slumdog Millionaire (2008) {tmdb-12405} (29.9 GB) → disk12
+2025-02-17 22:30:47 [info]   disk4:
+2025-02-17 22:30:49 [info]     Queued move: /mnt/disk4/data/media/movies/hd/In the Heat of the Night (1967) {tmdb-10633} (28.7 GB) → disk12
+2025-02-17 22:30:49 [info]     Queued move: /mnt/disk4/data/media/movies/hd/My Fair Lady (1964) {tmdb-11113} (26.4 GB) → disk12
+2025-02-17 22:30:49 [info]   disk8:
+2025-02-17 22:30:55 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Far and Away (1992) {tmdb-11259} (30.5 GB) → disk12
+2025-02-17 22:30:55 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Star Trek IV The Voyage Home (1986) {tmdb-168} (28.7 GB) → disk12
+===== Summary =====
+2025-02-17 22:30:55 [info] 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 22:30:55 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M moved from
+2025-02-17 22:30:55 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M
+2025-02-17 22:30:55 [info] ---------------------------
+2025-02-17 22:30:55 [info] Total Data Moved: 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 22:30:55 [info] Script Execution Time: 0h 0m 27s
+2025-02-17 22:30:55 [info] Simulation mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-02-17 22:33:36 [info] movarr.sh script started.
+==== Movarr Results for Mon Feb 17 22:33:36 MST 2025 ====
+
+2025-02-17 22:33:37 [info] Configuration validation completed successfully.
+2025-02-17 22:33:37 [info] Processing disks:
+2025-02-17 22:33:37 [info]     disk1: Skipping excluded disk
+2025-02-17 22:33:37 [info]   Adding disk2 to source disks due to low free space
+2025-02-17 22:33:37 [info]   Adding disk3 to source disks due to low free space
+2025-02-17 22:33:37 [info]   Adding disk4 to source disks due to low free space
+2025-02-17 22:33:37 [info]   Adding disk5 to source disks due to low free space
+2025-02-17 22:33:37 [info]   Adding disk6 to source disks due to low free space
+2025-02-17 22:33:37 [info]   Adding disk7 to target disks
+2025-02-17 22:33:37 [info]   Adding disk8 to source disks due to low free space
+2025-02-17 22:33:37 [info]   Adding disk9 to target disks
+2025-02-17 22:33:37 [info]   Adding disk10 to source disks due to low free space
+2025-02-17 22:33:37 [info]   Adding disk11 to target disks
+2025-02-17 22:33:37 [info]   Adding disk12 to target disks
+2025-02-17 22:33:37 [info]   Adding disk13 to target disks
+2025-02-17 22:33:37 [info]   disk6:
+2025-02-17 22:33:41 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Star Trek II The Wrath of Khan (1982) {tmdb-154} (30.9 GB) → disk11
+2025-02-17 22:33:41 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Ali Fear Eats the Soul (1974) {tmdb-216} (23.9 GB) → disk11
+2025-02-17 22:33:41 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Sonic the Hedgehog (2020) {tmdb-454626} (23.5 GB) → disk12
+2025-02-17 22:33:41 [info]     Queued move: /mnt/disk6/data/media/movies/hd/Philadelphia (1993) {tmdb-9800} (23.1 GB) → disk12
+2025-02-17 22:33:41 [info]     Queued move: /mnt/disk6/data/media/movies/hd/The Last Picture Show (1971) {tmdb-25188} (23.0 GB) → disk12
+2025-02-17 22:33:41 [info]   disk2:
+2025-02-17 22:33:44 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Hunger Games Catching Fire (2013) {tmdb-101299} (38.4 GB) → disk12
+2025-02-17 22:33:44 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Antebellum (2020) {tmdb-627290} (30.0 GB) → disk12
+2025-02-17 22:33:44 [info]     Queued move: /mnt/disk2/data/media/movies/hd/Before Sunrise (1995) {tmdb-76} (26.6 GB) → disk12
+2025-02-17 22:33:45 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Lady Vanishes (1938) {tmdb-940} (24.6 GB) → disk12
+2025-02-17 22:33:45 [info]   disk10:
+2025-02-17 22:33:48 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Lawrence of Arabia (1962) {tmdb-947} (33.0 GB) → disk12
+2025-02-17 22:33:48 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Paper Tigers (2020) {tmdb-731738} (32.6 GB) → disk12
+2025-02-17 22:33:48 [info]     Queued move: /mnt/disk10/data/media/movies/hd/The Manchurian Candidate (1962) {tmdb-982} (32.5 GB) → disk12
+2025-02-17 22:33:48 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Thief (1981) {tmdb-11524} (32.0 GB) → disk12
+2025-02-17 22:33:48 [info]   disk3:
+2025-02-17 22:33:49 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Batman (2022) {tmdb-414906} (32.6 GB) → disk12
+2025-02-17 22:33:49 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Dare to Dream (2020) {tmdb-550231} (14.8 GB) → disk12
+2025-02-17 22:33:49 [info]     Queued move: /mnt/disk3/data/media/movies/hd/The Secret Garden (2020) {tmdb-521034} (14.7 GB) → disk12
+2025-02-17 22:33:49 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Maurice (1987) {tmdb-26371} (14.6 GB) → disk12
+2025-02-17 22:33:49 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Empire of the Sun (1987) {tmdb-10110} (14.5 GB) → disk12
+2025-02-17 22:33:49 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Miracle in Milan (1951) {tmdb-43379} (14.4 GB) → disk12
+2025-02-17 22:33:50 [info]   disk5:
+2025-02-17 22:33:55 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160} (37.3 GB) → disk12
+2025-02-17 22:33:55 [info]     Queued move: /mnt/disk5/data/media/movies/hd/The Green Mile (1999) {tmdb-497} (30.1 GB) → disk12
+2025-02-17 22:33:55 [info]     Queued move: /mnt/disk5/data/media/movies/hd/Slumdog Millionaire (2008) {tmdb-12405} (29.9 GB) → disk12
+2025-02-17 22:33:56 [info]   disk4:
+2025-02-17 22:33:58 [info]     Queued move: /mnt/disk4/data/media/movies/hd/In the Heat of the Night (1967) {tmdb-10633} (28.7 GB) → disk12
+2025-02-17 22:33:58 [info]     Queued move: /mnt/disk4/data/media/movies/hd/My Fair Lady (1964) {tmdb-11113} (26.4 GB) → disk12
+2025-02-17 22:33:58 [info]   disk8:
+2025-02-17 22:34:03 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Far and Away (1992) {tmdb-11259} (30.5 GB) → disk12
+2025-02-17 22:34:03 [info]     Queued move: /mnt/disk8/data/media/movies/hd/Star Trek IV The Voyage Home (1986) {tmdb-168} (28.7 GB) → disk12
+===== Summary =====
+2025-02-17 22:34:03 [info] 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 22:34:03 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M moved from
+2025-02-17 22:34:03 [info] 3300: 0M, 63979: 0M, 571: 0M, 62166: 0M, 15244: 0M, 815: 0M, 5531: 0M
+2025-02-17 22:34:03 [info] ---------------------------
+2025-02-17 22:34:03 [info] Total Data Moved: 3300: 0M moved to 63979: 0M moved to 571: 0M moved to 62166: 0M moved to 15244: 0M moved to 815: 0M moved to 5531: 0M moved to 
+2025-02-17 22:34:03 [info] Script Execution Time: 0h 0m 27s
+2025-02-17 22:34:03 [info] Simulation mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
