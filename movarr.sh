@@ -3,6 +3,9 @@
 # movarr.sh - Script to transfer directories from source disks to target disks
 # based on available space, with optional simulation mode.
 
+set -e
+set -u
+
 startTime=$(date +%s)
 
 # Configuration variables
@@ -35,6 +38,15 @@ dryRunFilePath="$scriptDir/$dryRunFileName"
 fileListFileName="debug_file_list.txt"
 fileListFilePath="$scriptDir/$fileListFileName"
 
+cleanup() {
+    rm -f "$tempFile"
+    rm -f "$moveListFile"
+    rm -f "$scriptDir/movarr.pid"
+}
+
+# Set up trap to call cleanup function on script exit or interruption
+trap cleanup EXIT INT TERM
+
 # Function to log messages
 logMessage() {
     local logLevels="$1"
@@ -48,8 +60,10 @@ logMessage() {
     fi
 
     if [ -f "$logFilePath" ]; then
-        logFileSize=$(du -m "$logFilePath" | cut -f1)
-        if [ "$logFileSize" -ge "$maxLogSize" ]; then
+        local logFileSize=$(stat -c%s "$logFilePath")
+        local maxLogSizeBytes=$((maxLogSize * 1024 * 1024))
+
+        if [ "$logFileSize" -ge "$maxLogSizeBytes" ]; then
             for ((i = maxLogRollovers - 1; i >= 0; i--)); do
                 if [ -f "$scriptDir/logs/movarr.$i.log" ]; then
                     mv "$scriptDir/logs/movarr.$i.log" "$scriptDir/logs/movarr.$((i + 1)).log"
@@ -95,7 +109,6 @@ logMessage() {
         esac
     done
 }
-
 # Load configuration file
 if [ -f "$configFilePath" ]; then
     . "$configFilePath"
@@ -107,37 +120,45 @@ fi
 # Function to initialize logs and handle log rollover
 initializeLogs() {
     mkdir -p "$scriptDir/logs"
-    logFiles=("$scriptDir/logs/movarr"*.log)
-    logCount=${#logFiles[@]}
+
+    local logFiles=("$scriptDir/logs/movarr"*.log)
+    local logCount=${#logFiles[@]}
+    
     if [ "$logCount" -gt "$maxLogRollovers" ]; then
-        filesToRemove=$((logCount - maxLogRollovers))
+        local filesToRemove=$((logCount - maxLogRollovers))
         for ((i = 0; i < filesToRemove; i++)); do
             rm -f "${logFiles[$i]}"
         done
     fi
+
     if [ ! -f "$logFilePath" ]; then
         touch "$logFilePath"
         chmod 644 "$logFilePath"
     fi
+
     addHeader "$logFilePath"
 }
 
 initializeDryRun() {
+    local currentDate
+
     if [[ "$dryRun" == "true" ]] || [[ "$logLevel" == "debug" ]]; then
         logMessage "debug" "Starting data transfer simulation"
         > "$dryRunFilePath"
-        echo "==== Movarr Simulation for $(date) ====" >> "$dryRunFilePath"
+        currentDate="$(date)"
+        echo "==== Movarr Simulation for $currentDate ====" >> "$dryRunFilePath"
     else
         logMessage "debug,info" "Starting data transfer..."
         [ -f "$dryRunFilePath" ] && rm -f "$dryRunFilePath"
     fi
 }
 
-# Function to validate disk space
-validateDiskSpace() {
+validateDiskSpace() {  # NO LOGGING ALLOWED IN THIS FUNCTION!
     local spaceValue="$1"
     local spaceName="$2"
     local errors="$3"
+    local size
+    local unit
 
     if [[ "$spaceValue" =~ ^([0-9]+)[[:space:]]*(MB|GB)?$ ]]; then
         size=${BASH_REMATCH[1]}
@@ -154,6 +175,12 @@ validateDiskSpace() {
 # Function to validate configuration imported from config.ini
 validateConfiguration() {
     local errors=0
+    local rootFolderPath
+    local rootFolderPathExists
+    local strippedRootFolderPath
+    local found
+    local matchingDisks
+    local disk
 
     logMessage "debug" "Validating configuration..."
     [ "$dryRun" == "true" ] && echo "Configuration Settings:" >> "$dryRunFilePath"
@@ -314,18 +341,20 @@ validateConfiguration() {
         done
     fi
 
-    logMessage "debug" "minFreeDiskSpace: $(formatSpace $minFreeDiskSpace)"
-    echo "  minFreeDiskSpace: $(formatSpace $minFreeDiskSpace)" >> "$dryRunFilePath"
+    # Validate minFreeDiskSpace, maxSourceDiskFreeSpace, and minTargetDiskFreeSpace
     minFreeDiskSpace=$(validateDiskSpace "$minFreeDiskSpace" "minFreeDiskSpace" "$errors")
+    logMessage "debug" "minFreeDiskSpace: $(formatSpace $minFreeDiskSpace)"
+    [ "$dryRun" == "true" ] && echo "  minFreeDiskSpace: $(formatSpace $minFreeDiskSpace)" >> "$dryRunFilePath"
 
-    logMessage "debug" "maxSourceDiskFreeSpace: $(formatSpace $maxSourceDiskFreeSpace)"
-    echo "  maxSourceDiskFreeSpace: $(formatSpace $maxSourceDiskFreeSpace)" >> "$dryRunFilePath"
     maxSourceDiskFreeSpace=$(validateDiskSpace "$maxSourceDiskFreeSpace" "maxSourceDiskFreeSpace" "$errors")
+    logMessage "debug" "maxSourceDiskFreeSpace: $(formatSpace $maxSourceDiskFreeSpace)"
+    [ "$dryRun" == "true" ] && echo "  maxSourceDiskFreeSpace: $(formatSpace $maxSourceDiskFreeSpace)" >> "$dryRunFilePath"
 
-    logMessage "debug" "minTargetDiskFreeSpace: $(formatSpace $minTargetDiskFreeSpace)"
-    echo "  minTargetDiskFreeSpace: $(formatSpace $minTargetDiskFreeSpace)" >> "$dryRunFilePath"
     minTargetDiskFreeSpace=$(validateDiskSpace "$minTargetDiskFreeSpace" "minTargetDiskFreeSpace" "$errors")
+    logMessage "debug" "minTargetDiskFreeSpace: $(formatSpace $minTargetDiskFreeSpace)"
+    [ "$dryRun" == "true" ] && echo "  minTargetDiskFreeSpace: $(formatSpace $minTargetDiskFreeSpace)" >> "$dryRunFilePath"
 
+    # Validate fileTransferLimit (should be a positive integer and not exceed 10)
     logMessage "debug" "fileTransferLimit: $fileTransferLimit"
     [ "$dryRun" == "true" ] && echo "  fileTransferLimit: $fileTransferLimit" >> "$dryRunFilePath"
     if ! [[ "$fileTransferLimit" =~ ^[1-9][0-9]*$ ]] || [ "$fileTransferLimit" -gt 10 ]; then
@@ -364,18 +393,22 @@ validateConfiguration() {
     logMessage "info" "Configuration validation completed successfully."
 }
 
+# Function to check if an array contains a specific disk
 arrayContainsDisk() {
-    local array=("$@")
-    local seeking=${array[-1]}
-    unset array[-1]
+    local array=("${@:1:${#}-1}")
+    local seeking="${!#}"
+    
     for element in "${array[@]}"; do
-        [[ "$element" == "$seeking" ]] && return 0
+        if [[ "$element" == "$seeking" ]]; then
+            return 0
+        fi
     done
     return 1
 }
 
 getFreeSpace() {
-    df -m "$diskPath/$1" | awk 'NR==2 {print $4}'
+    local disk="$1"
+    df -m "$diskPath/$disk" | awk 'NR==2 {print $4}'
 }
 
 formatSpace() {
@@ -434,7 +467,7 @@ addFooter() {
     local elapsedTime=$((endTime - startTime))
 
     local elapsedHours=$((elapsedTime / 3600))
-    local elapsedMinutes=$(( (elapsedTime % 3600) / 60 ))
+    local elapsedMinutes=$(((elapsedTime % 3600) / 60))
     local elapsedSeconds=$((elapsedTime % 60))
 
     echo "===== Summary =====" >> "$logFilePath"
@@ -534,7 +567,7 @@ generateMoveList() {
         fi
 
         for rootFolder in "${rootFolders[@]}"; do
-            rootFolderPath="$diskPath/$sourceDisk/$rootFolder"
+            local rootFolderPath="$diskPath/$sourceDisk/$rootFolder"
 
             if [ ! -d "$rootFolderPath" ]; then
                 logMessage "debug,info" "    Root folder $rootFolderPath not found on $sourceDisk"
@@ -565,7 +598,6 @@ generateMoveList() {
                     if [[ " ${missingDirectories[@]} " =~ " $dir " ]]; then
                         continue
                     fi
-                    
                     echo "$(getSortKey "$dir") $dir"
                 done | sort -k1,1n | awk '{print substr($0, index($0,$2))}')
             fi
@@ -583,6 +615,7 @@ generateMoveList() {
             fi
 
             for sourceDir in "${sourceDirectories[@]}"; do
+                local sourceDirSize
                 sourceDirSize=$(du -sm "$sourceDir" 2>/dev/null | awk '{print $1}')
                 if [ -z "$sourceDirSize" ]; then
                     missingDirectories+=("$sourceDir")
@@ -599,6 +632,7 @@ generateMoveList() {
                 targetDiskFreeSpace=$(grep "^$targetDisk " "$tempFile" | awk '{print $2}')
                 logMessage "debug" "    Free space on target disk ($targetDisk) is $(formatSpace $targetDiskFreeSpace)"
 
+                local targetDir
                 targetDir=$(echo "$sourceDir" | sed "s|^$diskPath/disk[0-9]\+|$diskPath/$targetDisk|")
 
                 if [ "$dryRun" == "true" ]; then
@@ -613,9 +647,11 @@ generateMoveList() {
                 updateFreeSpace "$sourceDisk" "$sourceDirSize" "$tempFile"
                 updateFreeSpace "$targetDisk" "$((-sourceDirSize))" "$tempFile"
 
+                local sourceDiskfreeSpace
                 sourceDiskfreeSpace=$(grep "^$sourceDisk " "$tempFile" | awk '{print $2}')
                 logMessage "debug" "    Updated free space on source disk ($sourceDisk) is $(formatSpace $sourceDiskfreeSpace)"
 
+                local targetDiskFreeSpace
                 targetDiskFreeSpace=$(grep "^$targetDisk " "$tempFile" | awk '{print $2}')
                 logMessage "debug" "    Updated free space on target disk ($targetDisk) is $(formatSpace $targetDiskFreeSpace)"
 
@@ -734,6 +770,7 @@ main() {
             continue
         fi
 
+        local freeSpace
         freeSpace=$(getFreeSpace "$disk")
 
         logMessage "debug" "    $disk: $(formatSpace $freeSpace)"
@@ -753,6 +790,8 @@ main() {
 
     logMessage "debug" "  Analyzing disks..."
 
+    local sortedNameSourceDisks
+    local sortedNameTargetDisks
     sortedNameSourceDisks=($(for disk in "${!sourceDisks[@]}"; do echo "$disk"; done | sort -V))
     sortedNameTargetDisks=($(for disk in "${!targetDisks[@]}"; do echo "$disk"; done | sort -V))
 
@@ -764,6 +803,7 @@ main() {
     echo "  Target: ${sortedNameTargetDisks[@]}" >> "$dryRunFilePath"
     echo "" >> "$dryRunFilePath"
 
+    local tempFile
     tempFile=$(mktemp "$scriptDir/tmp.XXXXXX")
 
     find "$scriptDir" -name 'tmp.*' -type f -exec rm -f {} \;
@@ -775,6 +815,7 @@ main() {
     declare -A movedDirectories
     declare -A movedData
 
+    local moveListFile
     moveListFile=$(mktemp)
     generateMoveList "$moveListFile"
 
@@ -790,6 +831,7 @@ main() {
     moveFilesFromList "$moveListFile"
 
     logMessage "debug" "Waiting for all background jobs to complete..."
+    # timeout 600 wait || logMessage "warn" "Background jobs took too long to complete."
     wait
 
     logMessage "debug" "Missing directories:"
@@ -800,9 +842,9 @@ main() {
         done
     fi
 
-    if [ "$dryRun" != "true" ] && [ "$logLevel" != "debug" ]; then
-        rm -f "$tempFile"
-    fi
+    # if [ "$dryRun" = "true" ] || [ "$logLevel" = "debug" ]; then
+    #     cp "$tempFile" "$scriptDir/diskSpace.txt"
+    # fi
 
     logMessage "info" "Movarr is done."
     logMessage "debug" "movarr.sh script completed."
@@ -819,5 +861,5 @@ logMessage "debug,info" "movarr.sh script started."
 
 main
 
-logMessage "debug" "Cleaning up PID file"
-rm -f "$scriptDir/movarr.pid"
+# logMessage "debug" "Cleaning up PID file"
+# rm -f "$scriptDir/movarr.pid"

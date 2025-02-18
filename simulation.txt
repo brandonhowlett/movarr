@@ -1,7 +1,4 @@
-  minFreeDiskSpace: 100 MB
-  maxSourceDiskFreeSpace: 100 MB
-  minTargetDiskFreeSpace: 120 MB
 Disks:
-  Source: disk4
-  Target: disk2 disk3 disk5 disk6 disk7 disk8 disk9 disk10 disk11 disk12 disk13
+  Source: disk5
+  Target: disk2 disk3 disk4 disk6 disk7 disk8 disk9 disk10 disk11 disk12 disk13
 
