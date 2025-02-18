@@ -23,6 +23,7 @@ minFreeDiskSpace="20480 MB"
 maxSourceDiskFreeSpace="20480 MB"
 minTargetDiskFreeSpace="20480 MB"
 # backgroundTasks=false
+tmuxPanes=false
 fileTransferLimit=4
 moverMode="largest"
 notificationType="none"
@@ -411,6 +412,23 @@ validateConfiguration() {
     # else
     #     echo "  backgroundTasks: $backgroundTasks" >> "$dryRunFilePath"
     # fi
+
+    # Validate tmuxPanes (should be true or false)
+    logMessage "debug" "tmuxPanes: $tmuxPanes"
+    if [ "$tmuxPanes" != "true" ] && [ "$tmuxPanes" != "false" ]; then
+        logMessage "error" "Invalid value for 'tmuxPanes'. It should be true or false."
+        ((errors++))
+    else
+        # if tmuxPanes is enabled, check if tmux is installed
+        if [ "$tmuxPanes" = "true" ]; then
+            if ! command -v tmux &>/dev/null; then
+                logMessage "error" "tmux is not installed. Please install tmux or disable tmuxPanes."
+                ((errors++))
+            else
+                echo "  tmuxPanes: $tmuxPanes" >> "$dryRunFilePath"
+            fi
+        fi
+    fi
 
     # Validate fileTransferLimit (should be a positive integer and not exceed 10)
     logMessage "debug" "fileTransferLimit: $fileTransferLimit"
@@ -912,6 +930,13 @@ moveFilesFromList() {
     local targetDir
     local targetDisk
 
+    # if tmux has been installed, and tmuxPanes=true, use it to run the rsync commands in parallel
+    if [ "$tmuxPanes" == "true" ]; then
+        # Start tmux session
+        tmux new-session -d -s movarr  # Detached tmux session
+        tmux send-keys -t movarr "clear" C-m  # Clear screen for a clean start
+    fi
+
     while IFS= read -r line; do
         # Match the pattern with numbers followed by quoted paths
         if [[ $line =~ ^([0-9]+)\ [\"']([^\"]+)[\"']\ [\"']([^\"]+)[\"']$ ]]; then
@@ -930,11 +955,18 @@ moveFilesFromList() {
             continue
         fi
 
-        # Execute rsync (without dry-run for actual move)
-        rsync -avz --remove-source-files --progress -- "$sourceDir/" "$targetDir/" &
+        # If tmux is enabled, run rsync in a new tmux window
+        if [ "$tmux" == "true" ]; then
+            # Create a new pane for each transfer
+            tmux split-window -h  # Split the window horizontally
+            tmux send-keys -t transferSession "rsync -avz --dry-run --remove-source-files --progress -- \"$sourceDir/\" \"$targetDir/\"" C-m
+        else
+            # Execute rsync (without dry-run for actual move)
+            rsync -avz --remove-source-files --progress -- "$sourceDir/" "$targetDir/" &
 
-        # Remove empty directories after transfer
-        find "$sourceDir" -type d -empty -exec rmdir {} \;
+            # Remove empty directories after transfer
+            find "$sourceDir" -type d -empty -exec rmdir {} \;
+        fi
 
         # Track moved directories and their sizes
         # movedDirectories["$targetDisk"]+="$sourceDir\n"
@@ -948,6 +980,11 @@ moveFilesFromList() {
 
     # Wait for all background jobs to finish
     wait
+
+    # If tmux is enabled, kill the tmux session
+    if [ "$tmux" == "true" ]; then
+        tmux kill-session -t movarr
+    fi
 }
 
 main() {
