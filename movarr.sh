@@ -733,6 +733,7 @@ generateMoveList() {
         if [ "$dryRun" == "true" ]; then
             initialFreeSpace=$(grep "^$sourceDisk " "$tempFile" | awk '{print $2}')
             echo "  $sourceDisk (Available free space: $(formatSpace $initialFreeSpace), Target: $(formatSpace $minFreeDiskSpace))" >> "$dryRunFilePath"
+            echo "    Moves:" >> "$dryRunFilePath"
         fi
 
         # Iterate over each root folder
@@ -785,9 +786,8 @@ generateMoveList() {
 
             # Dry run - Initialize tracking for data moved
             if [ "$dryRun" == "true" ]; then
-                # dataMovedSourceDisk=0
+                unset dataMovedTargetDisks
                 declare -A dataMovedTargetDisks
-                # declare -A dataMovedThisIteration  # Tracks data moved per source disk to target disk
             fi
 
             # Iterate over each directory
@@ -814,10 +814,11 @@ generateMoveList() {
 
                 # Add move entry to move list file
                 if [ "$dryRun" == "true" ]; then
-                    echo "    \"$sourceDir\" ($(formatSpace $sourceDirSize))" >> "$dryRunFilePath"
-                    echo "     ➥ \"$targetDir\"" >> "$dryRunFilePath"
+                    echo "      \"$sourceDir\" ($(formatSpace $sourceDirSize))" >> "$dryRunFilePath"
+                    echo "       ➥ \"$targetDir\"" >> "$dryRunFilePath"
                 else
-                    echo "$sourceDirSize $sourceDir $targetDisk" >> "$moveListFile"
+                    # echo "$sourceDirSize $sourceDir $targetDisk" >> "$moveListFile"
+                    echo "$sourceDirSize \"$sourceDir\" \"$targetDir\"" >> "$moveListFile"
                 fi
 
                 logMessage "debug,info" "    Queued move: $sourceDir ($(formatSpace $sourceDirSize)) → $targetDisk"
@@ -836,13 +837,9 @@ generateMoveList() {
 
                 # Track total data moved from the source disk
                 if [ "$dryRun" == "true" ]; then
-                    # dataMovedSourceDisk=$((dataMovedSourceDisk + sourceDirSize))
-
                     totalDataMovedSourceDisks[$sourceDisk]=$((totalDataMovedSourceDisks[$sourceDisk] + sourceDirSize))
                     totalDataMovedTargetDisks[$targetDisk]=$((totalDataMovedTargetDisks[$targetDisk] + sourceDirSize))
                     dataMovedTargetDisks[$targetDisk]=$((dataMovedTargetDisks[$targetDisk] + sourceDirSize))
-                    # Track data moved for the current iteration (from source to target)
-                    # dataMovedThisIteration["$sourceDisk->$targetDisk"]=$((dataMovedThisIteration["$sourceDisk->$targetDisk"] + sourceDirSize))
                 fi
 
                 # Check if enough free space has been reached on the source disk
@@ -867,17 +864,14 @@ generateMoveList() {
             # Dry run - Log the total data moved for the disk
             if [ "$dryRun" == "true" ]; then
                 echo "    Summary:" >> "$dryRunFilePath"
-                echo "    [-] $sourceDisk: $(formatSpace ${totalDataMovedSourceDisks[$sourceDisk]})" >> "$dryRunFilePath"
+                echo "      [-] $sourceDisk: $(formatSpace ${totalDataMovedSourceDisks[$sourceDisk]})" >> "$dryRunFilePath"
 
                 for targetDisk in "${!dataMovedTargetDisks[@]}"; do
-                    echo "    [+] $targetDisk: $(formatSpace ${dataMovedTargetDisks[$targetDisk]})" >> "$dryRunFilePath"
+                    echo "      [+] $targetDisk: $(formatSpace ${dataMovedTargetDisks[$targetDisk]})" >> "$dryRunFilePath"
                 done
 
                 echo "" >> "$dryRunFilePath"
-
-                unset dataMovedTargetDisks
             fi
-
         done
     done <<< "$sortedSizeSourceDisks"
 
@@ -895,24 +889,27 @@ generateMoveList() {
         done
         echo "" >> "$dryRunFilePath"
 
-
-
-
         addFooter >> "$dryRunFilePath"
     fi
 }
 
 moveFilesFromList() {
     local moveListFile="$1"
-    fileTransferLimit=${fileTransferLimit:-3} # Default concurrent limit
+    local targetDirSize
+    local sourceDir
+    local targetDir
+    local targetDisk
 
     while IFS= read -r line; do
-        sourceDirSize=$(echo "$line" | awk '{print $1}')
-        sourceDir=$(echo "$line" | cut -d ' ' -f2- | rev | cut -d ' ' -f2- | rev)
-        targetDisk=$(echo "$line" | awk '{print $NF}')
-
-        # Ensure correct target directory replacement
-        targetDir=$(echo "$sourceDir" | sed "s|^$diskPath/disk[0-9]\+|$diskPath/$targetDisk|")
+        # Match the pattern with numbers followed by quoted paths
+        if [[ $line =~ ^([0-9]+)\ [\"']([^\"]+)[\"']\ [\"']([^\"]+)[\"']$ ]]; then
+            sourceDirSize="${BASH_REMATCH[1]}"
+            sourceDir="${BASH_REMATCH[2]}"
+            targetDir="${BASH_REMATCH[3]}"
+            targetDisk=$(echo "$targetDir" | awk -F'/' '{print $3}')
+        else
+            logMessage "error" "Failed to parse line: $line"
+        fi
 
         # Execute rsync
         echo "rsync -avz --remove-source-files --remove-source-dirs --progress -- \"$sourceDir/\" \"$targetDir/\" &"
@@ -930,7 +927,6 @@ moveFilesFromList() {
     wait
 }
 
-
 main() {
     # Initialize logs
     initializeLogs
@@ -943,8 +939,6 @@ main() {
     # Validate configuration and populate activeDisks
     validateConfiguration
     
-
-
     # Identify source and target disks
     declare -A sourceDisks
     declare -A targetDisks
@@ -1016,14 +1010,6 @@ main() {
     if [ "$dryRun" == "true" ]; then
         logMessage "debug,info" "Simulation mode: Transfer plan saved to $dryRunFilePath."
 
-        # Create a new log file if not present
-        if [ ! -f "$dryRunFilePath" ]; then
-            touch "$dryRunFilePath"
-            
-            # Set permissions
-            chmod 644 "$dryRunFilePath"
-        fi
-        
         # Exit without moving files
         exit 0
     elif [ "$logLevel" == "debug" ]; then
