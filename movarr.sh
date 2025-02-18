@@ -22,7 +22,7 @@ rootFolders=("/data/media/movies")
 minFreeDiskSpace="20480 MB"
 maxSourceDiskFreeSpace="20480 MB"
 minTargetDiskFreeSpace="20480 MB"
-backgroundTasks=false
+# backgroundTasks=false
 fileTransferLimit=4
 moverMode="largest"
 notificationType="none"
@@ -403,14 +403,14 @@ validateConfiguration() {
     logMessage "debug" "minTargetDiskFreeSpace: $(formatSpace $minTargetDiskFreeSpace)"
     echo "  minTargetDiskFreeSpace: $(formatSpace $minTargetDiskFreeSpace)" >> "$dryRunFilePath"
 
-    # Validate backgroundTasks (should be true or false)
-    logMessage "debug" "backgroundTasks: $backgroundTasks"
-    if [ "$backgroundTasks" != "true" ] && [ "$backgroundTasks" != "false" ]; then
-        logMessage "error" "Invalid value for 'backgroundTasks'. It should be true or false."
-        ((errors++))
-    else
-        echo "  backgroundTasks: $backgroundTasks" >> "$dryRunFilePath"
-    fi
+    # # Validate backgroundTasks (should be true or false)
+    # logMessage "debug" "backgroundTasks: $backgroundTasks"
+    # if [ "$backgroundTasks" != "true" ] && [ "$backgroundTasks" != "false" ]; then
+    #     logMessage "error" "Invalid value for 'backgroundTasks'. It should be true or false."
+    #     ((errors++))
+    # else
+    #     echo "  backgroundTasks: $backgroundTasks" >> "$dryRunFilePath"
+    # fi
 
     # Validate fileTransferLimit (should be a positive integer and not exceed 10)
     logMessage "debug" "fileTransferLimit: $fileTransferLimit"
@@ -720,9 +720,6 @@ generateMoveList() {
     while read -r sourceDisk size; do
         logMessage "debug,info" "  $sourceDisk:"
 
-        # Reset data moved this iteration for the current source disk
-        # declare -A dataMovedThisIteration
-
         # Skip excluded disks
         if arrayContainsDisk "${excludeSourceDisks[@]}" "$sourceDisk"; then
             logMessage "debug" "    Skipping excluded source disk"
@@ -771,6 +768,11 @@ generateMoveList() {
             # Sort directories based on moverMode
             if [[ "$moverMode" == "largest" || "$moverMode" == "smallest" || "$moverMode" == "oldest" || "$moverMode" == "newest" ]]; then
                 readarray -t sourceDirectories < <(for dir in "${sourceDirectories[@]}"; do
+                    # Skip inaccessible directories
+                    if [[ " ${missingDirectories[@]} " =~ " $dir " ]]; then
+                        continue
+                    fi
+                    
                     echo "$(getSortKey "$dir") $dir"
                 done | sort -k1,1n | awk '{print substr($0, index($0,$2))}')
             fi
@@ -796,6 +798,7 @@ generateMoveList() {
                 if [ -z "$sourceDirSize" ]; then
                     # Directory cannot be accessed, add to missingDirectories array
                     missingDirectories+=("$sourceDir")
+                    logMessage "warn" "    Directory $sourceDir cannot be accessed and will be added to missing directories."
                     continue
                 fi
 
@@ -817,7 +820,6 @@ generateMoveList() {
                     echo "      \"$sourceDir\" ($(formatSpace $sourceDirSize))" >> "$dryRunFilePath"
                     echo "       ➥ \"$targetDir\"" >> "$dryRunFilePath"
                 else
-                    # echo "$sourceDirSize $sourceDir $targetDisk" >> "$moveListFile"
                     echo "$sourceDirSize \"$sourceDir\" \"$targetDir\"" >> "$moveListFile"
                 fi
 
@@ -877,7 +879,7 @@ generateMoveList() {
 
     # Dry run - Add footer to the simulation file
     if [ "$dryRun" == "true" ]; then
-        # Lot the total data moved for each disk
+        # Log the total data moved for each disk
         echo "Total Data Moved:" >> "$dryRunFilePath"
         for disk in "${!totalDataMovedSourceDisks[@]}"; do
             echo "  $disk: $(formatSpace ${totalDataMovedSourceDisks[$disk]})" >> "$dryRunFilePath"
@@ -891,11 +893,21 @@ generateMoveList() {
 
         addFooter >> "$dryRunFilePath"
     fi
+
+    # Iterate over missing directories
+    if [ ${#missingDirectories[@]} -gt 0 ]; then
+        logMessage "debug,warn" "Missing directories:"
+        for dir in "${missingDirectories[@]}"; do
+            logMessage "debug,warn" "  $dir"
+        done
+    else
+        logMessage "debug" "No missing directories found."
+    fi
 }
 
 moveFilesFromList() {
     local moveListFile="$1"
-    local targetDirSize
+    local sourceDirSize
     local sourceDir
     local targetDir
     local targetDisk
@@ -909,21 +921,32 @@ moveFilesFromList() {
             targetDisk=$(echo "$targetDir" | awk -F'/' '{print $3}')
         else
             logMessage "error" "Failed to parse line: $line"
+            continue  # Skip to next line if parsing fails
         fi
 
-        # Execute rsync
-        echo "rsync -avz --remove-source-files --remove-source-dirs --progress -- \"$sourceDir/\" \"$targetDir/\" &"
-        # rsync -avz --remove-source-files --remove-source-dirs --progress -- "$sourceDir/" "$targetDir/" &
+        # Ensure source directory exists
+        if [ ! -d "$sourceDir" ]; then
+            logMessage "error" "Source directory $sourceDir does not exist. Skipping move."
+            continue
+        fi
+
+        # Execute rsync (without dry-run for actual move)
+        rsync -avz --remove-source-files --progress -- "$sourceDir/" "$targetDir/" &
+
+        # Remove empty directories after transfer
+        find "$sourceDir" -type d -empty -exec rmdir {} \;
 
         # Track moved directories and their sizes
-        movedDirectories["$targetDisk"]+="$sourceDir\n"
-        movedData["$targetDisk"]=$((movedData["$targetDisk"] + sourceDirSize))
+        # movedDirectories["$targetDisk"]+="$sourceDir\n"
+        # movedData["$targetDisk"]=$((movedData["$targetDisk"] + sourceDirSize))
 
+        # Limit the number of concurrent transfers
         while [ "$(jobs -r | wc -l)" -ge "$fileTransferLimit" ]; do
             sleep 1
         done
     done < "$moveListFile"
 
+    # Wait for all background jobs to finish
     wait
 }
 
@@ -983,11 +1006,6 @@ main() {
     echo "  Target: ${sortedNameTargetDisks[@]}" >> "$dryRunFilePath"
     echo "" >> "$dryRunFilePath"
 
-    # logMessage "debug,info" "Target disks sorted by available free space:"
-    # for disk in "${sortedTargetDisks[@]}"; do
-    #     logMessage "debug,info" "  $disk ($(formatSpace ${targetDisks[$disk]}))"
-    # done
-
     # Create a temporary file to track the simulated movement of data
     tempFile=$(mktemp "$scriptDir/tmp.XXXXXX")
 
@@ -997,7 +1015,6 @@ main() {
     initializeTempFile "$tempFile"
 
     # List to track missing directories
-    # declare -A missingDirectories
     missingDirectories=()
 
     # Dictionary to track moved directories and their sizes

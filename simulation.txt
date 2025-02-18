@@ -9,7 +9,6 @@
   minFreeDiskSpace: 102.4 GB
   maxSourceDiskFreeSpace: 102.4 GB
   minTargetDiskFreeSpace: 122.9 GB
-  backgroundTasks: true
   fileTransferLimit: 4
   moverMode: largest
   notificationType: unraid
