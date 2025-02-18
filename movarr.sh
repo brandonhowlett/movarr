@@ -434,49 +434,49 @@ getFreeSpace() {
     df -m "$diskPath/$1" | awk 'NR==2 {print $4}'
 }
 
-convertThreshold() {
-    local disk="$1"
-    local threshold="$2"
+# convertThreshold() {
+#     local disk="$1"
+#     local threshold="$2"
 
-    # Get total and available space on the disk in bytes
-    local total_space=$(df --output=size -B1 "$disk" | tail -1)
-    local available_space=$(df --output=avail -B1 "$disk" | tail -1)
+#     # Get total and available space on the disk in bytes
+#     local total_space=$(df --output=size -B1 "$disk" | tail -1)
+#     local available_space=$(df --output=avail -B1 "$disk" | tail -1)
 
-    # If threshold is in percentage format (e.g., "5%"), calculate equivalent bytes
-    if [[ "$threshold" =~ ^[0-9]+%$ ]]; then
-        local percent=${threshold%\%}  # Remove % sign
-        echo $((total_space * percent / 100))
-    elif [[ "$threshold" =~ ^[0-9]+(GB|G)$ ]]; then
-        echo $(( ${threshold%GB} * 1024 * 1024 * 1024 ))
-    elif [[ "$threshold" =~ ^[0-9]+(MB|M)$ ]]; then
-        echo $(( ${threshold%MB} * 1024 * 1024 ))
-    elif [[ "$threshold" =~ ^[0-9]+(KB|K)$ ]]; then
-        echo $(( ${threshold%KB} * 1024 ))
-    else
-        echo "$threshold"  # Assume it's already in bytes
-    fi
-}
+#     # If threshold is in percentage format (e.g., "5%"), calculate equivalent bytes
+#     if [[ "$threshold" =~ ^[0-9]+%$ ]]; then
+#         local percent=${threshold%\%}  # Remove % sign
+#         echo $((total_space * percent / 100))
+#     elif [[ "$threshold" =~ ^[0-9]+(GB|G)$ ]]; then
+#         echo $(( ${threshold%GB} * 1024 * 1024 * 1024 ))
+#     elif [[ "$threshold" =~ ^[0-9]+(MB|M)$ ]]; then
+#         echo $(( ${threshold%MB} * 1024 * 1024 ))
+#     elif [[ "$threshold" =~ ^[0-9]+(KB|K)$ ]]; then
+#         echo $(( ${threshold%KB} * 1024 ))
+#     else
+#         echo "$threshold"  # Assume it's already in bytes
+#     fi
+# }
 
-check_disk_space() {
-    local disk="$1"
-    local threshold="$2"
+# check_disk_space() {
+#     local disk="$1"
+#     local threshold="$2"
 
-    # Convert threshold to bytes
-    local min_free_space
-    min_free_space=$(convertThreshold "$disk" "$threshold")
+#     # Convert threshold to bytes
+#     local min_free_space
+#     min_free_space=$(convertThreshold "$disk" "$threshold")
 
-    # Get available space on the disk in bytes
-    local available_space
-    available_space=$(df --output=avail -B1 "$disk" | tail -1)
+#     # Get available space on the disk in bytes
+#     local available_space
+#     available_space=$(df --output=avail -B1 "$disk" | tail -1)
 
-    # Check if available space is below the threshold
-    if [[ "$available_space" -lt "$min_free_space" ]]; then
-        logMessage "warn" "Free space on $disk ($(formatSpace $((available_space / 1024 / 1024)))) is below the threshold ($(formatSpace $((min_free_space / 1024 / 1024))))"
-        return 1
-    fi
+#     # Check if available space is below the threshold
+#     if [[ "$available_space" -lt "$min_free_space" ]]; then
+#         logMessage "warn" "Free space on $disk ($(formatSpace $((available_space / 1024 / 1024)))) is below the threshold ($(formatSpace $((min_free_space / 1024 / 1024))))"
+#         return 1
+#     fi
 
-    return 0
-}
+#     return 0
+# }
 
 # Function to convert disk space reported in MB to GB for use in strings
 formatSpace() {
@@ -503,40 +503,7 @@ formatSpace() {
     echo "$formattedSpace"
 }
 
-# Function to find the disk with the least free space greater than a specified value and enough space for dirSize (optional)
-# findLeastFreeDisk() {
-#     local dirSize="${1:-0}"  # Default to 0 if dirSize is not provided
-#     local leastFreeDisk=""
-#     local leastFreeSpace=-1
-
-#     for disk in "${!targetDisks[@]}"; do
-#         local freeSpace
-#         freeSpace=$(getFreeSpace "$disk")
-
-#         # Check if getFreeSpace returned a valid number
-#         if ! [[ "$freeSpace" =~ ^[0-9]+$ ]]; then
-#             logMessage "error" "Failed to get free space for disk: $disk"
-#             continue
-#         fi
-
-#         # Check if the disk has enough space for dirSize and is greater than minTargetDiskFreeSpace
-#         if [[ $freeSpace -gt $minTargetDiskFreeSpace && $freeSpace -ge $dirSize ]]; then
-#             if [[ -z $leastFreeDisk || $freeSpace -lt $leastFreeSpace ]]; then
-#                 leastFreeDisk="$disk"
-#                 leastFreeSpace="$freeSpace"
-#             fi
-#         fi
-#     done
-
-#     if [[ -z $leastFreeDisk ]]; then
-#         logMessage "warn" "No suitable disk found with free space greater than $minTargetDiskFreeSpace and enough space for directory size $dirSize"
-#     else
-#         logMessage "info" "Selected disk: $leastFreeDisk with free space: $leastFreeSpace"
-#     fi
-
-#     echo "$leastFreeDisk"
-# }
-
+# Function to find the disk with the least free space
 findLeastFreeDisk() {
     local dirSize="$1"
     local tempFile="$2"
@@ -579,77 +546,6 @@ findLeastFreeDisk() {
     echo "$targetDisk"
 }
 
-
-
-
-# Function to check available space on a disk
-# checkAvailableSpace() {
-#     local disk="$1"
-#     local requiredSpace="$2"
-#     local availableSpace=$(getFreeSpace $disk)
-
-#     # Compare available space with required space
-#     if (( availableSpace >= requiredSpace )); then
-#         return 0 # Sufficient space
-#     else
-#         return 1 # Insufficient space
-#     fi
-# }
-
-# transferDirectories() {
-#     local requiredSpace
-
-#     for dir in "${sourceDirectories[@]}"; do
-#         requiredSpace=$(du -sm "$dir" | awk '{print $1}')
-#         local transferred=false
-
-#         for disk in "${targetDisks[@]}"; do
-#             if checkAvailableSpace "$disk" "$requiredSpace"; then
-#                 echo "Transferring $dir to $disk"
-#                 rsync -a "$dir" "$disk/" &
-#                 transferred=true
-#                 break
-#             else
-#                 logMessage "info" "Insufficient space on $disk for $dir"
-#             fi
-#         done
-
-#         if ! $transferred; then
-#             logMessage "error" "No target disks have sufficient space for $dir"
-#             return 1
-#         fi
-#     done
-
-#     # Wait for all background jobs to complete
-#     wait
-# }
-
-# Function to calculate the total size of directories in the file list
-# calculateTotalSize() {
-#     awk '{total+=$1} END{print total}' "$fileListFilePath"
-# }
-
-# # Function to determine the destination disk for each directory based on available space
-# determineDestinations() {
-#     local disk="$1"
-
-#     for dir in "${sourceDirectories[@]}"; do
-#         # Skip if the directory does not exist on the source disk
-#         if ! checkDirectoryExists "${$diskPath/$disk/$dir}"; then
-#             continue
-#         fi
-
-#         # Find the destination disk with the least free space greater than the destination limit
-#         targetDisk=$(findLeastFreeDisk "$minTargetDiskFreeSpace")
-
-#         # Calculate the size of the directory
-#         dirSize=$(du -sm "$dir" 2>/dev/null | awk '{print $1}')
-
-#         # Append the directory, size, and destination disk to the file list
-#         echo "$dirSize $dir $targetDisk" >> "$fileListFilePath"
-#     done
-# }
-
 # Function to add a header with date and time to the log file
 addHeader() {
     echo -e "==== Movarr Results for $(date) ====\n" >>"$logFilePath"
@@ -672,7 +568,7 @@ addFooter() {
     local totalDataAdded=""
     local totalDataRemoved=""
 
-    for diskdisk in "${sourceDisks[@]}"; do
+    for disk in "${sourceDisks[@]}"; do
         # diskName=$(basename "$diskPath")
 
         movedData=$(du -sh "$disk" 2>/dev/null || echo "0M")
@@ -732,86 +628,35 @@ initializeTempFile() {
     done
 }
 
-# calculateTotalSize() {
-#     awk '{total+=$1} END{print total}' "$scriptDir/tmp_file.txt"  # "$fileListFilePath"
-# }
-
-# moveDirectory() {
-#     local sourceDisk="$1"
-#     local targetDisk="$2"
-#     local directory="$3"
-#     mv "$sourceDisk/$directory" "$targetDisk/"
-# }
-
-# createSimulationFile() {
-#     local sourceDisk="$1"
-#     local destinationDisk="$2"
-#     echo "Simulating move from $sourceDisk to $destinationDisk" >> "$dryRunFilePath"
-# }
-
 isMovarrRunning() {
     [ -f "$scriptDir/movarr.pid" ]
 }
 
-checkDirectoryExists() {
-    [ -d "$1" ]
-}
+# checkDirectoryExists() {
+#     [ -d "$1" ]
+# }
 
 # Function to format simulation entry
 formatSimulationEntry() {
     local size="$1"
     local sourceDir="$2"
     local destDisk="$3"
-    printf "%-10s %-40s %-20s\n" "$size" "$sourceDir" "$destDisk"
+    printf "%-10s %-80s %-20s\n" "$size" "$sourceDir" "$destDisk"
 }
 
 # Function to set destination disk in simulation file
-setDestinationDisk() {
-    echo -e "\n# $1" >> "$dryRunFilePath"
-}
+# setDestinationDisk() {
+#     echo -e "\n# $1" >> "$dryRunFilePath"
+# }
 
 # Function to sort an associative array
-sortAssociativeArray() {
-    local -n arr=$1
-    local -A sortedArr
-    while IFS=$'\t' read -r key value; do
-        sortedArr["$key"]=$value
-    done < <(for key in "${!arr[@]}"; do echo -e "$key\t${arr[$key]}"; done | sort -k2 -n)
-    echo "${!sortedArr[@]}"
-}
-
-# Function to generate a list of tentative files to move
-# generateMoveList() {
-#     local moveListFile="$1"
-#     > "$moveListFile"  # Clear the move list file
-
-#     for sourceDisk in "${!sourceDisks[@]}"; do
-#         for rootFolder in "${rootFolders[@]}"; do
-#             rootFolderPath="$diskPath/$sourceDisk/$rootFolder"
-#             if [ ! -d "$rootFolderPath" ]; then
-#                 continue
-#             fi
-
-#             sourceDirectories=()
-#             while IFS= read -r dir; do
-#                 sourceDirectories+=("$dir")
-#             done < <(find "$rootFolderPath" -maxdepth 1 -mindepth 1 -type d)
-
-#             for dir in "${sourceDirectories[@]}"; do
-#                 dirSize=$(du -sm "$dir" 2>/dev/null | awk '{print $1}')
-#                 if [ -z "$dirSize" ]; then
-#                     continue
-#                 fi
-
-#                 targetDisk=$(findLeastFreeDisk "$dirSize")
-#                 if [ -z "$targetDisk" ]; then
-#                     continue
-#                 fi
-
-#                 echo "$dirSize $dir $targetDisk" >> "$moveListFile"
-#             done
-#         done
-#     done
+# sortAssociativeArray() {
+#     local -n arr=$1
+#     local -A sortedArr
+#     while IFS=$'\t' read -r key value; do
+#         sortedArr["$key"]=$value
+#     done < <(for key in "${!arr[@]}"; do echo -e "$key\t${arr[$key]}"; done | sort -k2 -n)
+#     echo "${!sortedArr[@]}"
 # }
 
 generateMoveList() {
@@ -823,7 +668,7 @@ generateMoveList() {
 
     # Iterate over sorted source disks (by ascending disk size)
     while read -r sourceDisk size; do
-        logMessage "debug" "  $sourceDisk:"
+        logMessage "debug,info" "  $sourceDisk:"
 
         # Skip excluded disks
         if arrayContainsDisk "${excludeSourceDisks[@]}" "$sourceDisk"; then
@@ -840,8 +685,6 @@ generateMoveList() {
                 logMessage "debug,info" "    Root folder $rootFolderPath not found on $sourceDisk"
                 continue
             fi
-
-            # logMessage "debug" "    Root folder exists"
 
             # List directories in rootFolderPath
             sourceDirectories=()
@@ -902,7 +745,9 @@ generateMoveList() {
                 logMessage "debug" "    Free space on target disk ($targetDisk) is $(formatSpace $targetDiskFreeSpace)"
 
                 # Add move entry to move list file
+                # formatSimulationEntry "$dirSize" "$dir" "$targetDisk" >> "$moveListFile"
                 echo "$dirSize $dir $targetDisk" >> "$moveListFile"
+
                 logMessage "debug,info" "    Queued move: $dir ($(formatSpace $dirSize)) → $targetDisk"
 
                 # Simulate updating free space
@@ -919,18 +764,18 @@ generateMoveList() {
 
                 # Check if enough free space has been reached on the source disk
                 if [ "$sourceDiskfreeSpace" -ge "$maxSourceDiskFreeSpace" ]; then
-                    logMessage "debug" "    Enough free space reached on source disk ($sourceDisk). Moving to next disk."
+                    logMessage "debug" "    Free space on source disk ($sourceDisk) exceeds minimum threshold."
                     break
                 else # Check if the disk has enough space for the next directory
-                    logMessage "debug" "    Checking if $sourceDisk has enough space for the next directory"
+                    # logMessage "debug" "    Checking if $targetDisk has enough space for the next directory"
                     nextDir=$(echo "${sourceDirectories[1]}" | awk '{print $2}')
                     nextDirSize=$(du -sm "$nextDir" 2>/dev/null | awk '{print $1}')
                     if [ -z "$nextDirSize" ]; then
                         continue
                     fi
 
-                    if [ "$((freeSpace - nextDirSize))" -lt "$maxSourceDiskFreeSpace" ]; then
-                        logMessage "debug" "    Not enough space for the next directory. Moving to next disk."
+                    if [ "$((targetDiskFreeSpace - nextDirSize))" -lt "$maxSourceDiskFreeSpace" ]; then
+                        logMessage "debug" "    Not enough space on target disk ($targetDisk) for the next directory."
                         break
                     fi
                 fi
@@ -939,17 +784,26 @@ generateMoveList() {
     done <<< "$sortedSizeSourceDisks"
 }
 
-# Function to move files based on the move list
 moveFilesFromList() {
     local moveListFile="$1"
+    fileTransferLimit=${fileTransferLimit:-3} # Default concurrent limit
+
     while IFS= read -r line; do
         dirSize=$(echo "$line" | awk '{print $1}')
-        dir=$(echo "$line" | awk '{print $2}')
-        targetDisk=$(echo "$line" | awk '{print $3}')
+        sourceDir=$(echo "$line" | cut -d ' ' -f2- | rev | cut -d ' ' -f2- | rev)
+        targetDisk=$(echo "$line" | awk '{print $NF}')
 
-        targetDir=$(echo "$dir" | sed "s:$diskPath/$sourceDisk:$diskPath/$targetDisk:")
-        rsync -avz --remove-source-files --progress -- "$dir/" "$targetDir/" &
-        
+        # Ensure correct target directory replacement
+        targetDir=$(echo "$sourceDir" | sed "s|^$diskPath/disk[0-9]\+|$diskPath/$targetDisk|")
+
+        # Execute rsync
+        echo "rsync -avz --remove-source-files --remove-source-dirs --progress -- \"$sourceDir/\" \"$targetDir/\" &"
+        # rsync -avz --remove-source-files --remove-source-dirs --progress -- "$sourceDir/" "$targetDir/" &
+
+        # Track moved directories and their sizes
+        movedDirectories["$targetDisk"]+="$sourceDir\n"
+        movedData["$targetDisk"]=$((movedData["$targetDisk"] + dirSize))
+
         while [ "$(jobs -r | wc -l)" -ge "$fileTransferLimit" ]; do
             sleep 1
         done
@@ -957,6 +811,7 @@ moveFilesFromList() {
 
     wait
 }
+
 
 main() {
     # Initialize logs
@@ -966,12 +821,14 @@ main() {
     validateConfiguration
     
     # Delete any existing simulation file if not in dryRun mode
-    if [ "$dryRun" == "true" ]; then
+    if [[ "$dryRun" == "true" ]] || [[ "$logLevel" == "debug" ]]; then
+
         logMessage "debug,info" "Starting data transfer simulation"
         # Create a new simulation file
         > "$dryRunFilePath"
     else
         logMessage "debug,info" "Starting data transfer..."
+        # Remove any existing simulation file
         if [ -f "$dryRunFilePath" ]; then
             rm -f "$dryRunFilePath"
         fi
@@ -1001,12 +858,13 @@ main() {
             sourceDisks["$disk"]=$freeSpace
             logMessage "info" "  Adding $disk to source disks due to low free space"
         else
+            # Disk space is sufficient
             targetDisks["$disk"]=$freeSpace
             logMessage "info" "  Adding $disk to target disks"
         fi
     done
-
-    logMessage "debug" "  Evaluating disks..."
+    
+    logMessage "debug" "  Analyzing disks..."
 
     # Sort source disks by name
     sortedNameSourceDisks=($(for disk in "${!sourceDisks[@]}"; do echo "$disk"; done | sort -V))
@@ -1014,7 +872,7 @@ main() {
 
     logMessage "debug" "    Source disks: ${sortedNameSourceDisks[@]}"
     logMessage "debug" "    Target disks: ${sortedNameTargetDisks[@]}"
-    logMessage "debug,info" "Sorting disks by available free space..."
+    # logMessage "debug,info" "Sorting disks by available free space..."
 
     # logMessage "debug,info" "Target disks sorted by available free space:"
     # for disk in "${sortedTargetDisks[@]}"; do
@@ -1024,17 +882,13 @@ main() {
     # Create a temporary file to track the simulated movement of data
     tempFile=$(mktemp "$scriptDir/tmp.XXXXXX")
 
-    # Delete any existing tempFile from a previous dry run
-    # if [ -f "$tempFile" ]; then
-    #     rm -f "$tempFile"
-    # fi
-
     # Delete any existing tempFiles from a previous dry run in scriptDir
     find "$scriptDir" -name 'tmp.*' -type f -exec rm -f {} \;
 
     initializeTempFile "$tempFile"
 
     # List to track missing directories
+    # declare -A missingDirectories
     missingDirectories=()
 
     # Dictionary to track moved directories and their sizes
@@ -1049,12 +903,16 @@ main() {
         # Copy the move list to the dry run file for inspection
         cp "$moveListFile" "$dryRunFilePath"
         exit 0
+    elif [ "$logLevel" == "debug" ]; then
+        logMessage "debug,info" "Debug mode: Transfer plan saved to $dryRunFilePath."
+        cp "$moveListFile" "$dryRunFilePath"
     fi
 
     moveFilesFromList "$moveListFile"
 
     # Wait for all background jobs to complete
     logMessage "debug" "Waiting for all background jobs to complete..."
+    # timeout 600 wait || logMessage "warn" "Background jobs took too long to complete."
     wait
 
     # Log missing directories
@@ -1067,12 +925,15 @@ main() {
     fi
 
     # Clean up the temporary file
-    if [ "$dryRun" != "true" ]; then
+    if [ "$dryRun" != "true" ] && [ "$logLevel" != "debug" ]; then
         rm -f "$tempFile"
     fi
 
     logMessage "info" "Movarr is done."
     logMessage "debug" "movarr.sh script completed."
+
+    # Add footer with summary
+    addFooter
 }
 
 # Ensure only one instance of movarr.sh is running

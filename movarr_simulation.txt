@@ -1,7 +1,0 @@
-
-# disk12
-57097      /mnt/disk11/data/media/movies/hd/Personal Shopper (2016) {tmdb-340676} disk12              
-42000      /mnt/disk11/data/media/movies/hd/Céline and Julie Go Boating (1974) {tmdb-27019} disk12              
-38406      /mnt/disk10/data/media/movies/hd/Spider-Man 2 (2004) {tmdb-558} disk12              
-38392      /mnt/disk10/data/media/movies/hd/Hotel Mumbai (2019) {tmdb-416144} disk12              
-38105      /mnt/disk10/data/media/movies/hd/Mr. India (1987) {tmdb-41903} disk12              
