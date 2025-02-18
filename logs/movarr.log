@@ -27359,3 +27359,209 @@ disk11
 2025-02-18 11:37:50 [info]   disk11:
 2025-02-18 11:37:55 [info]     Queued move: /mnt/disk11/data/media/movies/hd/Star Trek II The Wrath of Khan (1982) {tmdb-154} (30.9 GB) → disk12
 2025-02-18 11:37:55 [info] Debug mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-02-18 13:22:51 [info] Movarr is done.
+===== Summary =====
+2025-02-18 13:22:51 [info] 99385: 0M moved to 90273: 0M moved to 94200: 0M moved to 25883: 0M moved to 41345: 0M moved to 35044: 0M moved to 
+2025-02-18 13:22:51 [info] 99385: 0M, 90273: 0M, 94200: 0M, 25883: 0M, 41345: 0M, 35044: 0M moved from
+2025-02-18 13:22:51 [info] 99385: 0M, 90273: 0M, 94200: 0M, 25883: 0M, 41345: 0M, 35044: 0M
+2025-02-18 13:22:51 [info] ---------------------------
+2025-02-18 13:22:51 [info] Total Data Moved: 99385: 0M moved to 90273: 0M moved to 94200: 0M moved to 25883: 0M moved to 41345: 0M moved to 35044: 0M moved to 
+2025-02-18 13:22:51 [info] Script Execution Time: 1h 45m 20s
+2025-02-18 13:34:32 [info] movarr.sh script started.
+==== Movarr Results for Tue Feb 18 13:34:32 MST 2025 ====
+
+2025-02-18 13:34:32 [info] Starting data transfer...
+2025-02-18 13:34:32 [info] Configuration validation completed successfully.
+2025-02-18 13:34:32 [info] Processing disks:
+2025-02-18 13:34:32 [info]     disk1: Skipping excluded disk
+2025-02-18 13:34:32 [info]   Adding disk2 to target disks
+2025-02-18 13:34:33 [info]   Adding disk3 to target disks
+2025-02-18 13:34:33 [info]   Adding disk4 to target disks
+2025-02-18 13:34:33 [info]   Adding disk5 to target disks
+2025-02-18 13:34:33 [info]   Adding disk6 to target disks
+2025-02-18 13:34:33 [info]   Adding disk7 to target disks
+2025-02-18 13:34:33 [info]   Adding disk8 to target disks
+2025-02-18 13:34:33 [info]   Adding disk9 to target disks
+2025-02-18 13:34:33 [info]   Adding disk10 to target disks
+2025-02-18 13:34:33 [info]   Adding disk11 to target disks
+2025-02-18 13:34:33 [info]   Adding disk12 to target disks
+2025-02-18 13:34:33 [info]   Adding disk13 to target disks
+2025-02-18 13:34:33 [info] No source disks require maintenance.
+2025-02-18 13:36:16 [info] movarr.sh script started.
+==== Movarr Results for Tue Feb 18 13:36:16 MST 2025 ====
+
+2025-02-18 13:36:16 [info] Starting data transfer...
+2025-02-18 13:36:16 [info] Configuration validation completed successfully.
+2025-02-18 13:36:17 [info] Processing disks:
+2025-02-18 13:36:17 [info]     disk1: Skipping excluded disk
+2025-02-18 13:36:17 [info]   Adding disk2 to target disks
+2025-02-18 13:36:17 [info]   Adding disk3 to target disks
+2025-02-18 13:36:17 [info]   Adding disk4 to target disks
+2025-02-18 13:36:17 [info]   Adding disk5 to target disks
+2025-02-18 13:36:17 [info]   Adding disk6 to target disks
+2025-02-18 13:36:17 [info]   Adding disk7 to target disks
+2025-02-18 13:36:17 [info]   Adding disk8 to target disks
+2025-02-18 13:36:17 [info]   Adding disk9 to target disks
+2025-02-18 13:36:17 [info]   Adding disk10 to target disks
+2025-02-18 13:36:17 [info]   Adding disk11 to target disks
+2025-02-18 13:36:17 [info]   Adding disk12 to target disks
+2025-02-18 13:36:17 [info]   Adding disk13 to target disks
+2025-02-18 13:36:17 [info] No source disks require maintenance.
+2025-02-18 13:36:39 [info] movarr.sh script started.
+==== Movarr Results for Tue Feb 18 13:36:39 MST 2025 ====
+
+2025-02-18 13:36:39 [info] Starting data transfer...
+2025-02-18 13:36:39 [info] Configuration validation completed successfully.
+2025-02-18 13:36:39 [info] Processing disks:
+2025-02-18 13:36:39 [info]     disk1: Skipping excluded disk
+2025-02-18 13:36:39 [info]   Adding disk2 to target disks
+2025-02-18 13:36:39 [info]   Adding disk3 to target disks
+2025-02-18 13:36:39 [info]   Adding disk4 to target disks
+2025-02-18 13:36:39 [info]   Adding disk5 to target disks
+2025-02-18 13:36:39 [info]   Adding disk6 to source disks due to low free space
+2025-02-18 13:36:39 [info]   Adding disk7 to target disks
+2025-02-18 13:36:39 [info]   Adding disk8 to target disks
+2025-02-18 13:36:39 [info]   Adding disk9 to target disks
+2025-02-18 13:36:39 [info]   Adding disk10 to target disks
+2025-02-18 13:36:39 [info]   Adding disk11 to target disks
+2025-02-18 13:36:39 [info]   Adding disk12 to target disks
+2025-02-18 13:36:40 [info]   Adding disk13 to target disks
+2025-02-18 13:36:40 [info]   disk6:
+2025-02-18 13:36:54 [info] movarr.sh script started.
+==== Movarr Results for Tue Feb 18 13:36:54 MST 2025 ====
+
+2025-02-18 13:36:54 [info] Starting data transfer...
+2025-02-18 13:36:55 [info] Configuration validation completed successfully.
+2025-02-18 13:36:55 [info] Processing disks:
+2025-02-18 13:36:55 [info]     disk1: Skipping excluded disk
+2025-02-18 13:36:55 [info]   Adding disk2 to target disks
+2025-02-18 13:36:55 [info]   Adding disk3 to target disks
+2025-02-18 13:36:55 [info]   Adding disk4 to target disks
+2025-02-18 13:36:55 [info]   Adding disk5 to target disks
+2025-02-18 13:36:55 [info]   Adding disk6 to target disks
+2025-02-18 13:36:55 [info]   Adding disk7 to target disks
+2025-02-18 13:36:55 [info]   Adding disk8 to target disks
+2025-02-18 13:36:55 [info]   Adding disk9 to target disks
+2025-02-18 13:36:55 [info]   Adding disk10 to target disks
+2025-02-18 13:36:55 [info]   Adding disk11 to target disks
+2025-02-18 13:36:55 [info]   Adding disk12 to target disks
+2025-02-18 13:36:55 [info]   Adding disk13 to target disks
+2025-02-18 13:36:55 [info] No source disks require maintenance.
+2025-02-18 13:44:51 [info] movarr.sh script started.
+==== Movarr Results for Tue Feb 18 13:44:51 MST 2025 ====
+
+2025-02-18 13:44:51 [info] Starting data transfer...
+2025-02-18 13:44:52 [info] Configuration validation completed successfully.
+2025-02-18 13:44:52 [info] Processing disks:
+2025-02-18 13:44:52 [info]     disk1: Skipping excluded disk
+2025-02-18 13:44:52 [info]   Adding disk2 to target disks
+2025-02-18 13:44:52 [info]   Adding disk3 to target disks
+2025-02-18 13:44:52 [info]   Adding disk4 to target disks
+2025-02-18 13:44:52 [info]   Adding disk5 to target disks
+2025-02-18 13:44:52 [info]   Adding disk6 to target disks
+2025-02-18 13:44:52 [info]   Adding disk7 to target disks
+2025-02-18 13:44:52 [info]   Adding disk8 to target disks
+2025-02-18 13:44:52 [info]   Adding disk9 to target disks
+2025-02-18 13:44:52 [info]   Adding disk10 to target disks
+2025-02-18 13:44:52 [info]   Adding disk11 to target disks
+2025-02-18 13:44:52 [info]   Adding disk12 to target disks
+2025-02-18 13:44:52 [info]   Adding disk13 to target disks
+2025-02-18 13:44:52 [info] No source disks require maintenance.
+2025-02-18 13:45:46 [info] movarr.sh script started.
+==== Movarr Results for Tue Feb 18 13:45:46 MST 2025 ====
+
+2025-02-18 13:45:46 [info] Starting data transfer...
+2025-02-18 13:45:47 [info] Configuration validation completed successfully.
+2025-02-18 13:45:47 [info] Processing disks:
+2025-02-18 13:45:47 [info]     disk1: Skipping excluded disk
+2025-02-18 13:45:47 [info]   Adding disk2 to target disks
+2025-02-18 13:45:47 [info]   Adding disk3 to target disks
+2025-02-18 13:45:47 [info]   Adding disk4 to target disks
+2025-02-18 13:45:47 [info]   Adding disk5 to target disks
+2025-02-18 13:45:47 [info]   Adding disk6 to target disks
+2025-02-18 13:45:47 [info]   Adding disk7 to target disks
+2025-02-18 13:45:47 [info]   Adding disk8 to target disks
+2025-02-18 13:45:47 [info]   Adding disk9 to target disks
+2025-02-18 13:45:47 [info]   Adding disk10 to target disks
+2025-02-18 13:45:47 [info]   Adding disk11 to target disks
+2025-02-18 13:45:47 [info]   Adding disk12 to target disks
+2025-02-18 13:45:47 [info]   Adding disk13 to target disks
+2025-02-18 13:45:47 [info] No source disks require maintenance.
+2025-02-18 13:47:35 [info] movarr.sh script started.
+==== Movarr Results for Tue Feb 18 13:47:35 MST 2025 ====
+
+2025-02-18 13:47:35 [info] Starting data transfer...
+2025-02-18 13:47:36 [info] Configuration validation completed successfully.
+2025-02-18 13:47:36 [info] Processing disks:
+2025-02-18 13:47:36 [info]     disk1: Skipping excluded disk
+2025-02-18 13:47:36 [info]   Adding disk2 to target disks
+2025-02-18 13:47:36 [info]   Adding disk3 to target disks
+2025-02-18 13:47:36 [info]   Adding disk4 to target disks
+2025-02-18 13:47:36 [info]   Adding disk5 to target disks
+2025-02-18 13:47:36 [info]   Adding disk6 to source disks due to low free space
+2025-02-18 13:47:36 [info]   Adding disk7 to target disks
+2025-02-18 13:47:36 [info]   Adding disk8 to target disks
+2025-02-18 13:47:36 [info]   Adding disk9 to target disks
+2025-02-18 13:47:36 [info]   Adding disk10 to target disks
+2025-02-18 13:47:36 [info]   Adding disk11 to target disks
+2025-02-18 13:47:36 [info]   Adding disk12 to target disks
+2025-02-18 13:47:36 [info]   Adding disk13 to target disks
+2025-02-18 13:47:36 [info]   disk6:
+2025-02-18 13:51:44 [info] movarr.sh script started.
+==== Movarr Results for Tue Feb 18 13:51:44 MST 2025 ====
+
+2025-02-18 13:51:44 [info] Starting data transfer...
+2025-02-18 13:51:45 [info] Configuration validation completed successfully.
+2025-02-18 13:51:45 [info] Processing disks:
+2025-02-18 13:51:45 [info]     disk1: Skipping excluded disk
+2025-02-18 13:51:45 [info]   Adding disk2 to target disks
+2025-02-18 13:51:45 [info]   Adding disk3 to target disks
+2025-02-18 13:51:45 [info]   Adding disk4 to target disks
+2025-02-18 13:51:45 [info]   Adding disk5 to target disks
+2025-02-18 13:51:45 [info]   Adding disk6 to source disks due to low free space
+2025-02-18 13:51:45 [info]   Adding disk7 to target disks
+2025-02-18 13:51:45 [info]   Adding disk8 to target disks
+2025-02-18 13:51:45 [info]   Adding disk9 to target disks
+2025-02-18 13:51:45 [info]   Adding disk10 to target disks
+2025-02-18 13:51:45 [info]   Adding disk11 to target disks
+2025-02-18 13:51:45 [info]   Adding disk12 to target disks
+2025-02-18 13:51:45 [info]   Adding disk13 to target disks
+2025-02-18 13:51:45 [info]   disk6:
+2025-02-18 13:51:49 [info]     Queued move: /mnt/disk6/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160} (37.3 GB) → disk4
+2025-02-18 13:51:49 [info] Debug mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-02-18 14:03:12 [info] Movarr is done.
+===== Summary =====
+2025-02-18 14:03:12 [info] 87607: 0M moved to 
+2025-02-18 14:03:12 [info] 87607: 0M moved from
+2025-02-18 14:03:12 [info] 87607: 0M
+2025-02-18 14:03:12 [info] ---------------------------
+2025-02-18 14:03:12 [info] Total Data Moved: 87607: 0M moved to 
+2025-02-18 14:03:12 [info] Script Execution Time: 0h 11m 28s
+2025-02-18 14:05:45 [info] movarr.sh script started.
+==== Movarr Results for Tue Feb 18 14:05:45 MST 2025 ====
+
+2025-02-18 14:05:45 [info] Starting data transfer...
+2025-02-18 14:05:45 [error] Invalid disk space value: 100GB. Converting to integer.
+2025-02-18 14:05:45 [error] Invalid disk space value: 100GB. Converting to integer.
+2025-02-18 14:05:45 [error] Invalid disk space value: 100GB. Converting to integer.
+2025-02-18 14:05:45 [error] Invalid disk space value: 100GB. Converting to integer.
+2025-02-18 14:05:45 [error] Invalid disk space value: 120GB. Converting to integer.
+2025-02-18 14:05:45 [error] Invalid disk space value: 120GB. Converting to integer.
+2025-02-18 14:05:45 [info] Configuration validation completed successfully.
+2025-02-18 14:05:45 [info] Processing disks:
+2025-02-18 14:05:45 [info]     disk1: Skipping excluded disk
+2025-02-18 14:05:45 [info]   Adding disk2 to target disks
+2025-02-18 14:05:45 [info]   Adding disk3 to target disks
+2025-02-18 14:05:45 [info]   Adding disk4 to source disks due to low free space
+2025-02-18 14:05:45 [info]   Adding disk5 to target disks
+2025-02-18 14:05:45 [info]   Adding disk6 to target disks
+2025-02-18 14:05:46 [info]   Adding disk7 to target disks
+2025-02-18 14:05:46 [info]   Adding disk8 to target disks
+2025-02-18 14:05:46 [info]   Adding disk9 to target disks
+2025-02-18 14:05:46 [info]   Adding disk10 to target disks
+2025-02-18 14:05:46 [info]   Adding disk11 to target disks
+2025-02-18 14:05:46 [info]   Adding disk12 to target disks
+2025-02-18 14:05:46 [info]   Adding disk13 to target disks
+2025-02-18 14:05:46 [info]   disk4:
+2025-02-18 14:05:48 [info]     Queued move: /mnt/disk4/data/media/movies/hd/The Hunger Games (2012) {tmdb-70160} (37.3 GB) → disk5
+2025-02-18 14:05:48 [info] Debug mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.

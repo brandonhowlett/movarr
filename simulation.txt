@@ -1,19 +1,7 @@
-  dryRun: false
-  logLevel: debug
-  maxLogSize: 100
-  maxLogRollovers: 1
-  diskPath: /mnt
-  diskRegex: disk[0-9]{1,2}
-  excludeDisks: disk1
-  rootFolders: data/media/movies/hd
-  minFreeDiskSpace: 102.4 GB
-  maxSourceDiskFreeSpace: 102.4 GB
-  minTargetDiskFreeSpace: 122.9 GB
-  fileTransferLimit: 1
-  moverMode: largest
-  notificationType: unraid
-  notifyEmail: brandonhowlett.unraid@gmail.com
+  minFreeDiskSpace: 100 MB
+  maxSourceDiskFreeSpace: 100 MB
+  minTargetDiskFreeSpace: 120 MB
 Disks:
-  Source: disk2 disk3 disk4 disk5 disk8 disk11
-  Target: disk6 disk7 disk9 disk10 disk12 disk13
+  Source: disk4
+  Target: disk2 disk3 disk5 disk6 disk7 disk8 disk9 disk10 disk11 disk12 disk13
 
