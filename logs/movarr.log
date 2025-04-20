@@ -31006,3 +31006,145 @@ disk11
 2025-04-20 11:37:58 [info]   disk4:
 2025-04-20 11:38:00 [info]     Queued move: /mnt/disk4/data/media/movies/hd/Ordinary People (1980) {tmdb-16619} (17.4 GB) → disk11
 2025-04-20 11:38:00 [info] Debug mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-04-20 12:00:02 [info] movarr.sh script started.
+==== Movarr Results for Sun Apr 20 12:00:02 MST 2025 ====
+
+2025-04-20 12:00:02 [info] Starting data transfer...
+2025-04-20 12:00:02 [info] Configuration validation completed successfully.
+2025-04-20 12:00:02 [info] Processing disks:
+2025-04-20 12:00:02 [info]     disk1: Skipping excluded disk
+2025-04-20 12:00:02 [info]   Adding disk2 to source disks due to low free space
+2025-04-20 12:00:02 [info]   Adding disk3 to source disks due to low free space
+2025-04-20 12:00:02 [info]   Adding disk4 to source disks due to low free space
+2025-04-20 12:00:02 [info]   Adding disk5 to source disks due to low free space
+2025-04-20 12:00:02 [info]   Adding disk6 to target disks
+2025-04-20 12:00:02 [info]   Adding disk7 to source disks due to low free space
+2025-04-20 12:00:02 [info]   Adding disk8 to target disks
+2025-04-20 12:00:02 [info]   Adding disk9 to source disks due to low free space
+2025-04-20 12:00:02 [info]   Adding disk10 to source disks due to low free space
+2025-04-20 12:00:02 [info]   Adding disk11 to target disks
+2025-04-20 12:00:02 [info]   Adding disk12 to target disks
+2025-04-20 12:00:02 [info]   Adding disk13 to target disks
+2025-04-20 12:00:02 [info]   Adding disk14 to target disks
+2025-04-20 12:00:02 [info]   disk9:
+2025-04-20 12:00:10 [info]     Queued move: /mnt/disk9/data/media/movies/hd/Venom The Last Dance (2024) {tmdb-912649} (28.1 GB) → disk11
+2025-04-20 12:00:10 [info]   disk5:
+2025-04-20 12:00:14 [info]     Queued move: /mnt/disk5/data/media/movies/hd/Before Sunrise (1995) {tmdb-76} (26.6 GB) → disk11
+2025-04-20 12:00:14 [info]   disk2:
+2025-04-20 12:00:18 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Great Escape (1963) {tmdb-5925} (23.8 GB) → disk11
+2025-04-20 12:00:18 [info]   disk3:
+2025-04-20 12:00:19 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Dev.D (2009) {tmdb-15977} (11.2 GB) → disk11
+2025-04-20 12:00:19 [info]   disk10:
+2025-04-20 12:00:22 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Out of Africa (1985) {tmdb-606} (26.3 GB) → disk11
+2025-04-20 12:00:22 [info]   disk4:
+2025-04-20 12:00:25 [info]     Queued move: /mnt/disk4/data/media/movies/hd/Ordinary People (1980) {tmdb-16619} (17.4 GB) → disk11
+2025-04-20 12:00:25 [info]   disk7:
+2025-04-20 12:00:29 [info]     Queued move: /mnt/disk7/data/media/movies/hd/Harlem Nights (1989) {tmdb-9085} (18.5 GB) → disk11
+2025-04-20 12:00:29 [info] Debug mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-04-20 12:37:02 [info] movarr.sh script started.
+==== Movarr Results for Sun Apr 20 12:37:02 MST 2025 ====
+
+2025-04-20 12:37:02 [info] Starting data transfer...
+2025-04-20 12:37:03 [info] Configuration validation completed successfully.
+2025-04-20 12:37:03 [info] Processing disks:
+2025-04-20 12:37:03 [info]     disk1: Skipping excluded disk
+2025-04-20 12:37:03 [info]   Adding disk2 to source disks due to low free space
+2025-04-20 12:37:03 [info]   Adding disk3 to source disks due to low free space
+2025-04-20 12:37:03 [info]   Adding disk4 to source disks due to low free space
+2025-04-20 12:37:03 [info]   Adding disk5 to source disks due to low free space
+2025-04-20 12:37:03 [info]   Adding disk7 to source disks due to low free space
+2025-04-20 12:37:03 [info]   Adding disk10 to source disks due to low free space
+2025-04-20 12:37:03 [info]   Adding disk11 to target disks
+2025-04-20 12:37:03 [info]   Adding disk13 to target disks
+2025-04-20 12:37:03 [info]   Adding disk14 to target disks
+2025-04-20 12:37:03 [info]   disk4:
+2025-04-20 12:37:07 [info]     Queued move: /mnt/disk4/data/media/movies/hd/Ordinary People (1980) {tmdb-16619} (17.4 GB) → disk11
+2025-04-20 12:37:07 [info]   disk2:
+2025-04-20 12:37:12 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Great Escape (1963) {tmdb-5925} (23.8 GB) → disk11
+2025-04-20 12:37:12 [info]   disk3:
+2025-04-20 12:37:14 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Dev.D (2009) {tmdb-15977} (11.2 GB) → disk11
+2025-04-20 12:37:14 [info]   disk10:
+2025-04-20 12:37:18 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Out of Africa (1985) {tmdb-606} (26.3 GB) → disk11
+2025-04-20 12:37:18 [info]   disk5:
+2025-04-20 12:37:27 [info]     Queued move: /mnt/disk5/data/media/movies/hd/Pans Labyrinth (2006) {tmdb-1417} (26.4 GB) → disk11
+2025-04-20 12:37:27 [info]   disk7:
+2025-04-20 12:37:32 [info]     Queued move: /mnt/disk7/data/media/movies/hd/Harlem Nights (1989) {tmdb-9085} (18.5 GB) → disk11
+2025-04-20 12:37:32 [info] Debug mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-04-20 12:40:42 [info] movarr.sh script started.
+==== Movarr Results for Sun Apr 20 12:40:42 MST 2025 ====
+
+2025-04-20 12:40:42 [info] Starting data transfer...
+2025-04-20 12:40:42 [info] Configuration validation completed successfully.
+2025-04-20 12:40:42 [info] Processing disks:
+2025-04-20 12:40:42 [info]     disk1: Skipping excluded disk
+2025-04-20 12:40:42 [info]   Adding disk2 to source disks due to low free space
+2025-04-20 12:40:42 [info]   Adding disk3 to source disks due to low free space
+2025-04-20 12:40:42 [info]   Adding disk4 to source disks due to low free space
+2025-04-20 12:40:42 [info]   Adding disk5 to source disks due to low free space
+2025-04-20 12:40:42 [info]   Adding disk7 to source disks due to low free space
+2025-04-20 12:40:42 [info]   Adding disk10 to source disks due to low free space
+2025-04-20 12:40:42 [info]   Adding disk11 to target disks
+2025-04-20 12:40:43 [info]   Adding disk13 to target disks
+2025-04-20 12:40:43 [info]   Adding disk14 to target disks
+2025-04-20 12:40:43 [info]   disk4:
+2025-04-20 12:40:45 [info]     Queued move: /mnt/disk4/data/media/movies/hd/Ordinary People (1980) {tmdb-16619} (17.4 GB) → disk11
+2025-04-20 12:40:45 [info]   disk2:
+2025-04-20 12:40:48 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Great Escape (1963) {tmdb-5925} (23.8 GB) → disk11
+2025-04-20 12:40:48 [info]   disk3:
+2025-04-20 12:40:49 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Dev.D (2009) {tmdb-15977} (11.2 GB) → disk11
+2025-04-20 12:40:49 [info]   disk10:
+2025-04-20 12:40:52 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Out of Africa (1985) {tmdb-606} (26.3 GB) → disk11
+2025-04-20 12:40:53 [info]   disk5:
+2025-04-20 12:40:58 [info]     Queued move: /mnt/disk5/data/media/movies/hd/Pans Labyrinth (2006) {tmdb-1417} (26.4 GB) → disk11
+2025-04-20 12:40:58 [info]   disk7:
+2025-04-20 12:41:02 [info]     Queued move: /mnt/disk7/data/media/movies/hd/Harlem Nights (1989) {tmdb-9085} (18.5 GB) → disk11
+2025-04-20 12:41:02 [info] Debug mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-04-20 12:41:39 [info] movarr.sh script started.
+==== Movarr Results for Sun Apr 20 12:41:39 MST 2025 ====
+
+2025-04-20 12:41:39 [info] Starting data transfer...
+2025-04-20 12:41:39 [info] Configuration validation completed successfully.
+2025-04-20 12:41:39 [info] Processing disks:
+2025-04-20 12:41:39 [info]     disk1: Skipping excluded disk
+2025-04-20 12:41:39 [info]   Adding disk2 to source disks due to low free space
+2025-04-20 12:41:39 [info]   Adding disk3 to source disks due to low free space
+2025-04-20 12:41:39 [info]   Adding disk4 to source disks due to low free space
+2025-04-20 12:41:39 [info]   Adding disk7 to source disks due to low free space
+2025-04-20 12:41:40 [info]   Adding disk10 to source disks due to low free space
+2025-04-20 12:41:40 [info]   Adding disk11 to target disks
+2025-04-20 12:41:40 [info]   Adding disk13 to target disks
+2025-04-20 12:41:40 [info]   Adding disk14 to target disks
+2025-04-20 12:41:40 [info]   disk4:
+2025-04-20 12:41:42 [info]     Queued move: /mnt/disk4/data/media/movies/hd/Ordinary People (1980) {tmdb-16619} (17.4 GB) → disk11
+2025-04-20 12:41:42 [info]   disk2:
+2025-04-20 12:41:45 [info]     Queued move: /mnt/disk2/data/media/movies/hd/The Great Escape (1963) {tmdb-5925} (23.8 GB) → disk11
+2025-04-20 12:41:46 [info]   disk3:
+2025-04-20 12:41:46 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Dev.D (2009) {tmdb-15977} (11.2 GB) → disk11
+2025-04-20 12:41:47 [info]   disk10:
+2025-04-20 12:41:50 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Out of Africa (1985) {tmdb-606} (26.3 GB) → disk11
+2025-04-20 12:41:51 [info]   disk7:
+2025-04-20 12:41:55 [info]     Queued move: /mnt/disk7/data/media/movies/hd/Harlem Nights (1989) {tmdb-9085} (18.5 GB) → disk11
+2025-04-20 12:41:55 [info] Debug mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.
+2025-04-20 12:53:53 [info] movarr.sh script started.
+==== Movarr Results for Sun Apr 20 12:53:53 MST 2025 ====
+
+2025-04-20 12:53:53 [info] Starting data transfer...
+2025-04-20 12:53:53 [info] Configuration validation completed successfully.
+2025-04-20 12:53:53 [info] Processing disks:
+2025-04-20 12:53:53 [info]     disk1: Skipping excluded disk
+2025-04-20 12:53:54 [info]   Adding disk3 to source disks due to low free space
+2025-04-20 12:53:54 [info]   Adding disk4 to source disks due to low free space
+2025-04-20 12:53:54 [info]   Adding disk7 to source disks due to low free space
+2025-04-20 12:53:54 [info]   Adding disk10 to source disks due to low free space
+2025-04-20 12:53:54 [info]   Adding disk11 to target disks
+2025-04-20 12:53:54 [info]   Adding disk13 to target disks
+2025-04-20 12:53:54 [info]   Adding disk14 to target disks
+2025-04-20 12:53:54 [info]   disk4:
+2025-04-20 12:53:56 [info]     Queued move: /mnt/disk4/data/media/movies/hd/Sing (2016) {tmdb-335797} (19.6 GB) → disk11
+2025-04-20 12:53:56 [info]   disk3:
+2025-04-20 12:53:57 [info]     Queued move: /mnt/disk3/data/media/movies/hd/Dev.D (2009) {tmdb-15977} (11.2 GB) → disk11
+2025-04-20 12:53:57 [info]   disk10:
+2025-04-20 12:54:01 [info]     Queued move: /mnt/disk10/data/media/movies/hd/Out of Africa (1985) {tmdb-606} (26.3 GB) → disk11
+2025-04-20 12:54:01 [info]   disk7:
+2025-04-20 12:54:05 [info]     Queued move: /mnt/disk7/data/media/movies/hd/Harlem Nights (1989) {tmdb-9085} (18.5 GB) → disk11
+2025-04-20 12:54:05 [info] Debug mode: Transfer plan saved to /root/scripts/movarr/simulation.txt.

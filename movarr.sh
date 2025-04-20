@@ -41,9 +41,8 @@ tempFile=""
 moveListFile=""
 
 cleanup() {
-    rm -f "$tempFile"
-    rm -f "$moveListFile"
-    rm -f "$scriptDir/movarr.pid"
+    rm -f "$tempFile" "$moveListFile" "movarr.pid"
+    find "$scriptDir" -name 'tmp.*' -type f -exec rm -f {} \;
 }
 
 # Set up trap to call cleanup function on script exit or interruption
@@ -171,7 +170,8 @@ validateDiskSpace() {  # NO LOGGING ALLOWED IN THIS FUNCTION!
         ((errors++))
     fi
 
-    echo "$spaceValue"
+    # echo "$spaceValue"
+    echo "$spaceValue $errors"
 }
 
 # Function to validate configuration imported from config.ini
@@ -344,15 +344,18 @@ validateConfiguration() {
     fi
 
     # Validate minFreeDiskSpace, maxSourceDiskFreeSpace, and minTargetDiskFreeSpace
-    minFreeDiskSpace=$(validateDiskSpace "$minFreeDiskSpace" "minFreeDiskSpace" "$errors")
+    # minFreeDiskSpace=$(validateDiskSpace "$minFreeDiskSpace" "minFreeDiskSpace" "$errors")
+    read minFreeDiskSpace errors <<< "$(validateDiskSpace "$minFreeDiskSpace" "minFreeDiskSpace" "$errors")"
     logMessage "debug" "minFreeDiskSpace: $(formatSpace $minFreeDiskSpace)"
     [ "$dryRun" == "true" ] && echo "  minFreeDiskSpace: $(formatSpace $minFreeDiskSpace)" >> "$dryRunFilePath"
 
-    maxSourceDiskFreeSpace=$(validateDiskSpace "$maxSourceDiskFreeSpace" "maxSourceDiskFreeSpace" "$errors")
+    # maxSourceDiskFreeSpace=$(validateDiskSpace "$maxSourceDiskFreeSpace" "maxSourceDiskFreeSpace" "$errors")
+    read maxSourceDiskFreeSpace errors <<< "$(validateDiskSpace "$maxSourceDiskFreeSpace" "maxSourceDiskFreeSpace" "$errors")"
     logMessage "debug" "maxSourceDiskFreeSpace: $(formatSpace $maxSourceDiskFreeSpace)"
     [ "$dryRun" == "true" ] && echo "  maxSourceDiskFreeSpace: $(formatSpace $maxSourceDiskFreeSpace)" >> "$dryRunFilePath"
 
-    minTargetDiskFreeSpace=$(validateDiskSpace "$minTargetDiskFreeSpace" "minTargetDiskFreeSpace" "$errors")
+    # minTargetDiskFreeSpace=$(validateDiskSpace "$minTargetDiskFreeSpace" "minTargetDiskFreeSpace" "$errors")
+    read minTargetDiskFreeSpace errors <<< "$(validateDiskSpace "$minTargetDiskFreeSpace" "minTargetDiskFreeSpace" "$errors")"
     logMessage "debug" "minTargetDiskFreeSpace: $(formatSpace $minTargetDiskFreeSpace)"
     [ "$dryRun" == "true" ] && echo "  minTargetDiskFreeSpace: $(formatSpace $minTargetDiskFreeSpace)" >> "$dryRunFilePath"
 
@@ -411,43 +414,93 @@ arrayContainsDisk() {
 # Function to check if a disk is spun up and spin it up if necessary
 checkDiskStatus() {
     local disk="$1"
-    local diskPath="$diskPath/$disk"
-    local device=""
 
-    # Find the device associated with the mount point
-    device=$(findmnt -n -o SOURCE "$diskPath" | head -n 1)
-
-    if [ -z "$device" ]; then
-        logMessage "error" "Could not find device for disk $disk at $diskPath"
+    # Validate input
+    if [ -z "$disk" ]; then
+        logMessage "error" "Disk parameter is empty. Cannot check disk status."
         return 1
     fi
 
-    # Check if the disk is spun up using hdparm
-    if hdparm -C "$device" 2>/dev/null | grep -q "drive state is:  standby"; then
-        logMessage "info" "Disk $disk ($device) is in standby mode. Spinning it up..."
-        
-        # Spin up the disk using hdparm
+    # Check if required commands are available
+    if ! command -v findmnt &>/dev/null; then
+        logMessage "error" "findmnt command is not available. Cannot determine device for disk $disk."
+        return 2
+    fi
+
+    if ! command -v hdparm &>/dev/null; then
+        logMessage "error" "hdparm is not installed. Disk status checks will be skipped."
+        return 3
+    fi
+
+    # Helper function to find the device associated with the disk
+    findDevice() {
+        local disk="$1"
+        findmnt -n -o SOURCE "$diskPath/$disk" 2>/dev/null | head -n 1
+    }
+
+    # Helper function to spin up the disk
+    spinUpDisk() {
+        local device="$1"
         hdparm -S 0 "$device" 2>/dev/null
-        
-        # Wait for the disk to spin up (adjust sleep time as needed)
-        sleep 10
-        
-        # Verify that the disk is spun up
+    }
+
+    # Find the device associated with the disk
+    local device
+    device=$(findDevice "$disk")
+    if [ -z "$device" ]; then
+        logMessage "error" "Could not find device for disk $disk at $diskPath. Ensure the disk is mounted."
+        return 4
+    fi
+
+    # Check if the disk is in standby mode
+    if hdparm -C "$device" 2>/dev/null | grep -q "drive state is:  standby"; then
+        logMessage "info" "Disk $disk ($device) is in standby mode. Attempting to spin it up..."
+
+        # Spin up the disk with a timeout
+        spinUpDisk "$device" &
+        local spinUpPid=$!
+        local timeout=10
+        while kill -0 "$spinUpPid" 2>/dev/null && [ $timeout -gt 0 ]; do
+            sleep 1
+            timeout=$((timeout - 1))
+        done
+
+        # Check if the spin-up process timed out
+        if kill -0 "$spinUpPid" 2>/dev/null; then
+            logMessage "error" "Disk $disk ($device) failed to spin up within the timeout period."
+            kill -9 "$spinUpPid" 2>/dev/null
+            return 5
+        fi
+
+        # Verify that the disk is no longer in standby mode
         if hdparm -C "$device" 2>/dev/null | grep -q "drive state is:  standby"; then
             logMessage "error" "Failed to spin up disk $disk ($device)."
-            return 1
+            return 6
         else
             logMessage "info" "Disk $disk ($device) spun up successfully."
         fi
     else
         logMessage "debug" "Disk $disk ($device) is already spun up."
     fi
+
     return 0
 }
 
+# getFreeSpace() {
+#     local disk="$1"
+#     df -m "$diskPath/$disk" | awk 'NR==2 {print $4}'
+# }
+
 getFreeSpace() {
     local disk="$1"
-    df -m "$diskPath/$disk" | awk 'NR==2 {print $4}'
+    local freeSpace
+    freeSpace=$(df -m "$diskPath/$disk" 2>/dev/null | awk 'NR==2 {print $4}')
+    if [ -z "$freeSpace" ]; then
+        logMessage "error" "Failed to retrieve free space for $disk."
+        echo 0
+    else
+        echo "$freeSpace"
+    fi
 }
 
 formatSpace() {
@@ -570,8 +623,19 @@ initializeTempFile() {
     done
 }
 
+# isMovarrRunning() {
+#     [ -f "$scriptDir/movarr.pid" ]
+# }
+
 isMovarrRunning() {
-    [ -f "$scriptDir/movarr.pid" ]
+    if [ -f "$scriptDir/movarr.pid" ]; then
+        local pid
+        pid=$(cat "$scriptDir/movarr.pid")
+        if ps -p "$pid" &>/dev/null; then
+            return 0
+        fi
+    fi
+    return 1
 }
 
 formatSimulationEntry() {
@@ -648,7 +712,7 @@ generateMoveList() {
                 readarray -t sourceDirectories < <(printf "%s\n" "${sourceDirectories[@]}" | tac)
             fi
 
-            freeSpace=$(grep "^$sourceDisk " "$tempFile" | awk '{print $2}')
+            freeSpace=$(getFreeSpace "$disk")
             logMessage "debug" "    Free space on source disk ($sourceDisk) is $(formatSpace $freeSpace)"
 
             if [ "$dryRun" == "true" ]; then
@@ -758,6 +822,50 @@ generateMoveList() {
     fi
 }
 
+# moveFilesFromList() {
+#     local moveListFile="$1"
+#     local sourceDirSize
+#     local sourceDir
+#     local targetDir
+#     local targetDisk
+
+#     while IFS= read -r line; do
+#         if [[ $line =~ ^([0-9]+)\ [\"']([^\"]+)[\"']\ [\"']([^\"]+)[\"']$ ]]; then
+#             sourceDirSize="${BASH_REMATCH[1]}"
+#             sourceDir="${BASH_REMATCH[2]}"
+#             targetDir="${BASH_REMATCH[3]}"
+#             targetDisk=$(echo "$targetDir" | awk -F'/' '{print $3}')
+#         else
+#             logMessage "error" "Failed to parse line: $line"
+#             continue
+#         fi
+
+#         if [ ! -d "$sourceDir" ]; then
+#             logMessage "error" "Source directory $sourceDir does not exist. Skipping move."
+#             continue
+#         fi
+
+#         rsync -avz --remove-source-files --progress -- "$sourceDir/" "$targetDir/" &
+#         pid=$!
+#         rsyncPids+=("$pid")
+
+#         while [ "${#rsyncPids[@]}" -ge "$fileTransferLimit" ]; do
+#             for i in "${!rsyncPids[@]}"; do
+#                 if ! kill -0 "${rsyncPids[$i]}" 2>/dev/null; then
+#                     unset 'rsyncPids[$i]'
+#                 fi
+#             done
+#             rsyncPids=("${rsyncPids[@]}")  # Rebuild the array
+#             sleep 1
+#         done
+
+#         find "$sourceDir" -type d -empty -exec rmdir {} \;
+
+#     done < "$moveListFile"
+
+#     wait
+# }
+
 moveFilesFromList() {
     local moveListFile="$1"
     local sourceDirSize
@@ -782,22 +890,37 @@ moveFilesFromList() {
         fi
 
         rsync -avz --remove-source-files --progress -- "$sourceDir/" "$targetDir/" &
+        pid=$!
+        rsyncPids+=("$pid")
 
-        find "$sourceDir" -type d -empty -exec rmdir {} \;
-
-        while [ "$(jobs -r | wc -l)" -ge "$fileTransferLimit" ]; do
+        while [ "${#rsyncPids[@]}" -ge "$fileTransferLimit" ]; do
+            for i in "${!rsyncPids[@]}"; do
+                if ! kill -0 "${rsyncPids[$i]}" 2>/dev/null; then
+                    unset 'rsyncPids[$i]'
+                fi
+            done
+            rsyncPids=("${rsyncPids[@]}")  # Rebuild the array
             sleep 1
         done
     done < "$moveListFile"
 
+    # Wait for all rsync processes to complete
     wait
+
+    # Remove empty directories after all transfers are complete
+    while IFS= read -r line; do
+        if [[ $line =~ ^([0-9]+)\ [\"']([^\"]+)[\"']\ [\"']([^\"]+)[\"']$ ]]; then
+            sourceDir="${BASH_REMATCH[2]}"
+            find "$sourceDir" -type d -empty -exec rmdir {} \; || logMessage "warn" "Failed to remove some empty directories in $sourceDir."
+        fi
+    done < "$moveListFile"
 }
 
 main() {
     initializeLogs
     initializeDryRun
     validateConfiguration
-    
+
     declare -A sourceDisks
     declare -A targetDisks
 
@@ -807,30 +930,41 @@ main() {
     logMessage "debug" "  Calculating free space..."
 
     for disk in "${activeDisks[@]}"; do
-        if arrayContainsDisk "${excludedDisks[@]}" "$disk" ; then
+        if arrayContainsDisk "${excludedDisks[@]}" "$disk"; then
             logMessage "info" "    $disk: Skipping excluded disk"
+            continue
+        fi
+
+        # Get free space before spinning up the disk
+        freeSpace=$(getFreeSpace "$disk")
+        if [ -z "$freeSpace" ] || ! [[ "$freeSpace" =~ ^[0-9]+$ ]]; then
+            logMessage "error" "    Failed to retrieve free space for $disk. Skipping."
+            continue
+        fi
+
+        logMessage "debug" "    $disk: $(formatSpace $freeSpace)"
+
+        # Categorize the disk as source or target based on free space
+        if [ "$freeSpace" -lt "$minFreeDiskSpace" ]; then
+            sourceDisks["$disk"]=$freeSpace
+            logMessage "info" "  Adding $disk to source disks due to low free space"
+        elif [ "$freeSpace" -ge "$minTargetDiskFreeSpace" ]; then
+            targetDisks["$disk"]=$freeSpace
+            logMessage "info" "  Adding $disk to target disks"
+        else
+            logMessage "debug" "    $disk: Sufficient free space but does not qualify as a target disk. Skipping spin-up."
             continue
         fi
 
         # Check disk status and spin up if needed
         if ! checkDiskStatus "$disk"; then
             logMessage "error" "Failed to check/spin up disk $disk. Skipping."
+            unset sourceDisks["$disk"]
+            unset targetDisks["$disk"]
             continue
         fi
-
-        local freeSpace
-        freeSpace=$(getFreeSpace "$disk")
-
-        logMessage "debug" "    $disk: $(formatSpace $freeSpace)"
-        if [ "$freeSpace" -lt "$minFreeDiskSpace" ]; then
-            sourceDisks["$disk"]=$freeSpace
-            logMessage "info" "  Adding $disk to source disks due to low free space"
-        else
-            targetDisks["$disk"]=$freeSpace
-            logMessage "info" "  Adding $disk to target disks"
-        fi
     done
-    
+
     if [ ${#sourceDisks[@]} -eq 0 ]; then
         logMessage "info" "No source disks require maintenance."
         exit 1
@@ -880,7 +1014,6 @@ main() {
     moveFilesFromList "$moveListFile"
 
     logMessage "debug" "Waiting for all background jobs to complete..."
-    # timeout 600 wait || logMessage "warn" "Background jobs took too long to complete."
     wait
 
     logMessage "debug" "Missing directories:"
@@ -890,10 +1023,6 @@ main() {
             logMessage "debug,warn" "  $missingDir"
         done
     fi
-
-    # if [ "$dryRun" = "true" ] || [ "$logLevel" = "debug" ]; then
-    #     cp "$tempFile" "$scriptDir/diskSpace.txt"
-    # fi
 
     logMessage "info" "Movarr is done."
     logMessage "debug" "movarr.sh script completed."
