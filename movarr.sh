@@ -37,6 +37,8 @@ dryRunFileName="simulation.txt"
 dryRunFilePath="$scriptDir/$dryRunFileName"
 fileListFileName="debug_file_list.txt"
 fileListFilePath="$scriptDir/$fileListFileName"
+tempFile=""
+moveListFile=""
 
 cleanup() {
     rm -f "$tempFile"
@@ -406,6 +408,43 @@ arrayContainsDisk() {
     return 1
 }
 
+# Function to check if a disk is spun up and spin it up if necessary
+checkDiskStatus() {
+    local disk="$1"
+    local diskPath="$diskPath/$disk"
+    local device=""
+
+    # Find the device associated with the mount point
+    device=$(findmnt -n -o SOURCE "$diskPath" | head -n 1)
+
+    if [ -z "$device" ]; then
+        logMessage "error" "Could not find device for disk $disk at $diskPath"
+        return 1
+    fi
+
+    # Check if the disk is spun up using hdparm
+    if hdparm -C "$device" 2>/dev/null | grep -q "drive state is:  standby"; then
+        logMessage "info" "Disk $disk ($device) is in standby mode. Spinning it up..."
+        
+        # Spin up the disk using hdparm
+        hdparm -S 0 "$device" 2>/dev/null
+        
+        # Wait for the disk to spin up (adjust sleep time as needed)
+        sleep 10
+        
+        # Verify that the disk is spun up
+        if hdparm -C "$device" 2>/dev/null | grep -q "drive state is:  standby"; then
+            logMessage "error" "Failed to spin up disk $disk ($device)."
+            return 1
+        else
+            logMessage "info" "Disk $disk ($device) spun up successfully."
+        fi
+    else
+        logMessage "debug" "Disk $disk ($device) is already spun up."
+    fi
+    return 0
+}
+
 getFreeSpace() {
     local disk="$1"
     df -m "$diskPath/$disk" | awk 'NR==2 {print $4}'
@@ -472,29 +511,32 @@ addFooter() {
 
     echo "===== Summary =====" >> "$logFilePath"
 
+    local movedData=""
     local totalDataMoved=""
+    local addedData=""
     local totalDataAdded=""
+    local removedData=""
     local totalDataRemoved=""
 
-    for disk in "${sourceDisks[@]}"; do
-        movedData=$(du -sh "$disk" 2>/dev/null || echo "0M")
-        totalDataMoved+="$disk: $movedData moved to "
+    # for disk in "${sourceDisks[@]}"; do
+    #     movedData=$(du -sh "$disk" 2>/dev/null || echo "0M")
+    #     totalDataMoved+="$disk: $movedData moved to "
 
-        addedData=$(du -sh "$addedDataPath/$disk" 2>/dev/null || echo "0M")
-        totalDataAdded+="$disk: $addedData, "
+    #     addedData=$(du -sh "$addedDataPath/$disk" 2>/dev/null || echo "0M")
+    #     totalDataAdded+="$disk: $addedData, "
 
-        removedData=$(du -sh "$removedDataPath/$disk" 2>/dev/null || echo "0M")
-        totalDataRemoved+="$disk: $removedData, "
-    done
+    #     removedData=$(du -sh "$removedDataPath/$disk" 2>/dev/null || echo "0M")
+    #     totalDataRemoved+="$disk: $removedData, "
+    # done
 
-    totalDataAdded="${totalDataAdded%,*}"
-    totalDataRemoved="${totalDataRemoved%,*}"
+    # totalDataAdded="${totalDataAdded%,*}"
+    # totalDataRemoved="${totalDataRemoved%,*}"
 
-    logMessage "info" "$totalDataMoved"
-    logMessage "info" "$totalDataAdded moved from"
-    logMessage "info" "$totalDataRemoved"
-    logMessage "info" "---------------------------"
-    logMessage "info" "Total Data Moved: $totalDataMoved"
+    # logMessage "info" "$totalDataMoved"
+    # logMessage "info" "$totalDataAdded moved from"
+    # logMessage "info" "$totalDataRemoved"
+    # logMessage "info" "---------------------------"
+    # logMessage "info" "Total Data Moved: $totalDataMoved"
     logMessage "info" "Script Execution Time: ${elapsedHours}h ${elapsedMinutes}m ${elapsedSeconds}s"
 }
 
@@ -546,8 +588,8 @@ generateMoveList() {
     if [ "$dryRun" == "true" ]; then
         > "$dryRunFilePath"
 
-        declare -A totalDataMovedTargetDisks
-        declare -A totalDataMovedSourceDisks
+        declare -A totalDataMovedSourceDisks=()
+        declare -A totalDataMovedTargetDisks=()
     fi
 
     sortedSizeSourceDisks=$(for disk in "${!sourceDisks[@]}"; do echo "$disk ${sourceDisks[$disk]}"; done | sort -n -k2)
@@ -611,7 +653,7 @@ generateMoveList() {
 
             if [ "$dryRun" == "true" ]; then
                 unset dataMovedTargetDisks
-                declare -A dataMovedTargetDisks
+                declare -A dataMovedTargetDisks=()
             fi
 
             for sourceDir in "${sourceDirectories[@]}"; do
@@ -770,6 +812,12 @@ main() {
             continue
         fi
 
+        # Check disk status and spin up if needed
+        if ! checkDiskStatus "$disk"; then
+            logMessage "error" "Failed to check/spin up disk $disk. Skipping."
+            continue
+        fi
+
         local freeSpace
         freeSpace=$(getFreeSpace "$disk")
 
@@ -806,7 +854,8 @@ main() {
     local tempFile
     tempFile=$(mktemp "$scriptDir/tmp.XXXXXX")
 
-    find "$scriptDir" -name 'tmp.*' -type f -exec rm -f {} \;
+    # Remove old temporary files, but exclude the current move list file
+    find "$scriptDir" -name 'tmp.*' -type f ! -name "$(basename "$moveListFile")" -exec rm -f {} \;
 
     initializeTempFile "$tempFile"
 
